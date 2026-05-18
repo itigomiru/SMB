@@ -154,9 +154,12 @@
   <ItemGroup>
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
+    <ClCompile Include="program\Enemy.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />
+    <ClCompile Include="program\ObjectManager.cpp" />
+    <ClCompile Include="program\Player.cpp" />
     <ClCompile Include="program\Random.cpp" />
     <ClCompile Include="program\SceneManager.cpp" />
     <ClCompile Include="program\Hit.cpp" />
@@ -170,10 +173,15 @@
     <ClInclude Include="program\Effect.h" />
     <ClInclude Include="program\EffectManager.h" />
     <ClInclude Include="program\Ending.h" />
+    <ClInclude Include="program\Enemy.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
     <ClInclude Include="program\ImageManager.h" />
+    <ClInclude Include="program\Object.h" />
+    <ClInclude Include="program\ObjectManager.h" />
+    <ClInclude Include="program\Player.h" />
     <ClInclude Include="program\Random.h" />
+    <ClInclude Include="program\Scene.h" />
     <ClInclude Include="program\SceneManager.h" />
     <ClInclude Include="program\Hit.h" />
     <ClInclude Include="program\Main.h" />

@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Scene.h"
+#include <memory>
 #define SCREEN_W	640
 #define SCREEN_H	448
 class SceneManager
@@ -15,8 +16,7 @@ public:
 		SCENE_GAMEOVER,
 	};
 private:
-	int scene_num;		//	今どこのシーンにいるのかを見る用の変数
-	int scene_next;
+	std::unique_ptr<Scene> currentScene;
 	SceneManager();
 	~SceneManager();
 
@@ -24,9 +24,31 @@ private:
 	SceneManager& operator=(const SceneManager&) = delete;
 
 public:
-	void Init();	//	初期化処理
 	void Update();	//	更新処理
 	void Render();	//	描画処理
+	const float GRAVITY = 0.5f;
+
+	void ChangeScene(int nextScene) {
+		switch (nextScene) {
+		case SCENE_TITLE:
+			currentScene = std::make_unique<Title>();
+			break;
+		case SCENE_STAGE:
+			currentScene = std::make_unique<Stage>();
+			break;
+		case SCENE_CLEAR:
+			currentScene = std::make_unique<Clear>();
+			break;
+		case SCENE_ENDING:
+			currentScene = std::make_unique<Ending>();
+			break;
+		case SCENE_GAMEOVER:
+			currentScene = std::make_unique<Gameover>();
+			break;
+		default:
+			break;
+		}
+	}
 };
 
 

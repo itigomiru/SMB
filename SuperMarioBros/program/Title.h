@@ -1,7 +1,11 @@
 #pragma once
 
-//	タイトルで使う関数の宣言
-void TitleInit();
-void TitleUpdate();
-void TitleRender();
-void TitleExit();
+class Title : public Scene
+{
+	public:
+	void Init() override;
+	void Update() override;
+	void Render() override;
+	~Title() override {
+	}
+};

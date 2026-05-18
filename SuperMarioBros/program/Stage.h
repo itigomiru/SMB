@@ -1,19 +1,14 @@
 #pragma once
 
-enum stage_states
+class Stage : public Scene
 {
-	STAGE_READY,
-	STAGE_PLAYING,
-	STAGE_CLEAR,
-	STAGE_GAMEOVER,
+private :
+	//	ステージに必要な変数を宣言
+	ObjectManager objectManager;
+public:
+	void Init() override;
+	void Update() override;
+	void Render() override;
+	~Stage() override {
+	}
 };
-
-int GetStageScore();
-void AddStageScore(int point);
-
-//	ステージで使う関数の宣言
-void StageInit();
-void StageUpdate();
-void StageRender();
-void StageExit();
-
