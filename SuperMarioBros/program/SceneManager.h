@@ -1,8 +1,11 @@
 #pragma once
+#pragma once
 #include "Scene.h"
+#include "Title.h"
+#include "Stage.h"
 #include <memory>
-#define SCREEN_W	640
-#define SCREEN_H	448
+#define SCREEN_W	768
+#define SCREEN_H	720
 class SceneManager
 {
 public:
@@ -28,30 +31,5 @@ public:
 	void Render();	//	ï`âÊèàóù
 	const float GRAVITY = 0.5f;
 
-	void ChangeScene(int nextScene) {
-		switch (nextScene) {
-		case SCENE_TITLE:
-			currentScene = std::make_unique<Title>();
-			break;
-		case SCENE_STAGE:
-			currentScene = std::make_unique<Stage>();
-			break;
-		case SCENE_CLEAR:
-			currentScene = std::make_unique<Clear>();
-			break;
-		case SCENE_ENDING:
-			currentScene = std::make_unique<Ending>();
-			break;
-		case SCENE_GAMEOVER:
-			currentScene = std::make_unique<Gameover>();
-			break;
-		default:
-			break;
-		}
-	}
+	void ChangeScene(int nextScene);
 };
-
-
-
-
-

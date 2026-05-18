@@ -13,7 +13,9 @@ private:
 	const float DEKA_H = 32.0f;
 	const float WIDTH = 16.0f;
 
-	const Float2 VEL_MAX = { 2.0f, 10.0f };
+	const Float2 VEL_MAX = { 5.0f, 10.0f };
+	const float VEL_MIN = 0.05f;
+	bool isGrounded;//’n–Ê‚É‚¢‚é‚©‚Ç‚¤‚©
 	Float2 prevPos;
 
 	void Input();

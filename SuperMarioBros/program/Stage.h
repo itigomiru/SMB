@@ -1,4 +1,6 @@
 #pragma once
+#include "Scene.h"
+#include "ObjectManager.h"
 
 class Stage : public Scene
 {
@@ -9,6 +11,5 @@ public:
 	void Init() override;
 	void Update() override;
 	void Render() override;
-	~Stage() override {
-	}
+	~Stage() override;
 };

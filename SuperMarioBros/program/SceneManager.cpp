@@ -20,6 +20,7 @@
 //---------------------------------------------------------------------------------
 void SceneManager::Update()
 {
+	currentScene->Update();
 }
 
 //---------------------------------------------------------------------------------
@@ -27,13 +28,14 @@ void SceneManager::Update()
 //---------------------------------------------------------------------------------
 void SceneManager::Render()
 {
-
+	currentScene->Render();
 }
 //---------------------------------------------------------------------------------
 //	èIóπèàóù
 
 SceneManager::SceneManager()
 {
+	currentScene = std::make_unique<Title>();
 }
 
 SceneManager::~SceneManager()
@@ -44,4 +46,28 @@ SceneManager& SceneManager::GetInstance()
 {
 	static SceneManager instance;
 	return instance;
+}
+
+
+void SceneManager::ChangeScene(int nextScene) {
+	switch (nextScene) {
+	case SCENE_TITLE:
+		currentScene = std::make_unique<Title>();
+		break;
+	case SCENE_STAGE:
+		currentScene = std::make_unique<Stage>();
+		break;
+	case SCENE_CLEAR:
+		currentScene = std::make_unique<Clear>();
+		break;
+	case SCENE_ENDING:
+		currentScene = std::make_unique<Ending>();
+		break;
+	case SCENE_GAMEOVER:
+		currentScene = std::make_unique<Gameover>();
+		break;
+	default:
+		break;
+	}
+	currentScene->Init();
 }

@@ -1,4 +1,11 @@
 #pragma once
-void EndingInit();
-void EndingUpdate();
-void EndingRender();
+#include "Scene.h"
+
+class Ending : public Scene
+{
+	public:
+	void Init() override;
+	void Update() override;
+	void Render() override;
+	~Ending() override;
+};

@@ -1,7 +1,11 @@
 #pragma once
+#include "Scene.h"
 
-//	リザルト（結果表示）で使う関数の宣言
-void ClearInit();
-void ClearUpdate();
-void ClearRender();
-void ClearExit();
+class Clear : public Scene
+{
+	public:
+	void Init() override;
+	void Update() override;
+	void Render() override;
+	~Clear() override;
+};

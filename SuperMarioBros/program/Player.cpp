@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "Main.h"
 Player::Player()
 {
 	pos = { 100.0f, 100.0f };
@@ -21,19 +22,19 @@ void Player::update()
 void Player::Input()
 {
 	if( CheckHitKey( KEY_INPUT_LEFT ) ){
-		vel.x += 0.5f;
+		vel.x -= 0.05f;
 	}
 	else if( CheckHitKey( KEY_INPUT_RIGHT ) ){
-		vel.x -= 0.5f;
+		vel.x += 0.05f;
 	}
 	else{
 		if (vel.x > 0.0f) {
-			vel.x -= 0.5f;
+			vel.x -= 0.05f;
 		}
-		if(vel.x < 0.0f){
-			vel.x += 0.5f;
+		else if(vel.x < 0.0f){
+			vel.x += 0.05f;
 		}
-		else {
+		if(vel.x > -VEL_MIN && vel.x < VEL_MIN){
 			vel.x = 0.0f;
 		}
 	}
@@ -60,7 +61,7 @@ void Player::Move()
 
 void Player::Jump()
 {
-	if( CheckHitKey( KEY_INPUT_SPACE ) ){
+	if( PushHitKey( KEY_INPUT_SPACE ) && isGrounded){
 		vel.y = -10.0f;
 	}
 }
@@ -72,6 +73,14 @@ void Player::ApplyGravity()
 
 void Player::CheckCollisionToTile()
 {
+	if(pos.y > 400.0f){
+		pos.y = 400.0f;
+		vel.y = 0.0f;
+		isGrounded = true;
+	}
+	else {
+		isGrounded = false;
+	}
 }
 
 void Player::render()

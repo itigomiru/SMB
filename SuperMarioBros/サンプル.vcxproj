@@ -167,6 +167,7 @@
     <ClCompile Include="program\Clear.cpp" />
     <ClCompile Include="program\SoundManager.cpp" />
     <ClCompile Include="program\Stage.cpp" />
+    <ClCompile Include="program\TileManager.cpp" />
     <ClCompile Include="program\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="program\Clear.h" />
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
+    <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
