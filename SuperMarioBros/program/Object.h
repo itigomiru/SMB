@@ -8,8 +8,8 @@ public:
 	Float2 vel;//加速度
 	Size size;//サイズ
 
-	virtual void update() = 0;
-	virtual void render() = 0;
+	virtual void Update() = 0;
+	virtual void Render(float cameraX) = 0;
 
 	bool isDead;//死亡フラグ
 };

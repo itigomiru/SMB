@@ -6,6 +6,10 @@
 #include <memory>
 #define SCREEN_W	768
 #define SCREEN_H	720
+
+	constexpr int TILE_SIZE = 16;
+	constexpr int SCALE = 3;
+	constexpr int DRAW_SIZE = TILE_SIZE * SCALE;
 class SceneManager
 {
 public:

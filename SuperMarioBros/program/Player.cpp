@@ -10,29 +10,29 @@ Player::Player()
 	isDead = false;
 }
 
-void Player::update()
+void Player::Update()
 {
 	Input();
 	Jump();
 	ApplyGravity();
-	CheckCollisionToTile();
 	Move();
+	CheckCollisionToTile();
 }
 
 void Player::Input()
 {
-	if( CheckHitKey( KEY_INPUT_LEFT ) ){
-		vel.x -= 0.05f;
+	if( CheckHitKey( KEY_INPUT_A ) ){
+		vel.x -= 0.1f;
 	}
-	else if( CheckHitKey( KEY_INPUT_RIGHT ) ){
-		vel.x += 0.05f;
+	else if( CheckHitKey( KEY_INPUT_D ) ){
+		vel.x += 0.1f;
 	}
 	else{
 		if (vel.x > 0.0f) {
-			vel.x -= 0.05f;
+			vel.x -= 0.1f;
 		}
 		else if(vel.x < 0.0f){
-			vel.x += 0.05f;
+			vel.x += 0.1f;
 		}
 		if(vel.x > -VEL_MIN && vel.x < VEL_MIN){
 			vel.x = 0.0f;
@@ -73,17 +73,47 @@ void Player::ApplyGravity()
 
 void Player::CheckCollisionToTile()
 {
-	if(pos.y > 400.0f){
-		pos.y = 400.0f;
-		vel.y = 0.0f;
+	float nextY = pos.y + vel.y;
+
+	int tileX = pos.x / 16;
+
+	int tileY =
+		(nextY + size.h) / 16;
+
+	if (tileManager->IsSolid(tileX, tileY))
+	{
+		pos.y =
+			tileY * 16 - size.h;
+
+		vel.y = 0;
+
 		isGrounded = true;
 	}
-	else {
+	else
+	{
 		isGrounded = false;
 	}
 }
 
-void Player::render()
+void Player::Render(float cameraX)
 {
-	DrawBox( pos.x, pos.y, pos.x + size.w, pos.y + size.h, GetColor( 255, 0, 0 ), TRUE );
+	int drawX =
+		(pos.x - cameraX) * 3;
+
+	int drawY =
+		pos.y * 3;
+
+	DrawBox(
+		drawX,
+		drawY,
+		drawX + 48,
+		drawY + 48,
+		GetColor(0, 255, 0),
+		true);
 }
+
+ void Player::SetTileManager(TileManager* tm)
+{
+	tileManager = tm;
+}
+

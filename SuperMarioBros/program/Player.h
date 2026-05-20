@@ -1,13 +1,16 @@
 #pragma once
 #include "Object.h"
 
+class TileManager;
 
 class Player : public Object
 {
 	public:
 	Player();
-	void update() override;
-	void render() override;
+	void Update() override;
+	void Render(float cameraX) override;
+
+	void SetTileManager(TileManager* tm);
 private:
 	const float CHIBI_H = 16.0f;
 	const float DEKA_H = 32.0f;
@@ -17,6 +20,8 @@ private:
 	const float VEL_MIN = 0.05f;
 	bool isGrounded;//’n–Ê‚É‚¢‚é‚©‚Ç‚¤‚©
 	Float2 prevPos;
+
+	TileManager* tileManager = nullptr;
 
 	void Input();
 	void Move();
