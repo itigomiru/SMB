@@ -154,7 +154,6 @@
   <ItemGroup>
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
-    <ClCompile Include="program\Enemy.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />

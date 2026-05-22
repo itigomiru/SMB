@@ -60,9 +60,6 @@
     <ClCompile Include="program\ObjectManager.cpp">
       <Filter>program\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="program\Enemy.cpp">
-      <Filter>program\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="program\Player.cpp">
       <Filter>program\Objects</Filter>
     </ClCompile>

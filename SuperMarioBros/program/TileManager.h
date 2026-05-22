@@ -6,6 +6,8 @@ struct Tile
 {
     Float2 position;
     int type;
+	bool breakable;
+	int itemType;
 };
 
 class TileManager
@@ -15,6 +17,12 @@ private:
 	int currentStage;
 
 public:
+	enum ItemType {
+		ITEM_NONE,
+		ITEM_COIN,
+		ITEM_POWERUP,
+		ITEM_MAX
+	};
     enum TileType {
         TILE_EMPTY,
 		TILE_GROUND,

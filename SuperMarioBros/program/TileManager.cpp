@@ -1,4 +1,5 @@
 #include "TileManager.h"
+#include "SceneManager.h"
 #include "DxLib.h"
 void TileManager::SetTile()
 {
@@ -13,12 +14,12 @@ void TileManager::SetTile()
         { 0,0,0,0,0,0,1,0,0,0 },
         { 0,0,0,0,0,0,0,1,0,0 },
         { 0,0,0,0,0,0,0,0,1,0 },
-        { 0,0,0,0,0,0,0,0,0,1 },
-        { 0,0,0,0,0,0,0,0,1,0 },
-        { 0,0,0,0,0,0,0,1,0,0 },
+        { 0,0,0,0,0,0,0,0,0,0 },
+        { 0,0,0,0,0,0,0,0,0,0 },
+        { 0,0,0,0,0,0,0,0,0,0 },
         { 0,0,0,0,0,0,1,0,0,0 },
         { 0,0,0,0,0,1,0,0,0,0 },
-        { 1,1,1,1,1,1,1,1,1,1 },
+        { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
     };
 
     map.resize(map1.size());
@@ -41,19 +42,15 @@ void TileManager::SetTile()
 }
 
 
-void TileManager::Render(float cameraX)
-{
+void TileManager::Render(float cameraX) {
     for (int y = 0; y < map.size(); y++)
     {
         for (int x = 0; x < map[y].size(); x++)
         {
             int type = map[y][x].type;
 
-            int drawX =
-                (map[y][x].position.x - cameraX) * 3;
-
-            int drawY =
-                map[y][x].position.y * 3;
+            int drawX = (static_cast<int>(map[y][x].position.x) - static_cast<int>(cameraX)) * 3;
+            int drawY = static_cast<int>(map[y][x].position.y) * 3;
 
             switch (type)
             {
@@ -61,15 +58,13 @@ void TileManager::Render(float cameraX)
                 break;
 
             case TILE_GROUND:
-
                 DrawBox(
                     drawX,
                     drawY,
-                    drawX + 16 * 3,
-                    drawY + 16 * 3,
+                    drawX + TILE_SIZE * 3,
+                    drawY + TILE_SIZE * 3,
                     GetColor(255, 0, 0),
                     true);
-
                 break;
             }
         }
@@ -78,5 +73,11 @@ void TileManager::Render(float cameraX)
 
 bool TileManager::IsSolid(int x, int y)
 {
+    if (y < 0 || y >= map.size())
+        return false;
+
+    if (x < 0 || x >= map[y].size())
+        return false;
+
     return map[y][x].type == TILE_GROUND;
 }

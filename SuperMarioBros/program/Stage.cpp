@@ -24,16 +24,27 @@ void Stage::Update()
 {
     objectManager.Update();
 
-    if (player->pos.x > 128)
+    float targetX =
+        player->pos.x - 128;
+
+    // 右に進む時だけ更新
+    if (targetX > cameraX)
     {
-        cameraX =
-            player->pos.x - 128;
+        cameraX = targetX;
     }
 
+    // 左端制限
     if (cameraX < 0)
     {
         cameraX = 0;
     }
+
+	if (player->pos.x - cameraX < 0)
+	{
+		player->pos.x = cameraX;
+		player->vel.x = 0.0f;
+	}
+
 }
 
 void Stage::Render()

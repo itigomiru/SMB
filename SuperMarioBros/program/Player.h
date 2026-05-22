@@ -24,8 +24,11 @@ private:
 	TileManager* tileManager = nullptr;
 
 	void Input();
-	void Move();
+	void MoveX();
+	void MoveY();
 	void Jump();
 	void ApplyGravity();
-	void CheckCollisionToTile();
+	void CheckCollisionX();
+	void CheckCollisionY();
+	bool CheckGround();
 };
