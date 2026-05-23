@@ -9,6 +9,7 @@
 #include "EffectManager.h"
 #include "Stage.h"
 #include "TileManager.h"
+#include "EnemySpawner.h"
 
 void Stage::Init()
 {
@@ -16,13 +17,16 @@ void Stage::Init()
     player = p.get();
     player->SetTileManager(&tileManager);
     objectManager.AddObject(std::move(p));
+	enemySpawner.SetObjectManager(&objectManager);
 
     tileManager.SetTile();
+    enemySpawner.SetSpawner();
 }
 
 void Stage::Update()
 {
     objectManager.Update();
+	enemySpawner.Update(cameraX);
 
     float targetX =
         player->pos.x - 128;

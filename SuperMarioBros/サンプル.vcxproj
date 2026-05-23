@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
+    <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="program\EffectManager.h" />
     <ClInclude Include="program\Ending.h" />
     <ClInclude Include="program\Enemy.h" />
+    <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
     <ClInclude Include="program\ImageManager.h" />
@@ -190,6 +192,9 @@
     <ClInclude Include="program\Stage.h" />
     <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="program\SpawnData.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
