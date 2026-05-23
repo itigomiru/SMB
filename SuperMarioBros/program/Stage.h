@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "ObjectManager.h"
 #include "TileManager.h"
+#include "EnemySpawner.h"
 #include "Player.h"
 
 class Stage : public Scene

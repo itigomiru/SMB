@@ -17,7 +17,6 @@ class EnemySpawner
 private:
 	std::vector<SpawnData> spawnDataList;	// 出現データのリスト
 	ObjectManager* objectManager;			
-	EnemySpawner();
 	enum EnemyType
 	{
 		GOOMBA,
@@ -27,6 +26,7 @@ private:
 
 	};
 public:
+	EnemySpawner();
 	void Update(float cameraX);
 	void SetObjectManager(ObjectManager* om);
 	void SetSpawner();
