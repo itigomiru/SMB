@@ -8,6 +8,7 @@ public:
 	Float2 speed;//速度
 	Size size;//サイズ
 	int objectType;//オブジェクトの種類
+	int renderLayer;
 
 	virtual void Update() = 0;
 	virtual void Render(float cameraX) = 0;
@@ -21,5 +22,11 @@ public:
 		ENEMY,
 		ENEMY_BULLET, // 実体なし(攻撃判定しかないもの)
 		ITEM,
+	};
+	enum RenderLayer
+	{
+		UNDER_TILE,
+		ENEMY,
+		PLAYER
 	};
 };

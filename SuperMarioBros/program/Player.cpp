@@ -6,17 +6,16 @@
 Player::Player() {
     pos = { 20.0f, 200.0f };
 	prevPos = pos;
-	objectType = PLAYER;
+	objectType = ObjectType::PLAYER;
     speed = { 0.0f, 0.0f };
     size = { WIDTH, CHIBI_H };
 
-
+    renderLayer = RenderLayer::PLAYER;
     isDead = false;
     isGrounded = false;
 }
 
 void Player::Update() {
-    // ★復活：毎フレーム最初に足元を確認する（これが無いと上下にガタつきます）
     isGrounded = CheckGround();
 
     Input();
