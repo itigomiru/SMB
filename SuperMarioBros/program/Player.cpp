@@ -6,11 +6,11 @@
 Player::Player() {
     pos = { 20.0f, 200.0f };
 	prevPos = pos;
-	objectType = ObjectType::PLAYER;
+	objectType = OT_PLAYER;
     speed = { 0.0f, 0.0f };
     size = { WIDTH, CHIBI_H };
 
-    renderLayer = RenderLayer::PLAYER;
+    renderLayer = RL_PLAYER;
     isDead = false;
     isGrounded = false;
 }

@@ -17,16 +17,16 @@ public:
 
 	enum ObjectType
 	{
-		PLAYER,
-		PLAYER_BULLET, // 実体なし(攻撃判定しかないもの)
-		ENEMY,
-		ENEMY_BULLET, // 実体なし(攻撃判定しかないもの)
-		ITEM,
+		OT_PLAYER,
+		OT_PLAYER_BULLET, // 実体なし(攻撃判定しかないもの)
+		OT_ENEMY,
+		OT_ENEMY_BULLET, // 実体なし(攻撃判定しかないもの)
+		OT_ITEM,
 	};
 	enum RenderLayer
 	{
-		UNDER_TILE,
-		ENEMY,
-		PLAYER
+		RL_UNDER_TILE,
+		RL_ENEMY,
+		RL_PLAYER
 	};
 };
