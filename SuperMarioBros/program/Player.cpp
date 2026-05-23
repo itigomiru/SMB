@@ -3,7 +3,8 @@
 #include "SceneManager.h"
 #include "Main.h"
 
-Player::Player() {
+Player::Player() 
+{
     pos = { 20.0f, 200.0f };
 	prevPos = pos;
 	objectType = OT_PLAYER;
@@ -15,7 +16,8 @@ Player::Player() {
     isGrounded = false;
 }
 
-void Player::Update() {
+void Player::Update() 
+{
     isGrounded = CheckGround();
 
     Input();
@@ -31,7 +33,8 @@ void Player::Update() {
     CheckCollisionY();
 }
 
-void Player::Input() {
+void Player::Input() 
+{
     constexpr float MOVE_ACCEL = 0.1f;
     constexpr float FRICTION = 0.1f;
 
@@ -63,7 +66,8 @@ void Player::Input() {
     else if (speed.x < -VEL_MAX.x) speed.x = -VEL_MAX.x;
 }
 
-void Player::Jump() {
+void Player::Jump() 
+{
     constexpr float JUMP_POWER = 7.0f;
 
     if (PushHitKey(KEY_INPUT_SPACE) && isGrounded)
@@ -73,7 +77,8 @@ void Player::Jump() {
     }
 }
 
-void Player::ApplyGravity() {
+void Player::ApplyGravity() 
+{
     if (!isGrounded)
     {
         speed.y += SceneManager::GetInstance().GRAVITY;
@@ -89,7 +94,8 @@ void Player::ApplyGravity() {
     }
 }
 
-void Player::MoveX() {
+void Player::MoveX() 
+{
     pos.x += speed.x;
 
     // 左端制限
@@ -100,11 +106,13 @@ void Player::MoveX() {
     }
 }
 
-void Player::MoveY() {
+void Player::MoveY() 
+{
     pos.y += speed.y;
 }
 
-void Player::CheckCollisionX() {
+void Player::CheckCollisionX() 
+{
     int px = static_cast<int>(pos.x);
     int py = static_cast<int>(pos.y);
     int top = py / TILE_SIZE;
@@ -132,7 +140,8 @@ void Player::CheckCollisionX() {
     }
 }
 
-void Player::CheckCollisionY() {
+void Player::CheckCollisionY() 
+{
     int px = static_cast<int>(pos.x);
     int py = static_cast<int>(pos.y);
     int left = px / TILE_SIZE;
@@ -161,7 +170,8 @@ void Player::CheckCollisionY() {
     }
 }
 
-bool Player::CheckGround() {
+bool Player::CheckGround() 
+{
     int px = static_cast<int>(pos.x);
     int py = static_cast<int>(pos.y);
     int left = px / TILE_SIZE;
@@ -171,7 +181,8 @@ bool Player::CheckGround() {
     return tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom);
 }
 
-void Player::Render(float cameraX) {
+void Player::Render(float cameraX) 
+{
     int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
     int drawY = static_cast<int>(pos.y) ;
 
@@ -181,6 +192,7 @@ void Player::Render(float cameraX) {
     DrawFormatString(0, 16, 0xFFFFFF, "isGrounded: (%d)", isGrounded);
 }
 
-void Player::SetTileManager(TileManager* tm) {
+void Player::SetTileManager(TileManager* tm) 
+{
     tileManager = tm;
 }

@@ -72,6 +72,9 @@
     <ClCompile Include="program\EnemySpawner.cpp">
       <Filter>program\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="program\GoombaController.cpp">
+      <Filter>program\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -135,6 +138,9 @@
       <Filter>program\Managers</Filter>
     </ClInclude>
     <ClInclude Include="program\EnemySpawner.h">
+      <Filter>program\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="program\GoombaController.h">
       <Filter>program\Objects</Filter>
     </ClInclude>
   </ItemGroup>
