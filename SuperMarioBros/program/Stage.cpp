@@ -26,6 +26,7 @@ void Stage::Init()
 void Stage::Update()
 {
     objectManager.Update();
+	enemySpawner.Update(cameraX);
 
     float targetX =
         player->pos.x - 128;
