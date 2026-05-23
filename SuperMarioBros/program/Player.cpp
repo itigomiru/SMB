@@ -15,7 +15,8 @@ Player::Player() {
     isGrounded = false;
 }
 
-void Player::Update() {
+void Player::Update() 
+{
     isGrounded = CheckGround();
 
     Input();
@@ -32,8 +33,7 @@ void Player::Update() {
 }
 
 void Player::Input() {
-    constexpr float MOVE_ACCEL = 0.1f;
-    constexpr float FRICTION = 0.1f;
+
 
     if (CheckHitKey(KEY_INPUT_A))
     {
@@ -64,7 +64,6 @@ void Player::Input() {
 }
 
 void Player::Jump() {
-    constexpr float JUMP_POWER = 7.0f;
 
     if (PushHitKey(KEY_INPUT_SPACE) && isGrounded)
     {
