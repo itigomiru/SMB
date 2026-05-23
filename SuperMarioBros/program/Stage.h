@@ -10,6 +10,7 @@ private :
 	//	ステージに必要な変数を宣言
 	ObjectManager objectManager;
 	TileManager tileManager;
+	EnemySpawner enemySpawner;
 	Player* player = nullptr;
 public:
 	void Init() override;
