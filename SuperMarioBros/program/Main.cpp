@@ -13,6 +13,8 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 {
 	int Time;
 
+	SetWindowSizeExtendRate(3.0f);
+	SetDrawScreen(DX_SCREEN_BACK);
 	SetOutApplicationLogValidFlag( FALSE );
 	ChangeWindowMode( TRUE );
 	SetMainWindowText( "Super Mario Bros" );

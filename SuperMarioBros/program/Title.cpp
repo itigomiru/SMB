@@ -18,6 +18,7 @@ void Title::Update()
 
 void Title::Render()
 {
+    SetFontSize(10);
     DrawString(100, 100, "Super Mario Bros", GetColor(255, 255, 255));
     DrawString(100, 150, "Press Enter Key", GetColor(255, 255, 255));
 }

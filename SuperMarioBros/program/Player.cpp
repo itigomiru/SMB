@@ -172,10 +172,10 @@ bool Player::CheckGround() {
 }
 
 void Player::Render(float cameraX) {
-    int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX)) * 3;
-    int drawY = static_cast<int>(pos.y) * 3;
+    int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
+    int drawY = static_cast<int>(pos.y) ;
 
-    DrawBox(drawX,drawY,drawX + size.w * 3,drawY + size.h * 3,GetColor(0, 255, 0),true);
+    DrawBox(drawX,drawY,drawX + size.w ,drawY + size.h,GetColor(0, 255, 0),true);
 
     DrawFormatString(0, 0, 0xFFFFFF, "Player pos: (%.2f, %.2f)", pos.x, pos.y);
     DrawFormatString(0, 16, 0xFFFFFF, "isGrounded: (%d)", isGrounded);

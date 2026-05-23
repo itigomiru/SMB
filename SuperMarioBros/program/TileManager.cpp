@@ -49,9 +49,8 @@ void TileManager::Render(float cameraX) {
         {
             int type = map[y][x].type;
 
-            int drawX = (static_cast<int>(map[y][x].position.x) - static_cast<int>(cameraX)) * 3;
-            int drawY = static_cast<int>(map[y][x].position.y) * 3;
-
+            int drawX = (static_cast<int>(map[y][x].position.x) - static_cast<int>(cameraX));
+            int drawY = static_cast<int>(map[y][x].position.y);
             switch (type)
             {
             case TILE_EMPTY:
@@ -61,8 +60,8 @@ void TileManager::Render(float cameraX) {
                 DrawBox(
                     drawX,
                     drawY,
-                    drawX + TILE_SIZE * 3,
-                    drawY + TILE_SIZE * 3,
+                    drawX + TILE_SIZE,
+                    drawY + TILE_SIZE,
                     GetColor(255, 0, 0),
                     true);
                 break;

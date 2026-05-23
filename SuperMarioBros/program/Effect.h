@@ -14,15 +14,14 @@ class Effect {
 protected:
 	float x, y;
 	bool isDead;
-	int state;
 
 public:
 	Effect(float x, float y)
-		: x(x), y(y), isDead(false), state(0) {
+		: x(x), y(y), isDead(false) {
 	}
 
 	Effect(float x, float y, int state)
-		: x(x), y(y), isDead(false), state(state) {
+		: x(x), y(y), isDead(false) {
 	}
 
 	virtual ~Effect() {}
@@ -32,4 +31,5 @@ public:
 
 	bool IsDead() const { return isDead; }
 };
+
 

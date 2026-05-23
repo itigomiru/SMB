@@ -12,6 +12,7 @@ ImageManager::ImageManager()
 	for (int i = 0; i < IMAGE_MAX; i++) {
 		images[i] = -1;
 	}
+	images[IMAGE_PLAYER] = LoadGraph("image_player");
 }
 
 ImageManager::~ImageManager()
@@ -22,4 +23,3 @@ ImageManager::~ImageManager()
 		images[i] = -1;
 	}
 }
-

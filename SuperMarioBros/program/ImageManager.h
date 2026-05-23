@@ -1,6 +1,7 @@
 #pragma once
 enum IMAGE_LIST {
 	IMAGE_FAKE,
+	IMAGE_PLAYER,
 	IMAGE_MAX
 };
 
