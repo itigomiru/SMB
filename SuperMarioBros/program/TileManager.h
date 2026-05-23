@@ -24,10 +24,15 @@ public:
 		ITEM_MAX
 	};
     enum TileType {
-        TILE_EMPTY,
-		TILE_GROUND,
-        TILE_BLOCK,
-		TILE_QUESTION,
+        TILE_EMPTY				= 0,
+		TILE_GROUND				= 1,
+        TILE_BLOCK				= 2,
+		TILE_QUESTION			= 3,
+		TILE_PIPE_LEFT_TOP		= 4,
+		TILE_PIPE_RIGHT_TOP		= 5,
+		TILE_PIPE_LEFT_Bottom	= 6,
+		TILE_PIPE_RIGHT_Bottom	= 7,
+
 		TILE_MAX
 	};
     void SetTile();
