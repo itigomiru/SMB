@@ -5,7 +5,7 @@ class Object
 {
 public:
 	Float2 pos;//位置
-	Float2 vel;//加速度
+	Float2 speed;//速度
 	Size size;//サイズ
 	int objectType;//オブジェクトの種類
 

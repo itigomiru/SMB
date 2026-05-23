@@ -46,7 +46,7 @@ void Stage::Update()
 	if (player->pos.x - cameraX < 0)
 	{
 		player->pos.x = cameraX;
-		player->vel.x = 0.0f;
+		player->speed.x = 0.0f;
 	}
 
 }
