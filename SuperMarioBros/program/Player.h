@@ -15,6 +15,10 @@ private:
 	const float CHIBI_H = 16.0f;
 	const float DEKA_H = 32.0f;
 	const float WIDTH = 16.0f;
+	const float MOVE_ACCEL = 0.1f;
+	const float FRICTION = 0.1f;
+	const float JUMP_POWER = 7.0f;
+
 
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
 	const float VEL_MIN = 0.05f;

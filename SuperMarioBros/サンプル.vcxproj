@@ -179,6 +179,7 @@
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
     <ClInclude Include="program\ImageManager.h" />
+    <ClInclude Include="program\Item.h" />
     <ClInclude Include="program\Object.h" />
     <ClInclude Include="program\ObjectManager.h" />
     <ClInclude Include="program\Player.h" />
