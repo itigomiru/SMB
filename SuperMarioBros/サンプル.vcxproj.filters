@@ -140,7 +140,11 @@
     <ClInclude Include="program\EnemySpawner.h">
       <Filter>program\Objects</Filter>
     </ClInclude>
+
     <ClInclude Include="program\GoombaController.h">
+
+    <ClInclude Include="program\Item.h">
+
       <Filter>program\Objects</Filter>
     </ClInclude>
   </ItemGroup>

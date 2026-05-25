@@ -8,15 +8,15 @@ enum IMAGE_LIST {
 
 class ImageManager
 {
-	public:
-		static ImageManager& GetInstance();
-	private:
-		ImageManager();
-		~ImageManager();
-		ImageManager(const ImageManager&) = delete;
-		ImageManager& operator=(const ImageManager&) = delete;
+public:
+	static ImageManager& GetInstance();
+private:
+	ImageManager();
+	~ImageManager();
+	ImageManager(const ImageManager&) = delete;
+	ImageManager& operator=(const ImageManager&) = delete;
 
-		int images[IMAGE_MAX];	//	画像のハンドルを入れる配列
+	int images[IMAGE_MAX];	//	画像のハンドルを入れる配列
 public:
 	int GetImage(int num) const { return images[num]; }
 };

@@ -11,16 +11,39 @@ class Player : public Object
 	void Render(float cameraX) override;
 
 	void SetTileManager(TileManager* tm);
+	void GetSuperMashroom();
 private:
-	const float CHIBI_H = 16.0f;
-	const float DEKA_H = 32.0f;
+	const float SMALL_H = 16.0f;
+	const float SUPER_H = 32.0f;
 	const float WIDTH = 16.0f;
+	const float MOVE_ACCEL = 0.1f;	//加速度
+	const float FRICTION = 0.2f;	//摩擦(キーを入れない時の減速度)
+	const float JUMP_POWER = 7.0f;
+
 
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
 	const float VEL_MIN = 0.05f;
-	bool isGrounded;//�n�ʂɂ��邩�ǂ���
+
+
+	bool isGrounded;//地面にいるかどうか
 
 	Float2 prevPos;
+	int state;
+
+	bool isFacingRight;
+	bool isCrouching;
+	bool isTryingToStand;
+	float standPushDir;
+
+
+	bool isStar;
+	int starTimer;
+	enum PlayerState 
+	{
+		SMALL,
+		SUPER,
+		FIRE,
+	};
 
 	TileManager* tileManager = nullptr;
 
@@ -32,4 +55,9 @@ private:
 	void CheckCollisionX();
 	void CheckCollisionY();
 	bool CheckGround();
+
+	void UpdatePlayerSize();
+	bool CheckCanStand();
+	void UpdateStandPush();
 };
+
