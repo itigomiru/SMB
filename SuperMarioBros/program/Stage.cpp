@@ -18,6 +18,7 @@ void Stage::Init()
     player->SetTileManager(&tileManager);
     objectManager.AddObject(std::move(p));
 	enemySpawner.SetObjectManager(&objectManager);
+	enemySpawner.SetTileManager(&tileManager);
 
     tileManager.SetTile();
     enemySpawner.SetSpawner();

@@ -19,6 +19,7 @@ private:
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
 	const float VEL_MIN = 0.05f;
 	bool isGrounded;//’n–Ê‚É‚¢‚é‚©‚Ç‚¤‚©
+
 	Float2 prevPos;
 
 	TileManager* tileManager = nullptr;
