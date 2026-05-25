@@ -332,43 +332,16 @@ bool Player::CheckGround()
 
 void Player::Render(float cameraX)
 {
-	int drawX =
-		static_cast<int>(
-			pos.x - cameraX);
+	int drawX = static_cast<int>(pos.x - cameraX);
 
-	int drawY =
-		static_cast<int>(
-			pos.y);
+	int drawY = static_cast<int>(pos.y);
 
-	DrawBox(
-		drawX,
-		drawY,
-		drawX + size.w,
-		drawY + size.h,
-		GetColor(0, 255, 0),
-		true);
+	DrawBox(drawX,drawY,drawX + size.w,drawY + size.h,GetColor(0, 255, 0),true);
 
-	DrawFormatString(
-		0,
-		0,
-		0xFFFFFF,
-		"Player pos:(%.2f %.2f)",
-		pos.x,
-		pos.y);
+	DrawFormatString(0,5,0xFFFFFF,"Player pos:(%.2f %.2f)",pos.x,pos.y);
 
-	DrawFormatString(
-		0,
-		16,
-		0xFFFFFF,
-		"isGrounded:%d",
-		isGrounded);
-
-	DrawFormatString(
-		0,
-		32,
-		0xFFFFFF,
-		"isCrouching:%d",
-		isCrouching);
+	DrawFormatString(0,16,0xFFFFFF,"isGrounded:%d",isGrounded);
+	DrawFormatString(0,32,0xFFFFFF,"isCrouching:%d",isCrouching);
 }
 
 void Player::SetTileManager(TileManager* tm)
@@ -377,10 +350,6 @@ void Player::SetTileManager(TileManager* tm)
 }
 
 
-void Player::Render(float cameraX) 
-{
-    int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
-    int drawY = static_cast<int>(pos.y) ;
 
 void Player::GetSuperMashroom()
 {
@@ -447,11 +416,6 @@ bool Player::CheckCanStand()
 	return true;
 }
 
-
-void Player::SetTileManager(TileManager* tm) 
-{
-    tileManager = tm;
-}
 
 
 void Player::UpdateStandPush()
