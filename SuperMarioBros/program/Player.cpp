@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "Main.h"
 
+
 Player::Player()
 {
 	pos = { 20.0f, 200.0f };
@@ -28,10 +29,10 @@ Player::Player()
 	isCrouching = false;
 }
 
+
 void Player::Update()
 {
 	prevPos = pos;
-
 	isGrounded = CheckGround();
 
 #if 1
@@ -56,6 +57,7 @@ void Player::Update()
 	MoveY();
 	CheckCollisionY();
 }
+
 
 void Player::Input()
 {
@@ -144,9 +146,11 @@ void Player::Jump()
 	{
 		speed.y = -JUMP_POWER;
 
+
 		isGrounded = false;
 	}
 }
+
 
 void Player::ApplyGravity()
 {
@@ -170,6 +174,7 @@ void Player::MoveX()
 {
 	pos.x += speed.x;
 
+
 	// 左端制限
 	if (pos.x < 0.0f)
 	{
@@ -178,6 +183,7 @@ void Player::MoveX()
 		speed.x = 0.0f;
 	}
 }
+
 
 void Player::MoveY()
 {
@@ -370,6 +376,12 @@ void Player::SetTileManager(TileManager* tm)
 	tileManager = tm;
 }
 
+
+void Player::Render(float cameraX) 
+{
+    int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
+    int drawY = static_cast<int>(pos.y) ;
+
 void Player::GetSuperMashroom()
 {
 	switch (state)
@@ -433,6 +445,12 @@ bool Player::CheckCanStand()
 	}
 
 	return true;
+}
+
+
+void Player::SetTileManager(TileManager* tm) 
+{
+    tileManager = tm;
 }
 
 
@@ -500,3 +518,4 @@ void Player::UpdateStandPush()
 		pos.y -= (SUPER_H - SMALL_H);
 	}
 }
+

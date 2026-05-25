@@ -1,6 +1,6 @@
 #pragma once
 #include "Object.h"
-class Enemy : Object
+class Enemy : public Object
 {
 protected:
 	bool isGrounded;

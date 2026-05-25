@@ -16,8 +16,8 @@ private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;
 	const float WIDTH = 16.0f;
-	const float MOVE_ACCEL = 0.1f;	//‰Á‘¬“x
-	const float FRICTION = 0.2f;	//–€C(ƒL[‚ğ“ü‚ê‚È‚¢‚ÌŒ¸‘¬“x)
+	const float MOVE_ACCEL = 0.1f;	//åŠ é€Ÿåº¦
+	const float FRICTION = 0.2f;	//æ‘©æ“¦(ã‚­ãƒ¼ã‚’å…¥ã‚Œãªã„æ™‚ã®æ¸›é€Ÿåº¦)
 	const float JUMP_POWER = 7.0f;
 
 
@@ -25,7 +25,8 @@ private:
 	const float VEL_MIN = 0.05f;
 
 
-	bool isGrounded;//’n–Ê‚É‚¢‚é‚©‚Ç‚¤‚©
+	bool isGrounded;//åœ°é¢ã«ã„ã‚‹ã‹ã©ã†ã‹
+
 	Float2 prevPos;
 	int state;
 
@@ -54,7 +55,9 @@ private:
 	void CheckCollisionX();
 	void CheckCollisionY();
 	bool CheckGround();
+
 	void UpdatePlayerSize();
 	bool CheckCanStand();
 	void UpdateStandPush();
 };
+
