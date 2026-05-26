@@ -15,6 +15,7 @@ Goomba::Goomba()
 	isDead = false;
 	isGrounded = false;
 	state = 0;
+	canSquashed = true;
 }
 
 void Goomba::Update()

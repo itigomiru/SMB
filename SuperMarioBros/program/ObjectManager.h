@@ -13,5 +13,6 @@ public:
 	void Update();
 	void Render(float cameraX);
 
+	const std::vector<Object*>& GetObjects() const { return objects; }
 
 };

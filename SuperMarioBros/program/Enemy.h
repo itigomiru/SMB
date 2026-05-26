@@ -6,7 +6,15 @@ protected:
 	bool isGrounded;
 	int state;
 public:
-	Enemy() { objectType = OT_ENEMY; renderLayer = RL_ENEMY; isGrounded = false; state = 0; };
+	bool canSquashed;
+	Enemy() 
+	{
+		objectType = OT_ENEMY; 
+		renderLayer = RL_ENEMY; 
+		isGrounded = false; 
+		state = 0;
+		canSquashed = true;
+	};
 	virtual void Move() = 0;
 	virtual void ApplyGravity() = 0;
 };

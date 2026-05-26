@@ -2,6 +2,7 @@
 #include "Object.h"
 
 class TileManager;
+class Enemy;
 
 class Player : public Object
 {
@@ -12,6 +13,9 @@ class Player : public Object
 
 	void SetTileManager(TileManager* tm);
 	void GetSuperMashroom();
+
+	bool CheckSquashEnemy(Enemy* enemy);
+
 private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;

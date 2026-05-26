@@ -10,6 +10,7 @@
 #include "Stage.h"
 #include "TileManager.h"
 #include "EnemySpawner.h"
+#include "Enemy.h"
 
 void Stage::Init()
 {
@@ -28,6 +29,25 @@ void Stage::Update()
 {
     objectManager.Update();
 	enemySpawner.Update(cameraX);
+
+    for (Object* obj : objectManager.GetObjects())
+    {
+        // 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
+        if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
+        {
+            Enemy* enemy = static_cast<Enemy*>(obj);
+
+            // 踏んだかどうか
+            if (player->CheckSquashEnemy(enemy))
+            {
+                enemy->isDead = true;
+            }
+            else
+            {
+                // 横から衝突した時の判定
+            }
+        }
+    }
 
     float targetX =
         player->pos.x - 128;
