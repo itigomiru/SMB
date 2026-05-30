@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "Enemy.h"
 #include "Main.h"
 #include "Fireball.h"
 #include "ObjectManager.h"
@@ -566,5 +567,30 @@ void Player::UpdateStandPush()
 
 		pos.y -= (SUPER_H - SMALL_H);
 	}
+}
+
+bool Player::CheckSquashEnemy(Enemy* enemy)
+{
+	// マリオと敵の当たり判定
+	bool isColliding = (pos.x < enemy->pos.x + enemy->size.w &&
+						pos.x + size.w > enemy->pos.x &&
+						pos.y < enemy->pos.y + enemy->size.h &&
+						pos.y + size.h > enemy->pos.y);
+
+	if (!isColliding) return false;
+
+	// 踏みつけ処理
+	if (speed.y > 0.0f && (prevPos.y + size.h) <= enemy->pos.y)
+	{
+		pos.y = enemy->pos.y - size.h;
+
+		speed.y = -4.5f;
+		isGrounded = false;
+
+		return true;
+	}
+
+	return false;
+
 }
 

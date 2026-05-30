@@ -3,6 +3,7 @@
 
 class TileManager;
 class ObjectManager;
+class Enemy;
 
 class Player : public Object
 {
@@ -15,6 +16,9 @@ public:
 	void SetObjectManager(ObjectManager* om);
 	void GetSuperMashroom();
 	void GetFireFlower();
+
+	bool CheckSquashEnemy(Enemy* enemy);
+
 private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;
