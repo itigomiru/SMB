@@ -17,7 +17,7 @@ Goomba::Goomba()
 	state = 0;
 }
 
-void Goomba::Update()
+void Goomba::Update(float cameraX)
 {
 	isGrounded = CheckGround();
 	Move();

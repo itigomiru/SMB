@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "SceneManager.h"
 #include "Main.h"
+#include "Fireball.h"
+#include "ObjectManager.h"
 
 
 Player::Player()
@@ -30,7 +32,7 @@ Player::Player()
 }
 
 
-void Player::Update()
+void Player::Update(float cameraX)
 {
 	prevPos = pos;
 	isGrounded = CheckGround();
@@ -40,7 +42,16 @@ void Player::Update()
 	{
 		GetSuperMashroom();
 	}
+	if (PushHitKey(KEY_INPUT_9))
+	{
+		GetFireFlower();
+	}
 #endif
+
+	if (fireCooldown > 0)
+	{
+		fireCooldown--;
+	}
 
 	Input();
 
@@ -104,25 +115,39 @@ void Player::Input()
 	}
 	else
 	{
-		// 摩擦
-		if (speed.x > 0.0f)
+		if (isGrounded)
 		{
-			speed.x -= FRICTION;
-
-			if (speed.x < 0.0f)
-			{
-				speed.x = 0.0f;
-			}
-		}
-		else if (speed.x < 0.0f)
-		{
-			speed.x += FRICTION;
-
+			// 摩擦
 			if (speed.x > 0.0f)
 			{
-				speed.x = 0.0f;
+				speed.x -= FRICTION;
+
+				if (speed.x < 0.0f)
+				{
+					speed.x = 0.0f;
+				}
+			}
+			else if (speed.x < 0.0f)
+			{
+				speed.x += FRICTION;
+
+				if (speed.x > 0.0f)
+				{
+					speed.x = 0.0f;
+				}
 			}
 		}
+	}
+
+	fireballCount = objectManager->GetFireballCount();
+	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX)
+	{
+		Float2 fireballPos = pos;
+		fireballPos.x += isFacingRight ? size.w : 0; 
+		fireballPos.y += size.h / 4;
+		auto fireball = std::make_unique<Fireball>(fireballPos, isFacingRight, tileManager, objectManager);
+		objectManager->AddObject(std::move(fireball));
+		fireCooldown = FIRE_COOLDOWN_TIME;
 	}
 
 	//=========================================================
@@ -294,14 +319,43 @@ void Player::CheckCollisionY()
 		int top =
 			py / TILE_SIZE;
 
-		if (tileManager->IsSolid(left, top) ||
-			tileManager->IsSolid(right, top))
-		{
-			pos.y =
-				static_cast<float>(
-					(top + 1) * TILE_SIZE);
+		bool isLeftSolid = tileManager->IsSolid(left, top);
+		bool isRightSolid = tileManager->IsSolid(right, top);
 
-			speed.y = 0.0f;
+		if (isLeftSolid || isRightSolid)
+		{
+			bool slided = false;
+			// 角での滑り処理
+			// 左の角に当たった
+			if (isLeftSolid && !isRightSolid)
+			{
+				float overlap = (float)((left + 1) * TILE_SIZE) - pos.x;
+				// 重なりが閾値以下なら、右に押し出す
+				if (overlap > 0.0f && overlap < 4.0f)
+				{
+					pos.x += overlap;
+					slided = true;
+				}
+			}
+			// 右の角に当たった
+			else if (!isLeftSolid && isRightSolid)
+			{
+				float overlap = (pos.x + size.w) - (float)(right * TILE_SIZE);
+				// 重なりが閾値以下なら、左に押し出す
+				if (overlap > 0.0f && overlap < 4.0f)
+				{
+					pos.x -= overlap;
+					slided = true;
+				}
+			}
+
+			// 滑らなかった場合、頭をぶつけた処理
+			if (!slided)
+			{
+				// 衝突応答
+				pos.y = static_cast<float>((top + 1) * TILE_SIZE);
+				speed.y = 0.0f;
+			}
 		}
 	}
 }
@@ -336,17 +390,32 @@ void Player::Render(float cameraX)
 
 	int drawY = static_cast<int>(pos.y);
 
-	DrawBox(drawX,drawY,drawX + size.w,drawY + size.h,GetColor(0, 255, 0),true);
+	int color = GetColor(0, 255, 0);
+	if (state == FIRE)
+	{
+		color = GetColor(255, 100, 100);
+	}
+	else if (state == SUPER)
+	{
+		color = GetColor(0, 150, 0);
+	}
 
-	DrawFormatString(0,5,0xFFFFFF,"Player pos:(%.2f %.2f)",pos.x,pos.y);
+	DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, color, true);
 
-	DrawFormatString(0,16,0xFFFFFF,"isGrounded:%d",isGrounded);
-	DrawFormatString(0,32,0xFFFFFF,"isCrouching:%d",isCrouching);
+	DrawFormatString(0, 5, 0xFFFFFF, "Player pos:(%.2f %.2f)", pos.x, pos.y);
+
+	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGrounded);
+	DrawFormatString(0, 32, 0xFFFFFF, "isCrouching:%d", isCrouching);
 }
 
 void Player::SetTileManager(TileManager* tm)
 {
 	tileManager = tm;
+}
+
+void Player::SetObjectManager(ObjectManager* om)
+{
+	objectManager = om;
 }
 
 
@@ -367,6 +436,22 @@ void Player::GetSuperMashroom()
 	case SUPER:
 		break;
 
+	case FIRE:
+		break;
+	}
+}
+
+void Player::GetFireFlower()
+{
+	switch (state)
+	{
+	case SMALL:
+		state = SUPER;
+		pos.y -= (SUPER_H - SMALL_H);
+		break;
+	case SUPER:
+		state = FIRE;
+		break;
 	case FIRE:
 		break;
 	}
@@ -435,9 +520,9 @@ void Player::UpdateStandPush()
 	int px = static_cast<int>(pos.x);
 	int py = static_cast<int>(pos.y);
 
-	int top =py / TILE_SIZE;
+	int top = py / TILE_SIZE;
 
-	int bottom =(py + size.h - 1) / TILE_SIZE;
+	int bottom = (py + size.h - 1) / TILE_SIZE;
 
 	//=====================================================
 	// 右
@@ -445,7 +530,7 @@ void Player::UpdateStandPush()
 
 	if (push > 0.0f)
 	{
-		int right =(px + size.w) / TILE_SIZE;
+		int right = (px + size.w) / TILE_SIZE;
 
 		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom))
 		{
