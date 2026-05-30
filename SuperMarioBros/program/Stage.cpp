@@ -40,7 +40,7 @@ void Stage::Update()
             // 踏んだかどうか
             if (player->CheckSquashEnemy(enemy))
             {
-                enemy->isDead = true;
+                enemy->OnSquashed();
             }
             else
             {

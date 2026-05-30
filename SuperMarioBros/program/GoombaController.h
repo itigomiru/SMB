@@ -15,7 +15,19 @@ class Goomba : public Enemy
 
 	void SetPosition(float x, float y);
 	void SetTileManager(TileManager* tm);
+
+	void OnSquashed();
+
 private:
+	enum GoombaState
+	{
+		STATE_WALK,
+		STATE_SQUASHED,
+	};
+
+	GoombaState goombaState;
+	int squashTimer;
+
 	const float HEIGHT = 16.0f;
 	const float WIDTH = 16.0f;
 

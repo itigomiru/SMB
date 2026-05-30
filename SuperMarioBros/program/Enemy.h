@@ -15,6 +15,7 @@ public:
 		state = 0;
 		canSquashed = true;
 	};
+	virtual void OnSquashed() {}
 	virtual void Move() = 0;
 	virtual void ApplyGravity() = 0;
 };
