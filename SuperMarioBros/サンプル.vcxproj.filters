@@ -1,156 +1,161 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="program">
-      <UniqueIdentifier>{0c8d419b-7fbf-46a5-9d30-f09afe1cddfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="program\System">
-      <UniqueIdentifier>{8c910648-1f30-427f-b297-feed842978f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="program\Scenes">
-      <UniqueIdentifier>{6f423d7d-4330-4f91-97a6-04610ee94875}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="program\Managers">
-      <UniqueIdentifier>{39da40ce-37dd-4919-97ef-9f07a0fb2ed0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="program\inc">
-      <UniqueIdentifier>{76d10125-3b05-451e-964e-3aed8794e5e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="program\Objects">
-      <UniqueIdentifier>{2284cae2-e913-4ef1-9ab4-3f4327d56b11}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="program\Float2.cpp">
-      <Filter>program\System</Filter>
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="program\Main.cpp">
-      <Filter>program\System</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Clear.cpp">
-      <Filter>program\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Stage.cpp">
-      <Filter>program\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Title.cpp">
-      <Filter>program\Scenes</Filter>
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="program\Hit.cpp">
-      <Filter>program\System</Filter>
+      <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="program\ImageManager.cpp">
-      <Filter>program\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="program\SoundManager.cpp">
-      <Filter>program\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Random.cpp">
-      <Filter>program\System</Filter>
-    </ClCompile>
-    <ClCompile Include="program\EffectManager.cpp">
-      <Filter>program\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Ending.cpp">
-      <Filter>program\Scenes</Filter>
+    <ClCompile Include="program\Clear.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="program\Gameover.cpp">
-      <Filter>program\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="program\ObjectManager.cpp">
-      <Filter>program\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="program\Player.cpp">
-      <Filter>program\Objects</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="program\SceneManager.cpp">
-      <Filter>program\Scenes</Filter>
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Title.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\ObjectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\ImageManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\EffectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\SoundManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="program\TileManager.cpp">
-      <Filter>program\Managers</Filter>
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Stage.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Ending.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Random.cpp">
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="program\EnemySpawner.cpp">
-      <Filter>program\Objects</Filter>
+      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="program\GoombaController.cpp">
-      <Filter>program\Objects</Filter>
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Player.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Fireball.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
-      <Filter>program\System</Filter>
+      <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="program\Main.h">
-      <Filter>program\System</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Title.h">
-      <Filter>program\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Clear.h">
-      <Filter>program\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Stage.h">
-      <Filter>program\Scenes</Filter>
+      <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="program\Hit.h">
-      <Filter>program\System</Filter>
+      <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="program\ImageManager.h">
-      <Filter>program\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Random.h">
-      <Filter>program\System</Filter>
-    </ClInclude>
-    <ClInclude Include="program\EffectManager.h">
-      <Filter>program\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Effect.h">
-      <Filter>program\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="program\SoundManager.h">
-      <Filter>program\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Ending.h">
-      <Filter>program\Scenes</Filter>
+    <ClInclude Include="program\Clear.h">
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="program\Gameover.h">
-      <Filter>program\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Player.h">
-      <Filter>program\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Enemy.h">
-      <Filter>program\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Object.h">
-      <Filter>program\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="program\ObjectManager.h">
-      <Filter>program\Managers</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="program\Scene.h">
-      <Filter>program\Scenes</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="program\SceneManager.h">
-      <Filter>program\Scenes</Filter>
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Title.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\ObjectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\ImageManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Effect.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EffectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\SoundManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="program\TileManager.h">
-      <Filter>program\Managers</Filter>
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Stage.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Ending.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Random.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Player.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Enemy.h">
+      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="program\EnemySpawner.h">
-      <Filter>program\Objects</Filter>
+      <Filter>Object</Filter>
     </ClInclude>
-
     <ClInclude Include="program\GoombaController.h">
-
+      <Filter>Object</Filter>
+    </ClInclude>
     <ClInclude Include="program\Item.h">
-
-      <Filter>program\Objects</Filter>
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Fireball.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{ab70fa01-1b9b-48d5-9590-2d477be5266d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{f697f473-b543-4a9f-aa0f-9f978c7e0856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{3e589dc2-1df0-4236-a817-799106720015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{003a1fcb-8cd7-420f-b02d-a457fc50aab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\NewFilter1">
+      <UniqueIdentifier>{6c2923da-06cd-44e3-b109-6f5a815d5e18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b1ef0639-438b-4034-9c36-2b6e66d0be59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="program\SpawnData.inc">
-      <Filter>program\inc</Filter>
+      <Filter>Include</Filter>
     </None>
   </ItemGroup>
 </Project>

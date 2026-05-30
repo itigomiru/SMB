@@ -21,7 +21,7 @@ Goomba::Goomba()
     squashTimer = 0;
 }
 
-void Goomba::Update()
+void Goomba::Update(float cameraX)
 {
     if (isDead)
     {
