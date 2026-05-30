@@ -572,6 +572,9 @@ void Player::UpdateStandPush()
 
 bool Player::CheckSquashEnemy(Enemy* enemy)
 {
+
+	if (enemy->canSquashed == false) return false;
+
 	// マリオと敵の当たり判定
 	bool isColliding = CheckBoxHit(pos, size, enemy->pos, enemy->size);
 

@@ -16,16 +16,35 @@ Goomba::Goomba()
 	isGrounded = false;
 	state = 0;
 	canSquashed = true;
+
+	goombaState = STATE_WALK;
+    squashTimer = 0;
 }
 
 void Goomba::Update(float cameraX)
 {
+    if (isDead)
+    {
+        return;
+    }
+
+    if (goombaState == STATE_SQUASHED)
+    {
+        squashTimer--;
+        if (squashTimer <= 0)
+        {
+            isDead = true; 
+        }
+        return; 
+    }
+
 	isGrounded = CheckGround();
+	prevPos = pos;
 	Move();
 	ApplyGravity();
 	CheckCollisionX();
 	CheckCollisionY();
-    
+
 }
 
 void Goomba::Move()
@@ -36,6 +55,16 @@ void Goomba::Move()
 	CheckCollisionY();
 }
 
+void Goomba::OnSquashed()
+{
+	if (goombaState == STATE_WALK)
+	{
+        goombaState = STATE_SQUASHED;
+        canSquashed = false;  
+        squashTimer = 30;     
+        speed = { 0.0f, 0.0f }; 
+	}
+}
 
 void Goomba::ApplyGravity()
 {
@@ -129,8 +158,14 @@ void Goomba::Render(float cameraX)
     int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
     int drawY = static_cast<int>(pos.y);
 
-    DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 0, 255), true);
-    
+    if (goombaState == STATE_SQUASHED)
+    {
+        DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(255, 255, 0), true);
+    }
+    else
+    {
+        DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 0, 255), true);
+    }
     DrawFormatString(0, 0, 0xFFFFFF, "Goomba pos: (%.2f, %.2f)", pos.x, pos.y);
 
 
