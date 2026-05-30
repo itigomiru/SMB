@@ -5,6 +5,7 @@
 #include "Main.h"
 #include "Fireball.h"
 #include "ObjectManager.h"
+#include "Hit.h"
 
 
 Player::Player()
@@ -572,10 +573,7 @@ void Player::UpdateStandPush()
 bool Player::CheckSquashEnemy(Enemy* enemy)
 {
 	// マリオと敵の当たり判定
-	bool isColliding = (pos.x < enemy->pos.x + enemy->size.w &&
-						pos.x + size.w > enemy->pos.x &&
-						pos.y < enemy->pos.y + enemy->size.h &&
-						pos.y + size.h > enemy->pos.y);
+	bool isColliding = CheckBoxHit(pos, size, enemy->pos, enemy->size);
 
 	if (!isColliding) return false;
 
@@ -585,8 +583,10 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 		pos.y = enemy->pos.y - size.h;
 
 		speed.y = -4.5f;
-		isGrounded = false;
-
+		if (CheckHitKey(KEY_INPUT_SPACE))
+		{
+			speed.y = -JUMP_POWER;
+		}
 		return true;
 	}
 

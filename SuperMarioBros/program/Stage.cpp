@@ -28,49 +28,50 @@ void Stage::Init()
 
 void Stage::Update()
 {
-    objectManager.Update(cameraX);
-	enemySpawner.Update(cameraX);
+   objectManager.Update(cameraX);
+   enemySpawner.Update(cameraX);
 
-    for (Object* obj : objectManager.GetObjects())
-    {
-        // 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
-        if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
-        {
-            Enemy* enemy = static_cast<Enemy*>(obj);
+   for (const auto& obj : objectManager.GetObjects())
+   {
+       // 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
+       if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
+       {
+           Enemy* enemy = dynamic_cast<Enemy*>(obj.get()); // Use dynamic_cast with obj.get()
 
-            // 踏んだかどうか
-            if (player->CheckSquashEnemy(enemy))
-            {
-                enemy->isDead = true;
-            }
-            else
-            {
-                // 横から衝突した時の判定
-            }
-        }
-    }
+           if (enemy)
+           {
+               // 踏んだかどうか
+               if (player->CheckSquashEnemy(enemy))
+               {
+                   enemy->isDead = true;
+               }
+               else
+               {
+                   // 横から衝突した時の判定
+               }
+           }
+       }
+   }
 
-    float targetX =
-        player->pos.x - 128;
+   float targetX = player->pos.x - 128;
 
-    // 右に進む時だけ更新
-    if (targetX > cameraX)
-    {
-        cameraX = targetX;
-    }
+   // 右に進む時だけ更新
+   if (targetX > cameraX)
+   {
+       cameraX = targetX;
+   }
 
-    // 左端制限
-    if (cameraX < 0)
-    {
-        cameraX = 0;
-    }
+   // 左端制限
+   if (cameraX < 0)
+   {
+       cameraX = 0;
+   }
 
-	if (player->pos.x - cameraX < 0)
-	{
-		player->pos.x = cameraX;
-		player->speed.x = 0.0f;
-	}
-
+   if (player->pos.x - cameraX < 0)
+   {
+       player->pos.x = cameraX;
+       player->speed.x = 0.0f;
+   }
 }
 
 void Stage::Render()
