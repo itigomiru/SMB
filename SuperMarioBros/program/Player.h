@@ -2,17 +2,20 @@
 #include "Object.h"
 
 class TileManager;
+class ObjectManager;
 class Enemy;
 
 class Player : public Object
 {
-	public:
+public:
 	Player();
-	void Update() override;
+	void Update(float cameraX) override;
 	void Render(float cameraX) override;
 
 	void SetTileManager(TileManager* tm);
+	void SetObjectManager(ObjectManager* om);
 	void GetSuperMashroom();
+	void GetFireFlower();
 
 	bool CheckSquashEnemy(Enemy* enemy);
 
@@ -23,6 +26,8 @@ private:
 	const float MOVE_ACCEL = 0.1f;	//加速度
 	const float FRICTION = 0.2f;	//摩擦(キーを入れない時の減速度)
 	const float JUMP_POWER = 7.0f;
+	const int FIRE_COOLDOWN_TIME = 5;
+	const int FIREBALL_MAX = 2;
 
 
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
@@ -38,11 +43,13 @@ private:
 	bool isCrouching;
 	bool isTryingToStand;
 	float standPushDir;
+	int fireCooldown;
 
 
 	bool isStar;
 	int starTimer;
-	enum PlayerState 
+	int fireballCount;
+	enum PlayerState
 	{
 		SMALL,
 		SUPER,
@@ -50,6 +57,7 @@ private:
 	};
 
 	TileManager* tileManager = nullptr;
+	ObjectManager* objectManager = nullptr;
 
 	void Input();
 	void MoveX();

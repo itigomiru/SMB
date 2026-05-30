@@ -18,7 +18,7 @@ Goomba::Goomba()
 	canSquashed = true;
 }
 
-void Goomba::Update()
+void Goomba::Update(float cameraX)
 {
 	isGrounded = CheckGround();
 	Move();

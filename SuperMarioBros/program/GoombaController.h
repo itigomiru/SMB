@@ -8,7 +8,7 @@ class Goomba : public Enemy
 {
 	public:
 	Goomba();
-	void Update() override;
+	void Update(float cameraX) override;
 	void Render(float cameraX) override;
 	void Move() override;
 	void ApplyGravity() override;

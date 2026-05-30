@@ -6,6 +6,7 @@ protected:
 	bool isGrounded;
 	int state;
 public:
+	virtual void Update(float cameraX) override {};
 	bool canSquashed;
 	Enemy() 
 	{

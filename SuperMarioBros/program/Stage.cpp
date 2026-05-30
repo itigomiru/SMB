@@ -14,20 +14,21 @@
 
 void Stage::Init()
 {
-    auto p = std::make_unique<Player>();
-    player = p.get();
-    player->SetTileManager(&tileManager);
-    objectManager.AddObject(std::move(p));
+	auto p = std::make_unique<Player>();
+	player = p.get();
+	player->SetTileManager(&tileManager);
+	player->SetObjectManager(&objectManager);
+	objectManager.AddObject(std::move(p));
 	enemySpawner.SetObjectManager(&objectManager);
 	enemySpawner.SetTileManager(&tileManager);
 
-    tileManager.SetTile();
-    enemySpawner.SetSpawner();
+	tileManager.SetTile();
+	enemySpawner.SetSpawner();
 }
 
 void Stage::Update()
 {
-    objectManager.Update();
+    objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
 
     for (Object* obj : objectManager.GetObjects())
