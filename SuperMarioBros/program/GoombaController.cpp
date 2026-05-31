@@ -158,14 +158,16 @@ void Goomba::Render(float cameraX)
     int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
     int drawY = static_cast<int>(pos.y);
 
-    if (goombaState == STATE_SQUASHED)
-    {
-        DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(255, 255, 0), true);
-    }
-    else
-    {
-        DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 0, 255), true);
-    }
+	switch(goombaState)
+		{
+			case STATE_SQUASHED:
+				DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(255, 255, 0), true);
+			break;
+			
+			default:
+				DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 0, 255), true);
+			break;
+		}
     DrawFormatString(0, 0, 0xFFFFFF, "Goomba pos: (%.2f, %.2f)", pos.x, pos.y);
 
 
