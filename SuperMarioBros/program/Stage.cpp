@@ -38,15 +38,18 @@ void Stage::Update()
        {
            Enemy* enemy = dynamic_cast<Enemy*>(obj.get()); // Use dynamic_cast with obj.get()
 
-            // 踏んだかどうか
-            if (player->CheckSquashEnemy(enemy))
-            {
-                enemy->OnSquashed();
-            }
-            else
-            {
-                // 横から衝突した時の判定
-            }
+		   if(enemy)
+		   {
+            	// 踏んだかどうか
+            	if (player->CheckSquashEnemy(enemy))
+            	{
+                	enemy->OnSquashed();
+            	}
+            	else
+            	{
+                	// 横から衝突した時の判定
+            	}
+		   }
         }
     }
 
