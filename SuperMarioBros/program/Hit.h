@@ -5,7 +5,7 @@
 //	座標や四角の大きさに Float2 を渡すバージョン
 bool CheckCircleHit( Float2 circle1, float radius1, Float2 circle2, float radius2 );
 bool CheckPointCircleHit( Float2 point, Float2 circle, float radius );
-bool CheckBoxHit( Float2 box_pos1, Float2 box_size1, Float2 box_pos2, Float2 box_size2 );
+bool CheckBoxHit( Float2 box_pos1, Size box_size1, Float2 box_pos2, Size box_size2 );
 bool CheckPointBoxHit( Float2 point, Float2 box_pos, Float2 box_size );
 bool CheckCircleBoxHit( Float2 circle, float radius, Float2 box_pos, Float2 box_size );
 

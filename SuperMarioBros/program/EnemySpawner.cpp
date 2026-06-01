@@ -1,5 +1,7 @@
 #include "EnemySpawner.h"
 #include "SceneManager.h"
+#include "GoombaController.h"
+#include "TileManager.h"
 
 EnemySpawner::EnemySpawner()
 {
@@ -8,6 +10,11 @@ EnemySpawner::EnemySpawner()
 void EnemySpawner::SetObjectManager(ObjectManager* om)
 {
 	objectManager = om;
+}
+
+void EnemySpawner::SetTileManager(TileManager* tm)
+{
+    tileManager = tm;
 }
 
 void EnemySpawner::SetSpawner()
@@ -38,14 +45,11 @@ void EnemySpawner::Update(float cameraX)
             {
             case GOOMBA:
             {
-                //auto goomba =
-                //    std::make_unique<Goomba>();
+                auto goomba = std::make_unique<Goomba>();
 
-                //goomba->SetPosition(
-                //    data.x,
-                //    data.y);
-
-                //enemy = std::move(goomba);
+                goomba->SetPosition(data.x, data.y);
+				goomba->SetTileManager(tileManager);
+                enemy = std::move(goomba);
 
                 break;
             }

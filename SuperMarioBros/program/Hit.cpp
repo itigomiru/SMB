@@ -28,10 +28,10 @@ bool CheckPointCircleHit( Float2 point, Float2 circle, float radius )
 //---------------------------------------------------------------------------------
 //	四角同士の当たり判定（座標と大きさに Float2 を渡すバージョン）
 //---------------------------------------------------------------------------------
-bool CheckBoxHit( Float2 box_pos1, Float2 box_size1, Float2 box_pos2, Float2 box_size2 )
+bool CheckBoxHit( Float2 box_pos1, Size box_size1, Float2 box_pos2, Size box_size2 )
 {
-	if( box_pos1.x + box_size1.x >= box_pos2.x && box_pos1.x <= box_pos2.x + box_size2.x ){
-		if( box_pos1.y + box_size1.y >= box_pos2.y && box_pos1.y <= box_pos2.y + box_size2.y ){
+	if( box_pos1.x + box_size1.w >= box_pos2.x && box_pos1.x <= box_pos2.x + box_size2.w ){
+		if( box_pos1.y + box_size1.h >= box_pos2.y && box_pos1.y <= box_pos2.y + box_size2.h ){
 			return true;
 		}
 	}

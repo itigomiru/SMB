@@ -155,8 +155,10 @@
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
     <ClCompile Include="program\EnemySpawner.cpp" />
+    <ClCompile Include="program\Fireball.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
+    <ClCompile Include="program\GoombaController.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />
     <ClCompile Include="program\ObjectManager.cpp" />
     <ClCompile Include="program\Player.cpp" />
@@ -176,9 +178,12 @@
     <ClInclude Include="program\Ending.h" />
     <ClInclude Include="program\Enemy.h" />
     <ClInclude Include="program\EnemySpawner.h" />
+    <ClInclude Include="program\Fireball.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
+    <ClInclude Include="program\GoombaController.h" />
     <ClInclude Include="program\ImageManager.h" />
+    <ClInclude Include="program\Item.h" />
     <ClInclude Include="program\Object.h" />
     <ClInclude Include="program\ObjectManager.h" />
     <ClInclude Include="program\Player.h" />
