@@ -10,7 +10,7 @@
 
 Player::Player()
 {
-	pos = { 20.0f, 200.0f };
+	pos = { 20.0f, 150.0f };
 	prevPos = pos;
 
 	objectType = OT_PLAYER;
