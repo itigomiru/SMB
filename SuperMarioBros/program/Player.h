@@ -23,18 +23,22 @@ private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;
 	const float WIDTH = 16.0f;
-	const float MOVE_ACCEL = 0.1f;	//加速度
+	const float MOVE_ACCEL = 0.05f;	//加速度
 	const float FRICTION = 0.2f;	//摩擦(キーを入れない時の減速度)
-	const float JUMP_POWER = 7.0f;
+	const float JUMP_POWER = 5.0f;
 	const int FIRE_COOLDOWN_TIME = 5;
 	const int FIREBALL_MAX = 2;
+	const float DASH_JUDGE_SPEED = 3.0f;
+	const float OVERLAP_JUDGE = 4.0f;
+	
+	const Float2 SPEED_MAX = { 2.0f, 10.0f };
+	const float DASH_SPEED_MAX = 3.0f;
 
 
-	const Float2 VEL_MAX = { 5.0f, 10.0f };
-	const float VEL_MIN = 0.05f;
-
+	const float SQUASH_BOUNCE_POWER = 4.5f;
 
 	bool isGrounded;//地面にいるかどうか
+	bool isJumping;
 
 	Float2 prevPos;
 	int state;
