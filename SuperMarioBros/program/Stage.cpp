@@ -30,6 +30,7 @@ void Stage::Update()
 {
    objectManager.Update(cameraX);
    enemySpawner.Update(cameraX);
+   tileManager.Update();
 
    for (const auto& obj : objectManager.GetObjects())
    {
