@@ -310,8 +310,7 @@ void Player::CheckCollisionY()
 			(py + size.h - 1)
 			/ TILE_SIZE;
 
-		if (tileManager->IsSolid(left, bottom) ||
-			tileManager->IsSolid(right, bottom))
+		if (tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom))
 		{
 			pos.y =
 				static_cast<float>(
@@ -367,10 +366,38 @@ void Player::CheckCollisionY()
 				// 衝突応答
 				pos.y = static_cast<float>((top + 1) * TILE_SIZE);
 				speed.y = 0.0f;
+
+				int center;
+				if (isLeftSolid && isRightSolid)
+				{
+					// プレイヤーの中心に近い方を叩く
+					float playerCenterX = pos.x + size.w / 2.0f;
+					float boundaryX = (float)(left + 1) * TILE_SIZE;
+					if (playerCenterX < boundaryX)
+					{
+						center = left;
+					}
+					else
+					{
+						center = right;
+					}
+				}
+				else if (isLeftSolid)
+				{
+					center = left;
+				}
+				else // isRightSolid
+				{
+					center = right;
+				}
+
 				if (state != SMALL)
 				{
-					int center = isFacingRight ? (px + size.w - OVERLAP_JUDGE) / TILE_SIZE : (px - OVERLAP_JUDGE) / TILE_SIZE;
-					tileManager->BreakTile(center, top);
+					tileManager->HitTile(center, top, true);
+				}
+				else
+				{
+					tileManager->HitTile(center, top, false);
 				}
 			}
 		}

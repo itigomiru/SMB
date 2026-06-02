@@ -5,6 +5,8 @@
 struct Tile
 {
     Float2 position;
+	Float2 basePosition;
+	float speedY;
     int type;
 	bool breakable;
 	int itemType;
@@ -40,10 +42,12 @@ public:
 	};
     void SetTile();
 
+	void Update();
+
     void Render(float cameraX);
 
     bool IsSolid(int x, int y);
 
-	void BreakTile(int x, int y);
+	void HitTile(int x, int y, bool breakable);
 
 };
