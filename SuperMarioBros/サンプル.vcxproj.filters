@@ -146,9 +146,6 @@
     <Filter Include="Include">
       <UniqueIdentifier>{003a1fcb-8cd7-420f-b02d-a457fc50aab4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\NewFilter1">
-      <UniqueIdentifier>{6c2923da-06cd-44e3-b109-6f5a815d5e18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{b1ef0639-438b-4034-9c36-2b6e66d0be59}</UniqueIdentifier>
     </Filter>

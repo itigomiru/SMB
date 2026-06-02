@@ -20,7 +20,9 @@ public:
 	enum ItemType {
 		ITEM_NONE,
 		ITEM_COIN,
-		ITEM_POWERUP,
+		ITEM_SUPERMASHROOM,
+		ITEM_FIREFLOWER,
+		ITEM_STAR,
 		ITEM_MAX
 	};
     enum TileType {
@@ -32,16 +34,16 @@ public:
 		TILE_PIPE_RIGHT_TOP		= 5,
 		TILE_PIPE_LEFT_BOTTOM	= 6,
 		TILE_PIPE_RIGHT_BOTTOM	= 7,
-
+		TILE_HIDE_BLOCK			= 8,
+		TILE_HITTED_BLOCK		= 9,
 		TILE_MAX
 	};
     void SetTile();
 
     void Render(float cameraX);
 
-    int GetTile(int x, int y);
-
     bool IsSolid(int x, int y);
 
+	void BreakTile(int x, int y);
 
 };

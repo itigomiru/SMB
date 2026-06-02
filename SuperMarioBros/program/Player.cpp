@@ -145,7 +145,7 @@ void Player::Input()
 	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX)
 	{
 		Float2 fireballPos = pos;
-		fireballPos.x += isFacingRight ? size.w : 0; 
+		fireballPos.x += isFacingRight ? size.w : 0;
 		fireballPos.y += size.h / 4;
 		auto fireball = std::make_unique<Fireball>(fireballPos, isFacingRight, tileManager, objectManager);
 		objectManager->AddObject(std::move(fireball));
@@ -155,27 +155,45 @@ void Player::Input()
 	//=========================================================
 	// 最大速度制限
 	//=========================================================
-
-	if (speed.x > VEL_MAX.x)
+	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
-		speed.x = VEL_MAX.x;
+		if (speed.x > DASH_SPEED_MAX)
+		{
+			speed.x = DASH_SPEED_MAX;
+		}
+		else if (speed.x < -DASH_SPEED_MAX)
+		{
+			speed.x = -DASH_SPEED_MAX;
+		}
 	}
-	else if (speed.x < -VEL_MAX.x)
-	{
-		speed.x = -VEL_MAX.x;
+	else {
+
+		if (speed.x > SPEED_MAX.x)
+		{
+			speed.x = SPEED_MAX.x;
+		}
+		else if (speed.x < -SPEED_MAX.x)
+		{
+			speed.x = -SPEED_MAX.x;
+		}
 	}
 }
 
 void Player::Jump()
 {
-	if (PushHitKey(KEY_INPUT_SPACE) &&
-		isGrounded)
+	if (PushHitKey(KEY_INPUT_SPACE) &&isGrounded)
 	{
 		speed.y = -JUMP_POWER;
 
+		if (speed.x > DASH_JUDGE_SPEED || speed.x < -DASH_JUDGE_SPEED)
+		{
+			speed.y *= 1.1f; // ダッシュジャンプの高さを上げる
+		}
 
+		isJumping = true;
 		isGrounded = false;
 	}
+	if (speed.y > 0.0f)isJumping = false;
 }
 
 
@@ -183,12 +201,19 @@ void Player::ApplyGravity()
 {
 	if (!isGrounded)
 	{
-		speed.y +=
-			SceneManager::GetInstance().GRAVITY;
+		float gravity = SceneManager::GetInstance().GRAVITY;
 
-		if (speed.y > VEL_MAX.y)
+		if (CheckHitKey(KEY_INPUT_SPACE) && speed.y < 0.0f && isJumping)
 		{
-			speed.y = VEL_MAX.y;
+			gravity *= 0.35f;
+		}
+
+		speed.y += gravity;
+
+
+		if (speed.y > SPEED_MAX.y)
+		{
+			speed.y = SPEED_MAX.y;
 		}
 	}
 	else
@@ -225,25 +250,20 @@ void Player::CheckCollisionX()
 	int py =
 		static_cast<int>(pos.y);
 
-	int top =
-		py / TILE_SIZE;
+	int top = py / TILE_SIZE;
 
-	int bottom =
-		(py + size.h - 1)
-		/ TILE_SIZE;
+	int bottom = (py + size.h - 1) / TILE_SIZE;
 
+	int middle = (py + size.h / 2) / TILE_SIZE;
 	//=========================================================
 	// 右移動
 	//=========================================================
 
 	if (speed.x > 0.0f)
 	{
-		int right =
-			(px + size.w)
-			/ TILE_SIZE;
+		int right =(px + size.w)/ TILE_SIZE;
 
-		if (tileManager->IsSolid(right, top) ||
-			tileManager->IsSolid(right, bottom))
+		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom) || tileManager->IsSolid(right, middle))
 		{
 			pos.x =
 				static_cast<float>(
@@ -259,15 +279,11 @@ void Player::CheckCollisionX()
 
 	else if (speed.x < 0.0f)
 	{
-		int left =
-			px / TILE_SIZE;
+		int left = px / TILE_SIZE;
 
-		if (tileManager->IsSolid(left, top) ||
-			tileManager->IsSolid(left, bottom))
+		if (tileManager->IsSolid(left, top) || tileManager->IsSolid(left, bottom) || tileManager->IsSolid(left, middle))
 		{
-			pos.x =
-				static_cast<float>(
-					(left + 1) * TILE_SIZE);
+			pos.x = static_cast<float>((left + 1) * TILE_SIZE);
 
 			speed.x = 0.0f;
 		}
@@ -276,18 +292,13 @@ void Player::CheckCollisionX()
 
 void Player::CheckCollisionY()
 {
-	int px =
-		static_cast<int>(pos.x);
+	int px = static_cast<int>(pos.x);
 
-	int py =
-		static_cast<int>(pos.y);
+	int py = static_cast<int>(pos.y);
 
-	int left =
-		px / TILE_SIZE;
+	int left = px / TILE_SIZE;
 
-	int right =
-		(px + size.w - 1)
-		/ TILE_SIZE;
+	int right =(px + size.w - 1)/ TILE_SIZE;
 
 	//=========================================================
 	// 下方向
@@ -318,8 +329,7 @@ void Player::CheckCollisionY()
 
 	else if (speed.y < 0.0f)
 	{
-		int top =
-			py / TILE_SIZE;
+		int top = py / TILE_SIZE;
 
 		bool isLeftSolid = tileManager->IsSolid(left, top);
 		bool isRightSolid = tileManager->IsSolid(right, top);
@@ -333,7 +343,7 @@ void Player::CheckCollisionY()
 			{
 				float overlap = (float)((left + 1) * TILE_SIZE) - pos.x;
 				// 重なりが閾値以下なら、右に押し出す
-				if (overlap > 0.0f && overlap < 4.0f)
+				if (overlap > 0.0f && overlap < OVERLAP_JUDGE)
 				{
 					pos.x += overlap;
 					slided = true;
@@ -344,7 +354,7 @@ void Player::CheckCollisionY()
 			{
 				float overlap = (pos.x + size.w) - (float)(right * TILE_SIZE);
 				// 重なりが閾値以下なら、左に押し出す
-				if (overlap > 0.0f && overlap < 4.0f)
+				if (overlap > 0.0f && overlap < OVERLAP_JUDGE)
 				{
 					pos.x -= overlap;
 					slided = true;
@@ -357,6 +367,11 @@ void Player::CheckCollisionY()
 				// 衝突応答
 				pos.y = static_cast<float>((top + 1) * TILE_SIZE);
 				speed.y = 0.0f;
+				if (state != SMALL)
+				{
+					int center = isFacingRight ? (px + size.w - OVERLAP_JUDGE) / TILE_SIZE : (px - OVERLAP_JUDGE) / TILE_SIZE;
+					tileManager->BreakTile(center, top);
+				}
 			}
 		}
 	}
@@ -585,11 +600,7 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 	{
 		pos.y = enemy->pos.y - size.h;
 
-		speed.y = -4.5f;
-		if (CheckHitKey(KEY_INPUT_SPACE))
-		{
-			speed.y = -JUMP_POWER;
-		}
+		speed.y = -SQUASH_BOUNCE_POWER;
 		return true;
 	}
 
