@@ -2,12 +2,14 @@
 #include "Float2.h"
 #include <vector>
 
+class ObjectManager;
+
 struct Tile
 {
-    Float2 position;
+	Float2 position;
 	Float2 basePosition;
 	float speedY;
-    int type;
+	int type;
 	bool breakable;
 	int itemType;
 };
@@ -15,22 +17,25 @@ struct Tile
 class TileManager
 {
 private:
-    std::vector<std::vector<Tile>> map;
+	std::vector<std::vector<Tile>> map;
 	int currentStage;
+	ObjectManager* objectManager;
+	const float HIT_TILE_SPEED = 1.5f;
 
 public:
 	enum ItemType {
 		ITEM_NONE,
 		ITEM_COIN,
 		ITEM_SUPERMASHROOM,
+		ITEM_1UPMASHROOM,
 		ITEM_FIREFLOWER,
 		ITEM_STAR,
 		ITEM_MAX
 	};
-    enum TileType {
-        TILE_EMPTY				= 0,
+	enum TileType {
+		TILE_EMPTY				= 0,
 		TILE_GROUND				= 1,
-        TILE_BLOCK				= 2,
+		TILE_BLOCK				= 2,
 		TILE_QUESTION			= 3,
 		TILE_PIPE_LEFT_TOP		= 4,
 		TILE_PIPE_RIGHT_TOP		= 5,
@@ -40,14 +45,15 @@ public:
 		TILE_HITTED_BLOCK		= 9,
 		TILE_MAX
 	};
-    void SetTile();
+	void SetTile();
 
 	void Update();
 
-    void Render(float cameraX);
+	void Render(float cameraX);
 
-    bool IsSolid(int x, int y);
+	bool IsSolid(int x, int y);
 
 	void HitTile(int x, int y, bool breakable);
 
+	void SetObjectManager(ObjectManager* manager) { objectManager = manager; }
 };

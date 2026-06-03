@@ -160,6 +160,7 @@
     <ClCompile Include="program\Gameover.cpp" />
     <ClCompile Include="program\GoombaController.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />
+    <ClCompile Include="program\Item.cpp" />
     <ClCompile Include="program\ObjectManager.cpp" />
     <ClCompile Include="program\Player.cpp" />
     <ClCompile Include="program\Random.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="program\Clear.cpp" />
     <ClCompile Include="program\SoundManager.cpp" />
     <ClCompile Include="program\Stage.cpp" />
+    <ClCompile Include="program\Mashroom.cpp" />
     <ClCompile Include="program\TileManager.cpp" />
     <ClCompile Include="program\Title.cpp" />
   </ItemGroup>
@@ -195,6 +197,8 @@
     <ClInclude Include="program\Clear.h" />
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
+    <ClInclude Include="program\Mashroom.h" />
+    <ClInclude Include="program\SuperMashroom.h" />
     <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
   </ItemGroup>

@@ -12,7 +12,7 @@ private:
 public:
 	void AddObject(std::unique_ptr<Object> object);
 	void Update(float cameraX);
-	void Render(float cameraX);
+	void Render(int layer,float cameraX);
 	bool HitObjects(Object* attacker, Object* target);
 	const std::vector<std::unique_ptr<Object>>& GetObjects() const { return objects; }
 
