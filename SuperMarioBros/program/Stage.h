@@ -13,6 +13,13 @@ private :
 	TileManager tileManager;
 	EnemySpawner enemySpawner;
 	Player* player = nullptr;
+	int state;
+	enum StageState
+	{
+		ST_NORMAL,
+		ST_CLEAR,
+		ST_DEATH,
+	};
 public:
 	void Init() override;
 	void Update() override;

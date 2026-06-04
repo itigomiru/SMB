@@ -68,10 +68,10 @@ void Stage::Update()
 						   player->GetSuperMashroom();
 						   break;
 				   case TileManager::ITEM_1UPMASHROOM:
-                       //player->Get1UPMashroom();
+                           player->Get1UpMushroom();
                        break;
                    case TileManager::ITEM_FIREFLOWER:
-					   player->GetFireFlower();
+					        player->GetFireFlower();
                        break;
                    }
 				   item->isDead = true; // アイテムを消す

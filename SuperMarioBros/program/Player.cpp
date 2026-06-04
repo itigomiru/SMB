@@ -7,30 +7,38 @@
 #include "ObjectManager.h"
 #include "Hit.h"
 
-
 Player::Player()
 {
-	pos = { 20.0f, 150.0f };
-	prevPos = pos;
-
 	objectType = OT_PLAYER;
-
-	speed = { 0.0f, 0.0f };
-
-	size =
-	{
-		WIDTH,
-		SMALL_H
-	};
-
-	state = SMALL;
-
 	renderLayer = RL_PLAYER;
+	Init();
+}
 
+void Player::Init()
+{
 	isFacingRight = true;
 	isDead = false;
 	isGrounded = false;
 	isCrouching = false;
+	speed = { 0.0f, 0.0f };
+	pos = { 20.0f, 150.0f };
+	prevPos = pos;
+	state = SMALL;	size =
+	{
+		WIDTH,
+		SMALL_H
+	};
+	isFacingRight = true;
+	isDead = false;
+	isGrounded = false;
+	isCrouching = false;
+	isJumping = false;
+	isStar = false;
+	isTryingToStand = false;
+	standPushDir = 0.0f;
+	starTimer = 0;
+	fireballCount = 0;
+	fireCooldown = 0;
 }
 
 
@@ -187,7 +195,8 @@ void Player::Jump()
 
 		if (speed.x > DASH_JUDGE_SPEED || speed.x < -DASH_JUDGE_SPEED)
 		{
-			speed.y *= 1.1f; // ダッシュジャンプの高さを上げる
+			speed.y *= DASH_JUNP_POWER_MULTIPLIER;
+			// ダッシュジャンプの高さを上げる
 		}
 
 		isJumping = true;
@@ -244,11 +253,9 @@ void Player::MoveY()
 
 void Player::CheckCollisionX()
 {
-	int px =
-		static_cast<int>(pos.x);
+	int px = static_cast<int>(pos.x);
 
-	int py =
-		static_cast<int>(pos.y);
+	int py = static_cast<int>(pos.y);
 
 	int top = py / TILE_SIZE;
 
@@ -320,6 +327,10 @@ void Player::CheckCollisionY()
 
 			isGrounded = true;
 		}
+	}
+	if(py > SCREEN_H)
+	{
+		isDead = true;
 	}
 
 	//=========================================================
@@ -482,6 +493,15 @@ void Player::GetSuperMashroom()
 
 	case FIRE:
 		break;
+	}
+}
+
+void Player::Get1UpMushroom()
+{
+	stock++;
+	if (stock > STOCK_MAX)
+	{
+		stock = STOCK_MAX;
 	}
 }
 

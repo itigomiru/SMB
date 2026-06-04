@@ -9,6 +9,7 @@ class Player : public Object
 {
 public:
 	Player();
+	void Init();
 	void Update(float cameraX) override;
 	void Render(float cameraX) override;
 
@@ -16,8 +17,10 @@ public:
 	void SetObjectManager(ObjectManager* om);
 	void GetSuperMashroom();
 	void GetFireFlower();
+	void Get1UpMushroom();
 
 	bool CheckSquashEnemy(Enemy* enemy);
+
 
 private:
 	const float SMALL_H = 16.0f;
@@ -28,12 +31,15 @@ private:
 	const float JUMP_POWER = 5.0f;
 	const int FIRE_COOLDOWN_TIME = 5;
 	const int FIREBALL_MAX = 2;
-	const float DASH_JUDGE_SPEED = 3.0f;
+	const float DASH_JUDGE_SPEED = 1.8f;
+	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
 	const float OVERLAP_JUDGE = 4.0f;
 	
 	const Float2 SPEED_MAX = { 2.0f, 10.0f };
 	const float DASH_SPEED_MAX = 3.0f;
 
+	const int BASE_STOCK = 3;
+	const int STOCK_MAX = 99;
 
 	const float SQUASH_BOUNCE_POWER = 4.5f;
 
@@ -49,6 +55,8 @@ private:
 	float standPushDir;
 	int fireCooldown;
 
+	int score;
+	int stock;
 
 	bool isStar;
 	int starTimer;
