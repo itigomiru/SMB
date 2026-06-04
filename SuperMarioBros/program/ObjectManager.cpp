@@ -18,7 +18,7 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(),
 			[](const std::unique_ptr<Object>& obj) {
-				return obj->isDead;
+				return obj->isDead && obj->objectType != Object::OT_PLAYER;
 			}),
 		objects.end());
 }
