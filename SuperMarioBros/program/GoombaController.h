@@ -17,7 +17,7 @@ class Goomba : public Enemy
 	void SetTileManager(TileManager* tm);
 
 	void OnSquashed();
-
+	void Death() override;
 private:
 	enum GoombaState
 	{

@@ -167,5 +167,32 @@ void Stage::CheckHit()
 			}
 		}
 	}
+	CheckHitFireballandEnemy();
 
+}
+
+void Stage::CheckHitFireballandEnemy()
+{
+    for (const auto& fireObj : objectManager.GetObjects())
+    {
+        if (fireObj->objectType != Object::OT_FIREBALL)continue;
+
+        for (const auto& enemyObj : objectManager.GetObjects())
+        {
+            if (enemyObj->objectType != Object::OT_ENEMY)continue;
+
+            if (enemyObj->isDead)continue;
+
+            if (objectManager.HitObjects(fireObj.get(),enemyObj.get()))
+            {
+                Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
+
+				enemy->Death();
+				//enemyの死亡エフェクト
+                fireObj->isDead = true;
+				//fireballの消滅エフェクト
+                break;
+            }
+        }
+    }
 }

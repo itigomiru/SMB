@@ -185,3 +185,8 @@ void Goomba::SetTileManager(TileManager* tm)
 	tileManager = tm;
 }
 
+void Goomba::Death()
+{
+	isDead = true;
+	//Todo: 死亡エフェクトやスコア加算などの処理
+}

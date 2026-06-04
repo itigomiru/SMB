@@ -19,7 +19,7 @@ void Player::Init()
 {
 	isFacingRight = true;
 	isDead = false;
-	isGrounded = false;
+	isGround = false;
 	isCrouching = false;
 	speed = { 0.0f, 0.0f };
 	pos = { 20.0f, 150.0f };
@@ -32,7 +32,7 @@ void Player::Init()
 	};
 	isFacingRight = true;
 	isDead = false;
-	isGrounded = false;
+	isGround = false;
 	isCrouching = false;
 	isJumping = false;
 	isStar = false;
@@ -47,7 +47,7 @@ void Player::Init()
 void Player::Update(float cameraX)
 {
 	prevPos = pos;
-	isGrounded = CheckGround();
+	isGround = CheckGround();
 
 
 #if 1
@@ -118,17 +118,17 @@ void Player::Input()
 	if (CheckHitKey(KEY_INPUT_A) && !isCrouching)
 	{
 		speed.x -= MOVE_ACCEL;
-		isFacingRight = false;
+		if(isGround)isFacingRight = false;
 	}
 	else if
 		(CheckHitKey(KEY_INPUT_D) && !isCrouching)
 	{
 		speed.x += MOVE_ACCEL;
-		isFacingRight = true;
+		if(isGround)isFacingRight = true;
 	}
 	else
 	{
-		if (isGrounded)
+		if (isGround)
 		{
 			// 摩擦
 			if (speed.x > 0.0f)
@@ -192,7 +192,7 @@ void Player::Input()
 
 void Player::Jump()
 {
-	if (PushHitKey(KEY_INPUT_SPACE) && isGrounded)
+	if (PushHitKey(KEY_INPUT_SPACE) && isGround)
 	{
 		speed.y = -JUMP_POWER;
 
@@ -203,7 +203,7 @@ void Player::Jump()
 		}
 
 		isJumping = true;
-		isGrounded = false;
+		isGround = false;
 	}
 	if (speed.y > 0.0f)isJumping = false;
 }
@@ -211,7 +211,7 @@ void Player::Jump()
 
 void Player::ApplyGravity()
 {
-	if (!isGrounded)
+	if (!isGround)
 	{
 		float gravity = SceneManager::GetInstance().GRAVITY;
 
@@ -326,7 +326,7 @@ void Player::CheckCollisionY()
 
 			speed.y = 0.0f;
 
-			isGrounded = true;
+			isGround = true;
 		}
 	}
 	if (py > SCREEN_H)
@@ -467,7 +467,7 @@ void Player::Render(float cameraX)
 
 	DrawFormatString(0, 5, 0xFFFFFF, "Player pos:(%.2f %.2f)", pos.x, pos.y);
 
-	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGrounded);
+	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGround);
 	DrawFormatString(0, 32, 0xFFFFFF, "isCrouching:%d", isCrouching);
 }
 
@@ -695,7 +695,7 @@ void Player::Damage()
 		state = SMALL;
 		pos.y += (SUPER_H - SMALL_H);
 		invincibleTimer = INVINCIBLE_TIME;
-		
+
 	}
 	else if (state == SUPER)
 	{

@@ -22,6 +22,10 @@ private:
 	ObjectManager* objectManager;
 	const float HIT_TILE_SPEED = 1.5f;
 
+	void AddMash(Float2 pos, int type);
+	void AddFireFlower(Float2 pos, int type);
+	void AddStar(Float2 pos, int type);
+
 public:
 	enum ItemType {
 		ITEM_NONE,

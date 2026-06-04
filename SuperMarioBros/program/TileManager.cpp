@@ -1,6 +1,7 @@
 #include "TileManager.h"
 #include "SceneManager.h"
 #include "Mashroom.h"
+#include "FireFlower.h"
 #include "DxLib.h"
 #include <memory>
 void TileManager::SetTile()
@@ -107,7 +108,7 @@ bool TileManager::IsSolid(int x, int y)
 	return map[y][x].type != TILE_EMPTY;
 }
 
-void TileManager::HitTile(int x, int y,bool breakable)
+void TileManager::HitTile(int x, int y, bool breakable)
 {
 	if (map[y][x].breakable && breakable)
 	{
@@ -121,17 +122,30 @@ void TileManager::HitTile(int x, int y,bool breakable)
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK)
 	{
 #if 1
-		map[y][x].itemType = ITEM_SUPERMASHROOM;
+		map[y][x].itemType = ITEM_FIREFLOWER;
 #endif
 		map[y][x].type = TILE_HITTED_BLOCK;
-		//アイテムを出す
-		auto mash = std::make_unique<Mashroom>(map[y][x].basePosition.x,map[y][x].basePosition.y,map[y][x].itemType);
-		mash->SetTileManager(this);
-
-		objectManager->AddObject(std::move(mash));
+		switch (ItemType(map[y][x].itemType))
+		{
+		case ITEM_COIN:
+			//コインを出す
+			break;
+		case ITEM_SUPERMASHROOM:
+			AddMash(map[y][x].basePosition, map[y][x].itemType);
+			break;
+		case ITEM_1UPMASHROOM:
+			//アイテムを出す
+			AddMash(map[y][x].basePosition, map[y][x].itemType);
+			break;
+		case ITEM_FIREFLOWER:
+			AddFireFlower(map[y][x].basePosition, map[y][x].itemType);
+			break;
+		case ITEM_STAR:
+			AddStar(map[y][x].basePosition, map[y][x].itemType);
+			break;
+		}
 	}
 }
-
 void TileManager::Update()
 {
 	for (int y = 0; y < map.size(); y++)
@@ -150,4 +164,26 @@ void TileManager::Update()
 			}
 		}
 	}
+}
+void TileManager::AddMash(Float2 pos,int type)
+{
+	//mashを出す
+	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, type);
+	mash->SetTileManager(this);
+
+	objectManager->AddObject(std::move(mash));
+}
+void TileManager::AddFireFlower(Float2 pos, int type)
+{
+	//fireflowerを出す
+	auto flower = std::make_unique<FireFlower>(pos.x, pos.y, type);
+	flower->SetTileManager(this);
+	objectManager->AddObject(std::move(flower));
+}
+void TileManager::AddStar(Float2 pos, int type)
+{
+	//starを出す
+	//auto star = std::make_unique<Star>(pos.x, pos.y, type);
+	//star->SetTileManager(this);
+	//objectManager->AddObject(std::move(star));
 }

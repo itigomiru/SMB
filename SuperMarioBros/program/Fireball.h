@@ -15,7 +15,6 @@ private:
 	void ApplyGravity();
 	void CheckCollisionX();
 	void CheckCollisionY();
-	void CheckCollisionWithEnemies();
 	void MoveX();
 	void MoveY();
 
@@ -26,6 +25,4 @@ private:
 	const float MOVE_SPEED = 4.0f;
 	const float JUMP_POWER = 5.0f; 
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
-	int bounceCount = 0;
-	const int MAX_BOUNCES = 60;
 };

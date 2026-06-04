@@ -61,7 +61,10 @@
     <ClCompile Include="program\Item.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="program\SuperMashroom.cpp">
+    <ClCompile Include="program\FireFlower.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Mashroom.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
@@ -138,7 +141,10 @@
     <ClInclude Include="program\Item.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="program\SuperMashroom.h">
+    <ClInclude Include="program\FireFlower.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Mashroom.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
