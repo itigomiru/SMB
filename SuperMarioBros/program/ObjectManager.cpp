@@ -23,9 +23,14 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 		objects.end());
 }
 
-  void ObjectManager::Render(float cameraX) {
-	 for (auto& obj : objects) {
-		 obj->Render(cameraX);
+ void ObjectManager::Render(int layer,float cameraX)
+ {
+	 for (auto& obj : objects)
+	 {
+		 if (obj->renderLayer == layer)
+		 {
+			 obj->Render(cameraX);
+		 }
 	 }
  }
 

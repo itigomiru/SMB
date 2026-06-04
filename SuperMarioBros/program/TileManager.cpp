@@ -1,7 +1,8 @@
 #include "TileManager.h"
 #include "SceneManager.h"
-#include "SceneManager.h"
+#include "Mashroom.h"
 #include "DxLib.h"
+#include <memory>
 void TileManager::SetTile()
 {
 	std::vector<std::vector<int>> map1 =
@@ -51,7 +52,6 @@ void TileManager::SetTile()
 
 
 void TileManager::Render(float cameraX) {
-	DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
 	for (int y = 0; y < map.size(); y++)
 	{
 		for (int x = 0; x < map[y].size(); x++)
@@ -116,12 +116,19 @@ void TileManager::HitTile(int x, int y,bool breakable)
 	}
 	if (map[y][x].type == TILE_BLOCK || map[y][x].type == TILE_QUESTION)
 	{
-		map[y][x].speedY = -2.0f;
+		map[y][x].speedY = -HIT_TILE_SPEED;
 	}
-	if (map[y][x].type == TILE_QUESTION  || map[y][x].type == TILE_HIDE_BLOCK)
+	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK)
 	{
+#if 1
+		map[y][x].itemType = ITEM_SUPERMASHROOM;
+#endif
 		map[y][x].type = TILE_HITTED_BLOCK;
 		//アイテムを出す
+		auto mash = std::make_unique<Mashroom>(map[y][x].basePosition.x,map[y][x].basePosition.y,map[y][x].itemType);
+		mash->SetTileManager(this);
+
+		objectManager->AddObject(std::move(mash));
 	}
 }
 
