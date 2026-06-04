@@ -32,7 +32,7 @@ void Fireball::Update(float cameraX)
 	CheckCollisionY();
 
 
-	if (bounceCount >= MAX_BOUNCES || CheckInScreen(cameraX))isDead = true;
+	if (CheckInScreen(cameraX))isDead = true;
 }
 
 void Fireball::Render(float cameraX)
@@ -75,7 +75,8 @@ void Fireball::CheckCollisionX()
 		{
 			pos.x = static_cast<float>(right * TILE_SIZE - size.w);
 			speed.x *= -1; // Reverse direction
-			bounceCount++;
+			isDead = true; 
+			//Todo: エフェクト出す
 		}
 	}
 	else if (speed.x < 0.0f)
@@ -85,7 +86,8 @@ void Fireball::CheckCollisionX()
 		{
 			pos.x = static_cast<float>((left + 1) * TILE_SIZE);
 			speed.x *= -1; // Reverse direction
-			bounceCount++;
+			isDead = true;
+			//Todo: エフェクト出す
 		}
 	}
 }
