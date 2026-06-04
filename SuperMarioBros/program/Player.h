@@ -20,8 +20,18 @@ public:
 	void Get1UpMushroom();
 
 	bool CheckSquashEnemy(Enemy* enemy);
+	void PowerUpUpdate();
+	void DeathUpdate();
 
+	void Damage();
 
+	int score;
+	int stock;
+	int freezeTimer;
+	int deathTimer;
+	int invincibleTimer;
+	const int INVINCIBLE_FREEZE_TIME = 120;
+	
 private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;
@@ -34,7 +44,10 @@ private:
 	const float DASH_JUDGE_SPEED = 1.8f;
 	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
 	const float OVERLAP_JUDGE = 4.0f;
-	
+	const int INVINCIBLE_TIME = 180;
+	const int DEATH_TIME = 120;
+	const int POWER_UP_TIME = 60;
+
 	const Float2 SPEED_MAX = { 2.0f, 10.0f };
 	const float DASH_SPEED_MAX = 3.0f;
 
@@ -55,8 +68,6 @@ private:
 	float standPushDir;
 	int fireCooldown;
 
-	int score;
-	int stock;
 
 	bool isStar;
 	int starTimer;
@@ -79,6 +90,8 @@ private:
 	void CheckCollisionX();
 	void CheckCollisionY();
 	bool CheckGround();
+
+	void Death();
 
 	void UpdatePlayerSize();
 	bool CheckCanStand();

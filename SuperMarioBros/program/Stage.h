@@ -20,6 +20,9 @@ private :
 		ST_CLEAR,
 		ST_DEATH,
 	};
+	bool UpdateFreeze();
+	void CameraUpdate();
+	void CheckHit();
 public:
 	void Init() override;
 	void Update() override;
