@@ -11,6 +11,7 @@ Player::Player()
 {
 	objectType = OT_PLAYER;
 	renderLayer = RL_PLAYER;
+	stock = BASE_STOCK;
 	Init();
 }
 
@@ -23,7 +24,8 @@ void Player::Init()
 	speed = { 0.0f, 0.0f };
 	pos = { 20.0f, 150.0f };
 	prevPos = pos;
-	state = SMALL;	size =
+	state = SMALL;
+	size =
 	{
 		WIDTH,
 		SMALL_H
@@ -46,6 +48,7 @@ void Player::Update(float cameraX)
 {
 	prevPos = pos;
 	isGrounded = CheckGround();
+
 
 #if 1
 	if (PushHitKey(KEY_INPUT_0))
@@ -189,7 +192,7 @@ void Player::Input()
 
 void Player::Jump()
 {
-	if (PushHitKey(KEY_INPUT_SPACE) &&isGrounded)
+	if (PushHitKey(KEY_INPUT_SPACE) && isGrounded)
 	{
 		speed.y = -JUMP_POWER;
 
@@ -268,7 +271,7 @@ void Player::CheckCollisionX()
 
 	if (speed.x > 0.0f)
 	{
-		int right =(px + size.w)/ TILE_SIZE;
+		int right = (px + size.w) / TILE_SIZE;
 
 		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom) || tileManager->IsSolid(right, middle))
 		{
@@ -305,7 +308,7 @@ void Player::CheckCollisionY()
 
 	int left = px / TILE_SIZE;
 
-	int right =(px + size.w - 1)/ TILE_SIZE;
+	int right = (px + size.w - 1) / TILE_SIZE;
 
 	//=========================================================
 	// 下方向
@@ -319,18 +322,16 @@ void Player::CheckCollisionY()
 
 		if (tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom))
 		{
-			pos.y =
-				static_cast<float>(
-					bottom * TILE_SIZE - size.h);
+			pos.y = static_cast<float>(bottom * TILE_SIZE - size.h);
 
 			speed.y = 0.0f;
 
 			isGrounded = true;
 		}
 	}
-	if(py > SCREEN_H)
+	if (py > SCREEN_H)
 	{
-		isDead = true;
+		Death();
 	}
 
 	//=========================================================
@@ -441,6 +442,13 @@ bool Player::CheckGround()
 
 void Player::Render(float cameraX)
 {
+	if (invincibleTimer > 0)
+	{
+		if ((invincibleTimer / 4) % 2 == 0)
+		{
+			return; // 点滅
+		}
+	}
 	int drawX = static_cast<int>(pos.x - cameraX);
 
 	int drawY = static_cast<int>(pos.y);
@@ -483,11 +491,10 @@ void Player::GetSuperMashroom()
 
 		state = SUPER;
 
-		pos.y -=
-			(SUPER_H - SMALL_H);
+		pos.y -= (SUPER_H - SMALL_H);
 
+		freezeTimer = POWER_UP_TIME;
 		break;
-
 	case SUPER:
 		break;
 
@@ -512,9 +519,11 @@ void Player::GetFireFlower()
 	case SMALL:
 		state = SUPER;
 		pos.y -= (SUPER_H - SMALL_H);
+		freezeTimer = POWER_UP_TIME;
 		break;
 	case SUPER:
 		state = FIRE;
+		freezeTimer = POWER_UP_TIME;
 		break;
 	case FIRE:
 		break;
@@ -637,11 +646,6 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 
 	if (enemy->canSquashed == false) return false;
 
-	// マリオと敵の当たり判定
-	bool isColliding = CheckBoxHit(pos, size, enemy->pos, enemy->size);
-
-	if (!isColliding) return false;
-
 	// 踏みつけ処理
 	if (speed.y > 0.0f && (prevPos.y + size.h) <= enemy->pos.y)
 	{
@@ -655,3 +659,52 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 
 }
 
+void Player::PowerUpUpdate()
+{
+	freezeTimer--;
+	if (state == SUPER)
+	{
+		//animation suru
+	}
+	else if (state == FIRE)
+	{
+		//animation suru
+	}
+}
+
+void Player::Death()
+{
+	isDead = true;
+	deathTimer = DEATH_TIME;
+}
+
+void Player::DeathUpdate()
+{
+	deathTimer--;
+	// 死亡アニメーション
+}
+
+void Player::Damage()
+{
+	if (invincibleTimer > 0)
+	{
+		return;
+	}
+	if (state == FIRE)
+	{
+		state = SMALL;
+		pos.y += (SUPER_H - SMALL_H);
+		invincibleTimer = INVINCIBLE_TIME;
+		
+	}
+	else if (state == SUPER)
+	{
+		state = SMALL;
+		pos.y += (SUPER_H - SMALL_H);
+		invincibleTimer = INVINCIBLE_TIME;
+	}
+	else
+	{
+		Death();
+	}
+}

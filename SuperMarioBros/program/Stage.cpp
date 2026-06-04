@@ -30,87 +30,142 @@ void Stage::Init()
 
 void Stage::Update()
 {
-   objectManager.Update(cameraX);
-   enemySpawner.Update(cameraX);
-   tileManager.Update();
+	if (UpdateFreeze())return;
+	
+	objectManager.Update(cameraX);
+	enemySpawner.Update(cameraX);
+	tileManager.Update();
 
-   for (const auto& obj : objectManager.GetObjects())
-   {
-       // 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
-       if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
-       {
-           Enemy* enemy = static_cast<Enemy*>(obj.get());
+	CheckHit();
 
-		   if(enemy)
-		   {
-            	// 踏んだかどうか
-            	if (player->CheckSquashEnemy(enemy))
-            	{
-                	enemy->OnSquashed();
-            	}
-            	else
-            	{
-                	// 横から衝突した時の判定
-            	}
-		   }
-        }
-       if (obj->objectType == Object::OT_ITEM && !obj->isDead)
-       {
-           Item* item = static_cast<Item*>(obj.get());
-
-           if (item && item->state == Item::IS_MOVING)
-           {
-               if (objectManager.HitObjects(player, item))
-               {
-                   switch (item->itemType)
-                   {
-                   case TileManager::ITEM_SUPERMASHROOM:
-						   player->GetSuperMashroom();
-						   break;
-				   case TileManager::ITEM_1UPMASHROOM:
-                           player->Get1UpMushroom();
-                       break;
-                   case TileManager::ITEM_FIREFLOWER:
-					        player->GetFireFlower();
-                       break;
-                   }
-				   item->isDead = true; // アイテムを消す
-               }
-           }
-       }
-    }
-
-
-   float targetX = player->pos.x - 128;
-
-   // 右に進む時だけ更新
-   if (targetX > cameraX)
-   {
-       cameraX = targetX;
-   }
-
-   // 左端制限
-   if (cameraX < 0)
-   {
-       cameraX = 0;
-   }
-
-   if (player->pos.x - cameraX < 0)
-   {
-       player->pos.x = cameraX;
-       player->speed.x = 0.0f;
-   }
+	CameraUpdate();
 }
 
 void Stage::Render()
 {
-    DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
-    objectManager.Render(Object::RL_UNDER_TILE, cameraX);
-    tileManager.Render(cameraX);
-    objectManager.Render(Object::RL_ENEMY,cameraX);
-    objectManager.Render(Object::RL_PLAYER,cameraX);
+	DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
+	objectManager.Render(Object::RL_UNDER_TILE, cameraX);
+	tileManager.Render(cameraX);
+	objectManager.Render(Object::RL_ENEMY, cameraX);
+	objectManager.Render(Object::RL_PLAYER, cameraX);
 }
 Stage::~Stage()
 {
+
+}
+
+bool Stage::UpdateFreeze()
+{
+	if (player->isDead)
+	{
+		if (player->deathTimer > 0)
+		{
+			// 死亡アニメ、タイマー更新
+			player->DeathUpdate();
+		}
+		else
+		{
+			if (player->stock > 1)
+			{
+				player->stock--;
+				player->Init();
+				cameraX = 0.0f;
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);//debug
+				//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE);
+			}
+			else;//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
+		}
+
+		return true;
+	}
+	if (player->freezeTimer > 0)
+	{
+		player->PowerUpUpdate();
+		return true;
+	}
+	if (player->invincibleTimer > 0)
+	{
+		player->invincibleTimer--;
+		if (player->invincibleTimer > player->INVINCIBLE_FREEZE_TIME)return true;
+	}
+
+	return false;
+}
+
+void Stage::CameraUpdate()
+{
+	float targetX = player->pos.x - 128;
+
+	// 右に進む時だけ更新
+	if (targetX > cameraX)
+	{
+		cameraX = targetX;
+	}
+
+	// 左端制限
+	if (cameraX < 0)
+	{
+		cameraX = 0;
+	}
+
+	if (player->pos.x - cameraX < 0)
+	{
+		player->pos.x = cameraX;
+		player->speed.x = 0.0f;
+	}
+
+}
+
+void Stage::CheckHit()
+{
+	for (const auto& obj : objectManager.GetObjects())
+	{
+		// 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
+		if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
+		{
+			Enemy* enemy = static_cast<Enemy*>(obj.get());
+
+			if (enemy)
+			{
+				if (objectManager.HitObjects(player, enemy))
+				{
+
+					// 踏んだかどうか
+					if (player->CheckSquashEnemy(enemy))
+					{
+						enemy->OnSquashed();
+					}
+					else
+					{
+						player->Damage();
+					}
+				}
+			}
+		}
+		if (obj->objectType == Object::OT_ITEM && !obj->isDead)
+		{
+			Item* item = static_cast<Item*>(obj.get());
+
+			if (item && item->state == Item::IS_MOVING)
+			{
+				if (objectManager.HitObjects(player, item))
+				{
+					switch (item->itemType)
+					{
+					case TileManager::ITEM_SUPERMASHROOM:
+						player->GetSuperMashroom();
+						break;
+					case TileManager::ITEM_1UPMASHROOM:
+						player->Get1UpMushroom();
+						break;
+					case TileManager::ITEM_FIREFLOWER:
+						player->GetFireFlower();
+						break;
+					}
+					item->isDead = true; // アイテムを消す
+				}
+			}
+		}
+	}
 
 }
