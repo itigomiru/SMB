@@ -156,6 +156,7 @@
     <ClCompile Include="program\Ending.cpp" />
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
+    <ClCompile Include="program\FireFlower.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
     <ClCompile Include="program\GoombaController.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="program\Enemy.h" />
     <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Fireball.h" />
+    <ClInclude Include="program\FireFlower.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
     <ClInclude Include="program\GoombaController.h" />
@@ -198,7 +200,6 @@
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
     <ClInclude Include="program\Mashroom.h" />
-    <ClInclude Include="program\SuperMashroom.h" />
     <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
   </ItemGroup>

@@ -14,6 +14,8 @@ Mashroom::Mashroom(float tileX, float tileY,int type)
 	renderLayer = RL_UNDER_TILE;
 	objectType = OT_ITEM;
 	itemType = type;
+	if (itemType == TileManager::ITEM_SUPERMASHROOM)mashType = MT_SUPER;
+	if (itemType == TileManager::ITEM_1UPMASHROOM)mashType = MT_1UP;
 	size = { 16, 16 };
 }
 

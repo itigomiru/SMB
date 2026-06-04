@@ -31,7 +31,6 @@ void Fireball::Update(float cameraX)
 	MoveY();
 	CheckCollisionY();
 
-	CheckCollisionWithEnemies();
 
 	if (bounceCount >= MAX_BOUNCES || CheckInScreen(cameraX))isDead = true;
 }
@@ -105,7 +104,6 @@ void Fireball::CheckCollisionY()
 		{
 			pos.y = static_cast<float>(bottom * TILE_SIZE - size.h);
 			speed.y = -JUMP_POWER; // Bounce
-			bounceCount++;
 		}
 	}
 	else if (speed.y < 0.0f)
@@ -119,21 +117,6 @@ void Fireball::CheckCollisionY()
 	}
 }
 
-void Fireball::CheckCollisionWithEnemies()
-{
-	for (auto& obj : objectManager->GetObjects())
-	{
-		if (obj->objectType == OT_ENEMY)
-		{
-			if (objectManager->HitObjects(this, obj.get()))
-			{
-				isDead = true;
-				//エフェクトを作成
-				break;
-			}
-		}
-	}
-}
 
 bool Fireball::CheckInScreen(float cameraX)
 {

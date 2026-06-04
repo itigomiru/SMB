@@ -56,7 +56,7 @@ private:
 
 	const float SQUASH_BOUNCE_POWER = 4.5f;
 
-	bool isGrounded;//地面にいるかどうか
+	bool isGround;//地面にいるかどうか
 	bool isJumping;
 
 	Float2 prevPos;

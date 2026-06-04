@@ -23,6 +23,7 @@ private :
 	bool UpdateFreeze();
 	void CameraUpdate();
 	void CheckHit();
+	void CheckHitFireballandEnemy();
 public:
 	void Init() override;
 	void Update() override;
