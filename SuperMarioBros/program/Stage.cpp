@@ -142,7 +142,7 @@ void Stage::CheckHit()
 					}
 					else
 					{
-						player->Damage();
+						if(enemy->canDamage)player->Damage();
 					}
 				}
 			}

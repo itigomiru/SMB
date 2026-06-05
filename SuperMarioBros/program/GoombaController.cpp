@@ -16,7 +16,7 @@ Goomba::Goomba()
 	isGrounded = false;
 	state = 0;
 	canSquashed = true;
-
+	canDamage = true;
 	goombaState = STATE_WALK;
     squashTimer = 0;
 }
@@ -31,6 +31,7 @@ void Goomba::Update(float cameraX)
     if (goombaState == STATE_SQUASHED)
     {
         squashTimer--;
+		canDamage = false;
         if (squashTimer <= 0)
         {
             isDead = true; 

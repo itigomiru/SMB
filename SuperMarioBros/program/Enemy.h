@@ -8,6 +8,7 @@ protected:
 public:
 	virtual void Update(float cameraX) override {};
 	bool canSquashed;
+	bool canDamage;
 	Enemy() 
 	{
 		objectType = OT_ENEMY; 
@@ -15,6 +16,7 @@ public:
 		isGrounded = false; 
 		state = 0;
 		canSquashed = true;
+		canDamage = true;
 	};
 	virtual void Death() { }
 	virtual void OnSquashed() {}
