@@ -17,6 +17,8 @@ ImageManager::ImageManager()
 	images[IMAGE_PLAYER_BIG] = LoadGraph("data/image/image_player_big.png");
 	images[IMAGE_PLAYER_FIRE] = LoadGraph("data/image/image_player_fire.png");
 	images[IMAGE_BACK_GROUND] = LoadGraph("data/image/image_back_ground.png");
+	images[IMAGE_FIRE_BALL] = LoadGraph("data/image/image_fire_ball.png");
+	images[IMAGE_FIRE_BALL_EFFECT] = LoadGraph("data/image/image_fire_ball_effect.png");
 }
 
 ImageManager::~ImageManager()

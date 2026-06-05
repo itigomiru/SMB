@@ -23,6 +23,14 @@ private:
 	TileManager* tileManager = nullptr;
 	ObjectManager* objectManager = nullptr;
 	const float MOVE_SPEED = 4.0f;
-	const float JUMP_POWER = 5.0f; 
+	const float JUMP_POWER = 4.0f; 
 	const Float2 VEL_MAX = { 5.0f, 10.0f };
+
+
+	static const int FRAME_COUNT = 4;
+	int animTimer = 0;
+	int currentFrame = 0; 
+	const int ANIM_SPEED = 6;
+	const int FRAME_WIDTH = 8; 
+	const int FRAME_HEIGHT = 8;
 };
