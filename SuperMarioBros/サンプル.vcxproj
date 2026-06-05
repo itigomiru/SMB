@@ -208,6 +208,7 @@
     <ClInclude Include="program\Title.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="program\ItemData.inc" />
     <None Include="program\SpawnData.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

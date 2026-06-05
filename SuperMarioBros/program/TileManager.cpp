@@ -49,6 +49,7 @@ void TileManager::SetTile()
 			}
 		}
 	}
+#include "ItemData.inc"
 }
 
 
