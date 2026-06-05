@@ -4,31 +4,43 @@
 
 class TileManager;
 
-class Goomba : public Enemy
+class KoopaTroopa : public Enemy
 {
 public:
-	Goomba();
+	enum KoopaTroopaState
+	{
+		STATE_WALK,
+		STATE_SHELL_STOP,
+		STATE_SHELL_ROLL,
+		STATE_SHELL_WAKEUP,
+	};
+
+	KoopaTroopa();
 	void Update(float cameraX) override;
 	void Render(float cameraX) override;
 	void Move() override;
 	void ApplyGravity() override;
 
-	int GetEnemyType() const override { return Enemy::ET_GOOMBA; }
+	KoopaTroopaState GetState() const { return KoopaTroopaState; }
+	int GetEnemyType() const override { return Enemy::ET_KOOPATROOPA; }
 
 	void SetPosition(float x, float y);
 	void SetTileManager(TileManager* tm);
 
-	void OnSquashed();
+	void OnSquashed() override;
+	void OnKicked(float marioX);
 	void Death() override;
 private:
-	enum GoombaState
-	{
-		STATE_WALK,
-		STATE_SQUASHED,
-	};
+	
+	KoopaTroopaState KoopaTroopaState;
+	int wakeUpTimer;
 
-	GoombaState goombaState;
-	int squashTimer;
+	const int WAKEUP_TIME = 480; 
+	const int SHELL_START_TIME = 80;
+
+	Float2 shakeOffset;
+
+	const float SHELL_SPEED = 4.0f;
 
 	const float HEIGHT = 16.0f;
 	const float WIDTH = 16.0f;

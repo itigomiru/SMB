@@ -4,25 +4,31 @@
 class Enemy : public Object
 {
 protected:
+	const int OUT_OF_SCREEN_MASS = 10; // 画面外に出るまでのマス数
+	virtual void CheckOutOfScreen(float cameraX) { if (pos.x < cameraX - (OUT_OF_SCREEN_MASS * TILE_SIZE))isDead = true; };
 	bool isGrounded;
 	int state;
-	const int OUT_OF_SCREEN_MASS = 10;
-	virtual void CheckOutOfScreen(float cameraX) {if (pos.x < cameraX - (OUT_OF_SCREEN_MASS * TILE_SIZE))isDead = true;	};
 public:
 	virtual void Update(float cameraX) override {};
 	bool canSquashed;
 	bool canDamage;
-	Enemy() 
+	Enemy()
 	{
-		objectType = OT_ENEMY; 
-		renderLayer = RL_ENEMY; 
-		isGrounded = false; 
+		objectType = OT_ENEMY;
+		renderLayer = RL_ENEMY;
+		isGrounded = false;
 		state = 0;
 		canSquashed = true;
 		canDamage = true;
 	};
-	virtual void Death() { }
+	enum EnemyType
+	{
+		ET_GOOMBA,
+		ET_KOOPATROOPA,
+	};
+	virtual void Death() {}
 	virtual void OnSquashed() {}
 	virtual void Move() = 0;
 	virtual void ApplyGravity() = 0;
+	virtual int GetEnemyType() const = 0;
 };

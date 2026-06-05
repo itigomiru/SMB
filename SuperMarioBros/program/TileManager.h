@@ -22,8 +22,9 @@ private:
 	ObjectManager* objectManager;
 	const float HIT_TILE_SPEED = 1.5f;
 
-	void AddMash(Float2 pos, int type);
-	void AddFireFlower(Float2 pos, int type);
+	void AddPowerMash(Float2 pos);
+	void Add1UPMash(Float2 pos);
+	void AddFireFlower(Float2 pos);
 	void AddStar(Float2 pos, int type);
 
 public:

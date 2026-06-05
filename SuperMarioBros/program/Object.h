@@ -23,7 +23,7 @@ public:
 		OT_ENEMY,
 		OT_ENEMY_BULLET, // 実体なし(攻撃判定しかないもの)
 		OT_ITEM,
-		OT_SHELL
+		OT_SHELL,
 		OT_GOAL,
 	};
 	enum RenderLayer

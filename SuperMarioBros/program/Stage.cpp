@@ -14,6 +14,7 @@
 #include "PlayerData.h"
 #include "Enemy.h"
 #include "Object.h"
+#include "KoopaTroopaController.h"
 #include "Goal.h"
 
 void Stage::Init()

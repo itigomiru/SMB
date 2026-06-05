@@ -129,12 +129,12 @@ void TileManager::HitTile(int x, int y,bool isPlayerSmall)
 			//コインを出す
 			break;
 		case ITEM_POWERUP:
-			if (isPlayerSmall)AddMash(map[y][x].basePosition, map[y][x].itemType);
-			else AddFireFlower(map[y][x].basePosition, map[y][x].itemType);
+			if (isPlayerSmall)AddPowerMash(map[y][x].basePosition);
+			else AddFireFlower(map[y][x].basePosition);
 			break;
 		case ITEM_1UPMASHROOM:
 			//アイテムを出す
-			AddMash(map[y][x].basePosition, map[y][x].itemType);
+			Add1UPMash(map[y][x].basePosition);
 			break;
 		case ITEM_STAR:
 			AddStar(map[y][x].basePosition, map[y][x].itemType);
@@ -161,18 +161,26 @@ void TileManager::Update()
 		}
 	}
 }
-void TileManager::AddMash(Float2 pos,int type)
+void TileManager::AddPowerMash(Float2 pos)
 {
 	//mashを出す
-	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, type);
+	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_SUPERMASHROOM);
 	mash->SetTileManager(this);
 
 	objectManager->AddObject(std::move(mash));
 }
-void TileManager::AddFireFlower(Float2 pos, int type)
+void TileManager::Add1UPMash(Float2 pos)
+{
+	//mashを出す
+	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_1UPMASHROOM);
+	mash->SetTileManager(this);
+
+	objectManager->AddObject(std::move(mash));
+}
+void TileManager::AddFireFlower(Float2 pos)
 {
 	//fireflowerを出す
-	auto flower = std::make_unique<FireFlower>(pos.x, pos.y, type);
+	auto flower = std::make_unique<FireFlower>(pos.x, pos.y, ITEM_FIREFLOWER);
 	flower->SetTileManager(this);
 	objectManager->AddObject(std::move(flower));
 }

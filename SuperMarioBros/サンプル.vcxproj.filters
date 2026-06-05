@@ -73,6 +73,9 @@
     <ClCompile Include="program\Goal.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="program\KoopaTroopaController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="program\Goal.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\KoopaTroopaController.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -163,6 +163,7 @@
     <ClCompile Include="program\GoombaController.cpp" />
     <ClCompile Include="program\ImageManager.cpp" />
     <ClCompile Include="program\Item.cpp" />
+    <ClCompile Include="program\KoopaTroopaController.cpp" />
     <ClCompile Include="program\ObjectManager.cpp" />
     <ClCompile Include="program\Player.cpp" />
     <ClCompile Include="program\PlayerData.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="program\GoombaController.h" />
     <ClInclude Include="program\ImageManager.h" />
     <ClInclude Include="program\Item.h" />
+    <ClInclude Include="program\KoopaTroopaController.h" />
     <ClInclude Include="program\Object.h" />
     <ClInclude Include="program\ObjectManager.h" />
     <ClInclude Include="program\Player.h" />
