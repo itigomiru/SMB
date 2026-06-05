@@ -7,22 +7,20 @@
 #include "EffectManager.h"
 #include "Hit.h"
 
-Fireball::Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManager* om)
-{
+Fireball::Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManager* om) {
 	this->pos = pos;
-	this->tileManager = tm;
-	this->objectManager = om;
+	tileManager = tm;
+	objectManager = om;
 
 	objectType = OT_FIREBALL;
-	size = { 8.0f, 8.0f };
+	size = { 8.0f, 8.0f }; 
 	speed.x = isFacingRight ? MOVE_SPEED : -MOVE_SPEED;
 	speed.y = 0;
 	renderLayer = RL_PLAYER;
+
 }
 
-void Fireball::Update(float cameraX)
-{
-
+void Fireball::Update(float cameraX) {
 	ApplyGravity();
 
 	MoveX();
@@ -32,14 +30,24 @@ void Fireball::Update(float cameraX)
 	CheckCollisionY();
 
 
-	if (CheckInScreen(cameraX))isDead = true;
+	animTimer++;
+	if (animTimer >= ANIM_SPEED) {
+		animTimer = 0;
+		currentFrame = (currentFrame + 1) % FRAME_COUNT; 
+	}
+
+
+	if (CheckInScreen(cameraX)) isDead = true;
 }
 
-void Fireball::Render(float cameraX)
-{
+void Fireball::Render(float cameraX) {
 	int drawX = static_cast<int>(pos.x - cameraX);
 	int drawY = static_cast<int>(pos.y);
-	DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(255, 0, 0), true);
+
+	bool isTurn = (speed.x < 0.0f) ? true : false;
+	
+	DrawRectGraph(drawX, drawY, size.w * currentFrame, 0, size.w, size.h, ImageManager::GetInstance().GetImage(IMAGE_FIRE_BALL), true, isTurn);
+	
 }
 
 void Fireball::ApplyGravity()
