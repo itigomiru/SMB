@@ -49,6 +49,7 @@ void TileManager::SetTile()
 			}
 		}
 	}
+#include "ItemData.inc"
 }
 
 
@@ -121,9 +122,6 @@ void TileManager::HitTile(int x, int y, bool breakable)
 	}
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK)
 	{
-#if 1
-		map[y][x].itemType = ITEM_FIREFLOWER;
-#endif
 		map[y][x].type = TILE_HITTED_BLOCK;
 		switch (ItemType(map[y][x].itemType))
 		{

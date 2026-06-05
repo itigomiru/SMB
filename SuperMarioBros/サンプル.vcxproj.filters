@@ -184,5 +184,8 @@
     <None Include="program\SpawnData.inc">
       <Filter>Include</Filter>
     </None>
+    <None Include="program\ItemData.inc">
+      <Filter>Include</Filter>
+    </None>
   </ItemGroup>
 </Project>
