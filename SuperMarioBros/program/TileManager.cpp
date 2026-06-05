@@ -106,7 +106,7 @@ bool TileManager::IsSolid(int x, int y)
 	if (x < 0 || x >= map[y].size())
 		return false;
 
-	return map[y][x].type != TILE_EMPTY;
+	return (map[y][x].type != TILE_EMPTY && map[y][x].type != TILE_HIDE_BLOCK);
 }
 
 void TileManager::HitTile(int x, int y,bool isPlayerSmall)

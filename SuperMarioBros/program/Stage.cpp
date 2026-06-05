@@ -146,15 +146,49 @@ void Stage::CheckHit()
 					// 踏んだかどうか
 					if (player->CheckSquashEnemy(enemy))
 					{
-						enemy->OnSquashed();
+						if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
+						{
+							KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
+							if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
+								koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+							{
+								koopa->OnKicked(player->pos.x);
+							}
+							else
+							{
+								enemy->OnSquashed();
+							}
+						}
+						else
+						{
+							enemy->OnSquashed();
+						}
 					}
 					else
 					{
-						if(enemy->canDamage)player->Damage();
+						if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
+						{
+							KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
+
+							if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
+								koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+							{
+								koopatroopa->OnKicked(player->pos.x);
+							}
+							else
+							{
+								if (enemy->canDamage) player->Damage();
+							}
+						}
+						else
+						{
+							if (enemy->canDamage) player->Damage();
+						}
 					}
 				}
 			}
 		}
+
 		if (obj->objectType == Object::OT_ITEM && !obj->isDead)
 		{
 			Item* item = static_cast<Item*>(obj.get());
@@ -182,20 +216,14 @@ void Stage::CheckHit()
 		if (obj->objectType == Object::OT_GOAL)
 		{
 			Goal* goal = static_cast<Goal*>(obj.get());
-			if (goal)
+			if (goal && objectManager.HitObjects(player, goal))
 			{
-				if (objectManager.HitObjects(player, goal))
-				{
-					int score = goal->GetScore(player->pos.y);
-					PlayerData::GetInstance().AddScore(score);
-					SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_CLEAR);
-				}
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_CLEAR);
 			}
 		}
+		CheckHitFireballandEnemy();
+		CheckHitShellandEnemy();
 	}
-	CheckHitFireballandEnemy();
-	CheckHitShellandEnemy();
-
 }
 
 void Stage::CheckHitFireballandEnemy()

@@ -43,6 +43,7 @@ void Player::Init()
 	starTimer = 0;
 	fireballCount = 0;
 	fireCooldown = 0;
+	firePoseTimer = 0;
 }
 
 
@@ -63,10 +64,8 @@ void Player::Update(float cameraX)
 	}
 #endif
 
-	if (fireCooldown > 0)
-	{
-		fireCooldown--;
-	}
+	if (fireCooldown > 0)fireCooldown--; 
+	if (firePoseTimer > 0)firePoseTimer--; 
 
 	Input();
 
@@ -154,14 +153,16 @@ void Player::Input()
 	}
 
 	fireballCount = objectManager->GetFireballCount();
-	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX)
+	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX &&!isCrouching)
 	{
 		Float2 fireballPos = pos;
 		fireballPos.x += isFacingRight ? size.w : 0;
 		fireballPos.y += size.h / 4;
 		auto fireball = std::make_unique<Fireball>(fireballPos, isFacingRight, tileManager, objectManager);
 		objectManager->AddObject(std::move(fireball));
+
 		fireCooldown = FIRE_COOLDOWN_TIME;
+		firePoseTimer = FIRE_POSE_TIME; 
 	}
 
 	//=========================================================
@@ -785,9 +786,9 @@ void Player::RenderBig(float cameraX)
 	int drawX = static_cast<int>(pos.x - cameraX);
 	int drawY = static_cast<int>(pos.y);
 
-	// しゃがみ時の補正
 	if (isCrouching) {
-		drawY += 8;
+		drawY -= 16;
+		srcX = chipW * 6; // しゃがみポーズ
 	}
 
 	if (isFacingRight) {
@@ -836,8 +837,14 @@ void Player::RenderFire(float cameraX)
 
 	// しゃがみ時の補正
 	if (isCrouching) {
-		drawY += 8;
+		drawY -= 16;
+		srcX = chipW * 6; // しゃがみポーズ
 	}
+    if (firePoseTimer > 0)
+	{
+		srcX = chipW * 7;
+	}
+
 
 	if (isFacingRight) {
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true);

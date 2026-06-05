@@ -8,7 +8,7 @@ KoopaTroopa::KoopaTroopa()
     pos = { 100.0f, 200.0f };
     prevPos = pos;
     objectType = OT_ENEMY;
-    speed = { -1, 0.0f };
+    speed = { -1.0f, 0.0f };
     size = { WIDTH, HEIGHT };
 
     renderLayer = RL_ENEMY;

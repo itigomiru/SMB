@@ -65,6 +65,8 @@ private:
 	bool isTryingToStand;
 	float standPushDir;
 	int fireCooldown;
+	int firePoseTimer = 0;
+	const int FIRE_POSE_TIME = 12;
 
 
 	bool isStar;
