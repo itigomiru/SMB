@@ -1,6 +1,7 @@
 #include "EnemySpawner.h"
 #include "SceneManager.h"
 #include "GoombaController.h"
+#include "KoopaTroopaController.h"
 #include "TileManager.h"
 
 EnemySpawner::EnemySpawner()
@@ -84,8 +85,16 @@ void EnemySpawner::Update(float cameraX)
             }
 
             case KOOPA_TROOPA:
-                break;
+            {
 
+                auto koopatroopa = std::make_unique<KoopaTroopa>();
+
+                koopatroopa->SetPosition(data.x, data.y);
+                koopatroopa->SetTileManager(tileManager);
+                enemy = std::move(koopatroopa);
+
+                break;
+            }
             case PIRANHA_PLANT:
                 break;
 
