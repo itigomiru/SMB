@@ -202,16 +202,20 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 void TileManager::Update()
 {
 
-	if (animationCounter == 0 && isWait)
+	if (animWaitCounter > 0)
 	{
-		animWaitCounter = ANIM_WAIT_TIME;
-		isWait = true;
+		animWaitCounter--;
 	}
-	if(animWaitCounter > 0) animWaitCounter--;
-	if (animWaitCounter == 0)
+	else
 	{
-		isWait = false;
+		int prevFrame = animationCounter / ANIM_SPEED; 
 		animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
+		int nextFrame = animationCounter / ANIM_SPEED; 
+
+		if (prevFrame != 0 && nextFrame == 0)
+		{
+			animWaitCounter = ANIM_WAIT_TIME; 
+		}
 	}
 	for (int y = 0; y < map.size(); y++)
 	{
