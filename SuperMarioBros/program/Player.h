@@ -25,8 +25,7 @@ public:
 
 	void Damage();
 
-	int score;
-	int stock;
+
 	int freezeTimer;
 	int deathTimer;
 	int invincibleTimer;
@@ -50,9 +49,6 @@ private:
 
 	const Float2 SPEED_MAX = { 2.0f, 10.0f };
 	const float DASH_SPEED_MAX = 3.0f;
-
-	const int BASE_STOCK = 3;
-	const int STOCK_MAX = 99;
 
 	const float SQUASH_BOUNCE_POWER = 4.5f;
 

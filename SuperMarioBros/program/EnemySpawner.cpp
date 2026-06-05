@@ -20,11 +20,8 @@ void EnemySpawner::SetTileManager(TileManager* tm)
 void EnemySpawner::SetSpawner()
 {
 	SpawnData data1 = { GOOMBA, 200.0f, 190.0f, false, true };
-	SpawnData data2 = { KOOPA_TROOPA, 400.0f, 190.0f, false, true };
-	SpawnData data3 = { PIRANHA_PLANT, 600.0f, 190.0f, false, true };
 	spawnDataList.push_back(data1);
-	spawnDataList.push_back(data2);
-	spawnDataList.push_back(data3);
+
 }
 
 void EnemySpawner::Update(float cameraX)

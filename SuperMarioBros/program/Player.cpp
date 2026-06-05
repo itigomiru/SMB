@@ -5,13 +5,13 @@
 #include "Main.h"
 #include "Fireball.h"
 #include "ObjectManager.h"
+#include "PlayerData.h"
 #include "Hit.h"
 
 Player::Player()
 {
 	objectType = OT_PLAYER;
 	renderLayer = RL_PLAYER;
-	stock = BASE_STOCK;
 	Init();
 }
 
@@ -505,11 +505,7 @@ void Player::GetSuperMashroom()
 
 void Player::Get1UpMushroom()
 {
-	stock++;
-	if (stock > STOCK_MAX)
-	{
-		stock = STOCK_MAX;
-	}
+	PlayerData::GetInstance().AddStock(1);
 }
 
 void Player::GetFireFlower()

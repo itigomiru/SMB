@@ -11,6 +11,7 @@
 #include "Item.h"
 #include "TileManager.h"
 #include "EnemySpawner.h"
+#include "PlayerData.h"
 #include "Enemy.h"
 
 void Stage::Init()
@@ -46,8 +47,12 @@ void Stage::Render()
 	DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
 	objectManager.Render(Object::RL_UNDER_TILE, cameraX);
 	tileManager.Render(cameraX);
+	objectManager.Render(Object::RL_GOAL, cameraX);
 	objectManager.Render(Object::RL_ENEMY, cameraX);
 	objectManager.Render(Object::RL_PLAYER, cameraX);
+	objectManager.Render(Object::RL_ITEM, cameraX);
+	objectManager.Render(Object::RL_CASTLE, cameraX);
+	objectManager.Render(Object::RL_EFFECT, cameraX);
 }
 Stage::~Stage()
 {
@@ -65,9 +70,9 @@ bool Stage::UpdateFreeze()
 		}
 		else
 		{
-			if (player->stock > 1)
+			if (PlayerData::GetInstance().GetStock() > 1)
 			{
-				player->stock--;
+				PlayerData::GetInstance().AddStock(-1);
 				player->Init();
 				cameraX = 0.0f;
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);//debug

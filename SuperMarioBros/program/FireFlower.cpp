@@ -24,6 +24,7 @@ void FireFlower::Update(float cameraX)
 		if (SpawnUpdate())
 		{
 			state = IS_MOVING;
+			renderLayer = RL_ITEM;
 		}
 	}
 	else if (state == IS_MOVING)

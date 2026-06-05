@@ -28,6 +28,10 @@ public:
 	{
 		RL_UNDER_TILE,
 		RL_ENEMY,
-		RL_PLAYER
+		RL_GOAL,
+		RL_PLAYER,
+		RL_ITEM,
+		RL_CASTLE,
+		RL_EFFECT,
 	};
 };

@@ -67,6 +67,9 @@
     <ClCompile Include="program\Mashroom.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="program\PlayerData.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="program\Mashroom.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\PlayerData.h">
+      <Filter>Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
