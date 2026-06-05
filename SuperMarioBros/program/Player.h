@@ -30,7 +30,8 @@ public:
 	int deathTimer;
 	int invincibleTimer;
 	const int INVINCIBLE_FREEZE_TIME = 120;
-	
+	int starTimer;
+
 private:
 	const float SMALL_H = 16.0f;
 	const float SUPER_H = 32.0f;
@@ -47,7 +48,7 @@ private:
 	const int DEATH_TIME = 120;
 	const int POWER_UP_TIME = 60;
 
-	const Float2 SPEED_MAX = { 2.0f, 10.0f };
+	const Float2 SPEED_MAX = { 2.0f, 7.0f };
 	const float DASH_SPEED_MAX = 3.0f;
 
 	const float SQUASH_BOUNCE_POWER = 4.5f;
@@ -57,10 +58,16 @@ private:
 	bool isAnimJamping;
 	int animeCount = 0;
 
-	Float2 prevPos;
 	int state;
-
 	bool isFacingRight;
+
+	int oldState;
+	int newState;
+	bool isChangingState = false;
+
+	Float2 prevPos;
+
+
 	bool isCrouching;
 	bool isTryingToStand;
 	float standPushDir;
@@ -69,8 +76,7 @@ private:
 	const int FIRE_POSE_TIME = 12;
 
 
-	bool isStar;
-	int starTimer;
+
 	int fireballCount;
 	enum PlayerState
 	{

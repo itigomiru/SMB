@@ -27,7 +27,7 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
  {
 	 for (auto& obj : objects)
 	 {
-		 if (obj->renderLayer == layer)
+		 if (obj->renderLayer == layer && obj->isDead == false)
 		 {
 			 obj->Render(cameraX);
 		 }

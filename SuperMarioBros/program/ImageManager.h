@@ -6,6 +6,12 @@ enum IMAGE_LIST {
 	IMAGE_BACK_GROUND,
 	IMAGE_FIRE_BALL,
 	IMAGE_FIRE_BALL_EFFECT,
+
+
+	//里--------------
+	IMAGE_PLAYER_SMALL_TO_BIG,
+	IMAGE_PLAYER_BIG_TO_FIRE,
+	//----------------
 	IMAGE_MAX
 };
 

@@ -22,9 +22,10 @@ public:
 	}
 
 	void Update();
-	void Render();
+	void Render(float cameraX);
 
 	// エフェクトの登録関数
+	void AddEffect(std::unique_ptr<Effect> effect);
 
 	// リセット用
 	void ClearAll();

@@ -8,7 +8,7 @@ KoopaTroopa::KoopaTroopa()
     pos = { 100.0f, 200.0f };
     prevPos = pos;
     objectType = OT_ENEMY;
-    speed = { -1.0f, 0.0f };
+    speed = { -SPEED.x, 0.0f };
     size = { WIDTH, HEIGHT };
 
     renderLayer = RL_ENEMY;
@@ -121,9 +121,9 @@ void KoopaTroopa::ApplyGravity()
     {
         speed.y += SceneManager::GetInstance().GRAVITY;
 
-        if (speed.y > VEL_MAX.y)
+        if (speed.y > SPEED.y)
         {
-            speed.y = VEL_MAX.y;
+            speed.y = SPEED.y;
         }
     }
     else

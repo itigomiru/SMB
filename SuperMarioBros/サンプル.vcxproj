@@ -154,8 +154,10 @@
   <ItemGroup>
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
+    <ClCompile Include="program\EnemyDefeatedEffect.cpp" />
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
+    <ClCompile Include="program\FireballEffect.cpp" />
     <ClCompile Include="program\FireFlower.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
@@ -183,8 +185,10 @@
     <ClInclude Include="program\EffectManager.h" />
     <ClInclude Include="program\Ending.h" />
     <ClInclude Include="program\Enemy.h" />
+    <ClInclude Include="program\EnemyDefeatedEffect.h" />
     <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Fireball.h" />
+    <ClInclude Include="program\FireballEffect.h" />
     <ClInclude Include="program\FireFlower.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />

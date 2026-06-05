@@ -34,6 +34,5 @@ public:
 		RL_PLAYER,
 		RL_ITEM,
 		RL_CASTLE,
-		RL_EFFECT,
 	};
 };

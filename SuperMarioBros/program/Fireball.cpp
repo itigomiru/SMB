@@ -5,6 +5,7 @@
 #include "ObjectManager.h"
 #include "Enemy.h"
 #include "EffectManager.h"
+#include "FireballEffect.h"
 #include "Hit.h"
 
 Fireball::Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManager* om) {
@@ -82,9 +83,7 @@ void Fireball::CheckCollisionX()
 		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom))
 		{
 			pos.x = static_cast<float>(right * TILE_SIZE - size.w);
-			speed.x *= -1; // Reverse direction
-			isDead = true; 
-			//Todo: エフェクト出す
+			DeathAndEffect();
 		}
 	}
 	else if (speed.x < 0.0f)
@@ -93,9 +92,7 @@ void Fireball::CheckCollisionX()
 		if (tileManager->IsSolid(left, top) || tileManager->IsSolid(left, bottom))
 		{
 			pos.x = static_cast<float>((left + 1) * TILE_SIZE);
-			speed.x *= -1; // Reverse direction
-			isDead = true;
-			//Todo: エフェクト出す
+			DeathAndEffect();
 		}
 	}
 }
@@ -133,4 +130,9 @@ bool Fireball::CheckInScreen(float cameraX)
 	int screenLeft = static_cast<int>(cameraX) - size.w;
 	int screenRight = static_cast<int>(cameraX) + SCREEN_W + size.w;
 	return pos.x < screenLeft || pos.x > screenRight;
+}
+void Fireball::DeathAndEffect()
+{
+	isDead = true;
+	EffectManager::GetInstance().AddEffect(std::make_unique<FireballEffect>(pos.x, pos.y));
 }
