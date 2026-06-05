@@ -19,6 +19,20 @@ ImageManager::ImageManager()
 	images[IMAGE_BACK_GROUND] = LoadGraph("data/image/image_back_ground.png");
 	images[IMAGE_FIRE_BALL] = LoadGraph("data/image/image_fire_ball.png");
 	images[IMAGE_FIRE_BALL_EFFECT] = LoadGraph("data/image/image_fire_ball_effect.png");
+	//丸山
+	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");
+	images[IMAGE_GROUND] = LoadGraph("data/image/image_ground.png");
+	images[IMAGE_STAIR_BLOCK] = LoadGraph("data/image/image_stair_block.png");
+	images[IMAGE_QUESTION_BLOCK] = LoadGraph("data/image/image_question_block.png");
+	images[IMAGE_HITTED_BLOCK] = LoadGraph("data/image/image_hitted_block.png");
+	images[IMAGE_PIPE_LEFT_TOP] = LoadGraph("data/image/image_pipe_left_top.png");
+	images[IMAGE_PIPE_RIGHT_TOP] = LoadGraph("data/image/image_pipe_right_top.png");
+	images[IMAGE_PIPE_LEFT_BOTTOM] = LoadGraph("data/image/image_pipe_left_bottom.png");
+	images[IMAGE_PIPE_RIGHT_BOTTOM] = LoadGraph("data/image/image_pipe_right_bottom.png");
+
+
+
+	//--------------------------------------------------------------
 }
 
 ImageManager::~ImageManager()

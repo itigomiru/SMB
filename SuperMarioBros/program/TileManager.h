@@ -22,6 +22,14 @@ private:
 	ObjectManager* objectManager;
 	const float HIT_TILE_SPEED = 1.5f;
 
+	int animationCounter = 0;    
+	const int ANIM_SPEED = 12;      
+	const int ANIM_FRAMES = 3;   
+
+	bool isWait = false;
+	int animWaitCounter = 0;
+	const int ANIM_WAIT_TIME = 120;
+
 	void AddPowerMash(Float2 pos);
 	void Add1UPMash(Float2 pos);
 	void AddFireFlower(Float2 pos);
@@ -49,6 +57,7 @@ public:
 		TILE_PIPE_RIGHT_BOTTOM	= 7,
 		TILE_HIDE_BLOCK			= 8,
 		TILE_HITTED_BLOCK		= 9,
+		TILE_STAIR_BLOCK        = 10,
 		TILE_MAX
 	};
 	void SetTile();
