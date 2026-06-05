@@ -19,7 +19,7 @@ void EnemySpawner::SetTileManager(TileManager* tm)
 
 void EnemySpawner::SetSpawner()
 {
-	SpawnData data1 = { GOOMBA, 200.0f, 190.0f, false, true };
+	SpawnData data1 = { GOOMBA, 300.0f, 190.0f, false, true };
 	spawnDataList.push_back(data1);
 
 }
