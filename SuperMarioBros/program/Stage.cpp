@@ -13,6 +13,7 @@
 #include "EnemySpawner.h"
 #include "PlayerData.h"
 #include "Enemy.h"
+#include "Goal.h"
 
 void Stage::Init()
 {
@@ -27,11 +28,13 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
+	objectManager.AddObject(std::make_unique<Goal>());
 }
 
 void Stage::Update()
 {
 	if (UpdateFreeze())return;
+	CameraUpdate();
 	
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
@@ -39,12 +42,15 @@ void Stage::Update()
 
 	CheckHit();
 
-	CameraUpdate();
 }
 
 void Stage::Render()
 {
 	DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
+	for (int i = 0; i < 5; i++)
+	{
+		DrawGraph(i * 768 - static_cast<int>(cameraX), TILE_SIZE * 2, ImageManager::GetInstance().GetImage(IMAGE_BACK_GROUND), true);
+	}
 	objectManager.Render(Object::RL_UNDER_TILE, cameraX);
 	tileManager.Render(cameraX);
 	objectManager.Render(Object::RL_GOAL, cameraX);
@@ -168,6 +174,19 @@ void Stage::CheckHit()
 						break;
 					}
 					item->isDead = true; // アイテムを消す
+				}
+			}
+		}
+		if (obj->objectType == Object::OT_GOAL)
+		{
+			Goal* goal = static_cast<Goal*>(obj.get());
+			if (goal)
+			{
+				if (objectManager.HitObjects(player, goal))
+				{
+					int score = goal->GetScore(player->pos.y);
+					PlayerData::GetInstance().AddScore(score);
+					SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_CLEAR);
 				}
 			}
 		}
