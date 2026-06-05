@@ -19,6 +19,12 @@ ImageManager::ImageManager()
 	images[IMAGE_BACK_GROUND] = LoadGraph("data/image/image_back_ground.png");
 	images[IMAGE_FIRE_BALL] = LoadGraph("data/image/image_fire_ball.png");
 	images[IMAGE_FIRE_BALL_EFFECT] = LoadGraph("data/image/image_fire_ball_effect.png");
+
+	//里----------------
+	images[IMAGE_PLAYER_SMALL_TO_BIG] = LoadGraph("data/image/image_player_small_to_big.png");
+	images[IMAGE_PLAYER_BIG_TO_FIRE] = LoadGraph("data/image/image_player_big_to_fire.png");
+	
+	//------------------
 	//丸山
 	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");
 	images[IMAGE_GROUND] = LoadGraph("data/image/image_ground.png");

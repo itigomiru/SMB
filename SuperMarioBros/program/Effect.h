@@ -27,7 +27,7 @@ public:
 	virtual ~Effect() {}
 
 	virtual void Update() = 0;
-	virtual void Render() = 0;
+	virtual void Render(float cameraX) = 0;
 
 	bool IsDead() const { return isDead; }
 };

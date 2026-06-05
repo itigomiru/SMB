@@ -10,6 +10,7 @@ public:
 	Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManager* om);
 	void Update(float cameraX) override;
 	void Render(float cameraX) override;
+	void DeathAndEffect();
 
 private:
 	void ApplyGravity();

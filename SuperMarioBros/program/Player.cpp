@@ -37,7 +37,6 @@ void Player::Init()
 	isCrouching = false;
 	isJumping = false;
 	isAnimJamping = false;
-	isStar = false;
 	isTryingToStand = false;
 	standPushDir = 0.0f;
 	starTimer = 0;
@@ -50,35 +49,32 @@ void Player::Init()
 void Player::Update(float cameraX)
 {
 	prevPos = pos;
+
+	
+	if (freezeTimer > 0)
+	{
+		PowerUpUpdate(); 
+		return;          
+	}
+
 	isGround = CheckGround();
 	if (isGround)isAnimJamping = false;
 
 #if 1
-	if (PushHitKey(KEY_INPUT_0))
-	{
-		GetSuperMashroom();
-	}
-	if (PushHitKey(KEY_INPUT_9))
-	{
-		GetFireFlower();
-	}
+	// デバッグ用キー
+	if (PushHitKey(KEY_INPUT_0)) { GetSuperMashroom(); }
+	if (PushHitKey(KEY_INPUT_9)) { GetFireFlower(); }
 #endif
-
-	if (fireCooldown > 0)fireCooldown--; 
-	if (firePoseTimer > 0)firePoseTimer--; 
+	if (fireCooldown > 0)fireCooldown--;
+	if (firePoseTimer > 0)firePoseTimer--;
 
 	Input();
-
 	UpdatePlayerSize();
 	UpdateStandPush();
-
 	Jump();
-
 	ApplyGravity();
-
 	MoveX();
 	CheckCollisionX();
-
 	MoveY();
 	CheckCollisionY();
 }
@@ -118,12 +114,14 @@ void Player::Input()
 	if (CheckHitKey(KEY_INPUT_A) && !isCrouching)
 	{
 		speed.x -= MOVE_ACCEL;
+		if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
 		if(isGround)isFacingRight = false;
 	}
 	else if
 		(CheckHitKey(KEY_INPUT_D) && !isCrouching)
 	{
 		speed.x += MOVE_ACCEL;
+		if (speed.x < 0.05)speed.x += MOVE_ACCEL * 2;
 		if(isGround)isFacingRight = true;
 	}
 	else
@@ -447,24 +445,16 @@ void Player::SetObjectManager(ObjectManager* om)
 }
 
 
-
 void Player::GetSuperMashroom()
 {
-	switch (state)
+	if (state == SMALL)
 	{
-	case SMALL:
-
-		state = SUPER;
+		oldState = SMALL;
+		newState = SUPER;
+		isChangingState = true;
+		freezeTimer = POWER_UP_TIME; 
 
 		pos.y -= (SUPER_H - SMALL_H);
-
-		freezeTimer = POWER_UP_TIME;
-		break;
-	case SUPER:
-		break;
-
-	case FIRE:
-		break;
 	}
 }
 
@@ -475,19 +465,21 @@ void Player::Get1UpMushroom()
 
 void Player::GetFireFlower()
 {
-	switch (state)
+	if (state == SMALL)
 	{
-	case SMALL:
-		state = SUPER;
+		oldState = SMALL;
+		newState = SUPER;
+		isChangingState = true;
+		freezeTimer = POWER_UP_TIME;
+
 		pos.y -= (SUPER_H - SMALL_H);
+	}
+	else if (state == SUPER)
+	{
+		oldState = SUPER;
+		newState = FIRE;
+		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
-		break;
-	case SUPER:
-		state = FIRE;
-		freezeTimer = POWER_UP_TIME;
-		break;
-	case FIRE:
-		break;
 	}
 }
 
@@ -623,13 +615,19 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 void Player::PowerUpUpdate()
 {
 	freezeTimer--;
-	if (state == SUPER)
+
+	if (freezeTimer <= 0)
 	{
-		//animation suru
-	}
-	else if (state == FIRE)
-	{
-		//animation suru
+
+		if (oldState != SMALL && newState == SMALL)
+		{
+			pos.y += (SUPER_H - SMALL_H);
+		}
+
+		state = newState;        
+		isChangingState = false; 
+
+		UpdatePlayerSize();      
 	}
 }
 
@@ -647,21 +645,16 @@ void Player::DeathUpdate()
 
 void Player::Damage()
 {
-	if (invincibleTimer > 0)
-	{
-		return;
-	}
-	if (state == FIRE)
-	{
-		state = SMALL;
-		pos.y += (SUPER_H - SMALL_H);
-		invincibleTimer = INVINCIBLE_TIME;
+	if (invincibleTimer > 0 || freezeTimer > 0) return;
 
-	}
-	else if (state == SUPER)
+	if (state == FIRE || state == SUPER)
 	{
-		state = SMALL;
-		pos.y += (SUPER_H - SMALL_H);
+		oldState = state;
+		newState = SMALL;
+		isChangingState = true;
+		freezeTimer = POWER_UP_TIME;
+
+		// 無敵時間を付与
 		invincibleTimer = INVINCIBLE_TIME;
 	}
 	else
@@ -672,40 +665,95 @@ void Player::Damage()
 
 void Player::Render(float cameraX)
 {
-	if (invincibleTimer > 0)
+	// 被弾後の通常の点滅（変身アニメーション中でない場合のみ）
+	if (!isChangingState && invincibleTimer > 0)
 	{
 		if ((invincibleTimer / 4) % 2 == 0)
 		{
-			return; // 点滅
+			return;
 		}
 	}
 
-	if (isGround && std::abs(speed.x) > 0.05f) {
+	if (isGround && std::abs(speed.x) > 0.05f && freezeTimer == 0) {
 		animeCount += std::abs(speed.x);
 	}
-	else {
-		animeCount = 0.0f; // 停止時はリセット
+	else if (freezeTimer == 0) {
+		animeCount = 0.0f;
 	}
 
-	switch (state)
+
+	if (isChangingState)
 	{
-	case SMALL:
-		RenderSmall(cameraX);
-		break;
-	case SUPER:
-		RenderBig(cameraX);
-		break;
-	case FIRE:
-		RenderFire(cameraX);
-		break;
+		int drawX = static_cast<int>(pos.x - cameraX);
+		int drawY = static_cast<int>(pos.y);
+		int srcX = 0;
+		int chipW = 16;
+		int chipH = 32;
+
+		if ((oldState == SMALL && newState == SUPER) || (oldState != SMALL && newState == SMALL))
+		{
+			if (freezeTimer <= 12)
+			{
+				if (newState == SUPER) {
+					srcX = 32; 
+				}
+				else {
+					srcX = 0;  
+				}
+			}
+			else
+			{
+				int framePattern;
+				if(oldState == SMALL && newState == SUPER)framePattern = ((POWER_UP_TIME - freezeTimer) / 4) % 3;
+				else  framePattern = (freezeTimer / 4) % 3;
+
+				srcX = framePattern * chipW;
+			}
+
+			if (((oldState != SMALL && newState == SMALL)) && freezeTimer / 4 % 2)return;
+			// 画像を描画
+			int handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL_TO_BIG);
+			if (isFacingRight) {
+				DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true);
+			}
+			else {
+				DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true, true);
+			}
+		}
+		else
+		{
+			if (freezeTimer <= 12)
+			{
+				RenderFire(cameraX);
+			}
+			else
+			{
+				int framePattern;
+				framePattern = ((POWER_UP_TIME - freezeTimer) / 4) % 4;
+
+				srcX = framePattern * chipW;
+				// 画像を描画
+				int handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_TO_FIRE);
+
+				if (isFacingRight) {
+					DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true);
+				}
+				else {
+					DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true, true);
+				}
+			}
+		}
 	}
-
-	//DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, color, true);
-
-	DrawFormatString(0, 5, 0xFFFFFF, "Player pos:(%.2f %.2f)", pos.x, pos.y);
-
-	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGround);
-	DrawFormatString(0, 32, 0xFFFFFF, "isCrouching:%d", isCrouching);
+	else
+	{
+		// 通常時の描画
+		switch (state)
+		{
+		case SMALL: RenderSmall(cameraX); break;
+		case SUPER: RenderBig(cameraX);   break;
+		case FIRE:  RenderFire(cameraX);  break;
+		}
+	}
 }
 void Player::RenderSmall(float cameraX)
 {

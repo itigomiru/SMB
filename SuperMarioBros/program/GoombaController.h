@@ -33,7 +33,7 @@ private:
 	const float HEIGHT = 16.0f;
 	const float WIDTH = 16.0f;
 
-	const Float2 VEL_MAX = { 5.0f, 10.0f };
+	const Float2 SPEED = { 0.5f, 7.0f };
 	Float2 prevPos;
 
 	TileManager* tileManager = nullptr;
