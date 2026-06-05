@@ -30,9 +30,10 @@ public:
 	enum ItemType {
 		ITEM_NONE,
 		ITEM_COIN,
+		ITEM_POWERUP,
 		ITEM_SUPERMASHROOM,
-		ITEM_1UPMASHROOM,
 		ITEM_FIREFLOWER,
+		ITEM_1UPMASHROOM,
 		ITEM_STAR,
 		ITEM_MAX
 	};
@@ -57,7 +58,9 @@ public:
 
 	bool IsSolid(int x, int y);
 
-	void HitTile(int x, int y, bool breakable);
+	void HitTile(int x, int y,bool isPlayerSmall);
 
 	void SetObjectManager(ObjectManager* manager) { objectManager = manager; }
+
+	bool IsHidden(int x, int y);
 };

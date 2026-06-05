@@ -70,6 +70,9 @@
     <ClCompile Include="program\PlayerData.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="program\Goal.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -152,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="program\PlayerData.h">
       <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Goal.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 #include "Main.h"
 #include "Fireball.h"
 #include "ObjectManager.h"
+#include "ImageManager.h"
 #include "PlayerData.h"
 #include "Hit.h"
 
@@ -35,6 +36,7 @@ void Player::Init()
 	isGround = false;
 	isCrouching = false;
 	isJumping = false;
+	isAnimJamping = false;
 	isStar = false;
 	isTryingToStand = false;
 	standPushDir = 0.0f;
@@ -48,7 +50,7 @@ void Player::Update(float cameraX)
 {
 	prevPos = pos;
 	isGround = CheckGround();
-
+	if (isGround)isAnimJamping = false;
 
 #if 1
 	if (PushHitKey(KEY_INPUT_0))
@@ -86,8 +88,7 @@ void Player::Update(float cameraX)
 void Player::Input()
 {
 	// しゃがみ
-	if (CheckHitKey(KEY_INPUT_S) &&
-		state != SMALL)
+	if (CheckHitKey(KEY_INPUT_S) &&state != SMALL)
 	{
 		if (!isCrouching)
 		{
@@ -203,6 +204,7 @@ void Player::Jump()
 		}
 
 		isJumping = true;
+		isAnimJamping = true;
 		isGround = false;
 	}
 	if (speed.y > 0.0f)isJumping = false;
@@ -327,6 +329,7 @@ void Player::CheckCollisionY()
 			speed.y = 0.0f;
 
 			isGround = true;
+			isAnimJamping = false;
 		}
 	}
 	if (py > SCREEN_H)
@@ -342,8 +345,8 @@ void Player::CheckCollisionY()
 	{
 		int top = py / TILE_SIZE;
 
-		bool isLeftSolid = tileManager->IsSolid(left, top);
-		bool isRightSolid = tileManager->IsSolid(right, top);
+		bool isLeftSolid = tileManager->IsSolid(left, top) || tileManager->IsHidden(left, top);
+		bool isRightSolid = tileManager->IsSolid(right, top) || tileManager->IsHidden(right, top);
 
 		if (isLeftSolid || isRightSolid)
 		{
@@ -405,11 +408,11 @@ void Player::CheckCollisionY()
 
 				if (state != SMALL)
 				{
-					tileManager->HitTile(center, top, true);
+					tileManager->HitTile(center, top, false);
 				}
 				else
 				{
-					tileManager->HitTile(center, top, false);
+					tileManager->HitTile(center, top, true);
 				}
 			}
 		}
@@ -418,58 +421,19 @@ void Player::CheckCollisionY()
 
 bool Player::CheckGround()
 {
-	int px =
-		static_cast<int>(pos.x);
+	int px = static_cast<int>(pos.x);
 
-	int py =
-		static_cast<int>(pos.y);
+	int py = static_cast<int>(pos.y);
 
-	int left =
-		px / TILE_SIZE;
+	int left = px / TILE_SIZE;
 
-	int right =
-		(px + size.w - 1)
-		/ TILE_SIZE;
+	int right = (px + size.w - 1) / TILE_SIZE;
 
-	int bottom =
-		(py + size.h)
-		/ TILE_SIZE;
+	int bottom = (py + size.h) / TILE_SIZE;
 
-	return
-		tileManager->IsSolid(left, bottom) ||
-		tileManager->IsSolid(right, bottom);
+	return tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom);
 }
 
-void Player::Render(float cameraX)
-{
-	if (invincibleTimer > 0)
-	{
-		if ((invincibleTimer / 4) % 2 == 0)
-		{
-			return; // 点滅
-		}
-	}
-	int drawX = static_cast<int>(pos.x - cameraX);
-
-	int drawY = static_cast<int>(pos.y);
-
-	int color = GetColor(0, 255, 0);
-	if (state == FIRE)
-	{
-		color = GetColor(255, 100, 100);
-	}
-	else if (state == SUPER)
-	{
-		color = GetColor(0, 150, 0);
-	}
-
-	DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, color, true);
-
-	DrawFormatString(0, 5, 0xFFFFFF, "Player pos:(%.2f %.2f)", pos.x, pos.y);
-
-	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGround);
-	DrawFormatString(0, 32, 0xFFFFFF, "isCrouching:%d", isCrouching);
-}
 
 void Player::SetTileManager(TileManager* tm)
 {
@@ -702,5 +666,184 @@ void Player::Damage()
 	else
 	{
 		Death();
+	}
+}
+
+void Player::Render(float cameraX)
+{
+	if (invincibleTimer > 0)
+	{
+		if ((invincibleTimer / 4) % 2 == 0)
+		{
+			return; // 点滅
+		}
+	}
+
+	if (isGround && std::abs(speed.x) > 0.05f) {
+		animeCount += std::abs(speed.x);
+	}
+	else {
+		animeCount = 0.0f; // 停止時はリセット
+	}
+
+	switch (state)
+	{
+	case SMALL:
+		RenderSmall(cameraX);
+		break;
+	case SUPER:
+		RenderBig(cameraX);
+		break;
+	case FIRE:
+		RenderFire(cameraX);
+		break;
+	}
+
+	//DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, color, true);
+
+	DrawFormatString(0, 5, 0xFFFFFF, "Player pos:(%.2f %.2f)", pos.x, pos.y);
+
+	DrawFormatString(0, 16, 0xFFFFFF, "isGrounded:%d", isGround);
+	DrawFormatString(0, 32, 0xFFFFFF, "isCrouching:%d", isCrouching);
+}
+void Player::RenderSmall(float cameraX)
+{
+	int chipW = 16;
+	int chipH = 16;
+	int srcX = 0;
+
+	bool isBraking = false;
+
+	// 逆キーが押されている場合はブレーキアニメーション
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+		isBraking = true;
+	}
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+		isBraking = true;
+	}
+
+	if (isAnimJamping) {
+		srcX = chipW * 5; // ジャンプポーズ
+	}
+	else if (isBraking) {
+		srcX = chipW * 4; 
+	}
+	else if (std::abs(speed.x) > 0.05f) 
+	{
+		int frame = (animeCount / 6) % 3;
+		srcX = chipW + (frame * chipW); // 走りアニメーション
+	}
+	else
+	{
+		srcX = 0; // 立ちポーズ
+	}
+
+	int drawX = static_cast<int>(pos.x - cameraX);
+	int drawY = static_cast<int>(pos.y);
+
+	if (isFacingRight) {
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true);
+	}
+	else 
+	{
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true,true);
+	}
+}
+void Player::RenderBig(float cameraX)
+{
+	int chipW = 16;
+	int chipH = 32;
+	int srcX = 0;
+
+	bool isBraking = false;
+
+	// 逆キーが押されている場合はブレーキアニメーション
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+		isBraking = true;
+	}
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+		isBraking = true;
+	}
+
+	if (isAnimJamping)
+	{
+		srcX = chipW * 5; // ジャンプポーズ
+	}
+	else if (isBraking) {
+		srcX = chipW * 4;
+	}
+	else if (std::abs(speed.x) > 0.05f)
+	{
+		int frame = (animeCount / 6) % 3;
+		srcX = chipW + (frame * chipW); // 走りアニメーション
+	}
+	else
+	{
+		srcX = 0; // 立ちポーズ
+	}
+
+	int drawX = static_cast<int>(pos.x - cameraX);
+	int drawY = static_cast<int>(pos.y);
+
+	// しゃがみ時の補正
+	if (isCrouching) {
+		drawY += 8;
+	}
+
+	if (isFacingRight) {
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true);
+	}
+	else {
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true,true);
+	}
+}
+
+void Player::RenderFire(float cameraX)
+{
+	int chipW = 16;
+	int chipH = 32;
+	int srcX = 0;
+
+	bool isBraking = false;
+
+	// 逆キーが押されている場合はブレーキアニメーション
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+		isBraking = true;
+	}
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+		isBraking = true;
+	}
+
+
+	if (isAnimJamping) {
+		srcX = chipW * 5; // ジャンプポーズ
+	}
+	else if (isBraking) {
+		srcX = chipW * 4;
+	}
+	else if (std::abs(speed.x) > 0.05f)
+	{
+		int frame = (animeCount / 6) % 3;
+		srcX = chipW + (frame * chipW); // 走りアニメーション
+	}
+	else
+	{
+		srcX = 0; // 立ちポーズ
+	}
+
+	int drawX = static_cast<int>(pos.x - cameraX);
+	int drawY = static_cast<int>(pos.y);
+
+	// しゃがみ時の補正
+	if (isCrouching) {
+		drawY += 8;
+	}
+
+	if (isFacingRight) {
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true);
+	}
+	else 
+	{
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true,true);
 	}
 }

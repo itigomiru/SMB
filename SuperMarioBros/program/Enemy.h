@@ -1,10 +1,13 @@
 #pragma once
 #include "Object.h"
+#include "SceneManager.h"
 class Enemy : public Object
 {
 protected:
 	bool isGrounded;
 	int state;
+	const int OUT_OF_SCREEN_MASS = 10;
+	virtual void CheckOutOfScreen(float cameraX) {if (pos.x < cameraX - (OUT_OF_SCREEN_MASS * TILE_SIZE))isDead = true;	};
 public:
 	virtual void Update(float cameraX) override {};
 	bool canSquashed;
