@@ -36,7 +36,7 @@ private:
 	const float SUPER_H = 32.0f;
 	const float WIDTH = 16.0f;
 	const float MOVE_ACCEL = 0.05f;	//加速度
-	const float FRICTION = 0.2f;	//摩擦(キーを入れない時の減速度)
+	const float FRICTION = 0.04f;	//摩擦(キーを入れない時の減速度)
 	const float JUMP_POWER = 5.0f;
 	const int FIRE_COOLDOWN_TIME = 5;
 	const int FIREBALL_MAX = 2;
@@ -54,6 +54,8 @@ private:
 
 	bool isGround;//地面にいるかどうか
 	bool isJumping;
+	bool isAnimJamping;
+	int animeCount = 0;
 
 	Float2 prevPos;
 	int state;
@@ -92,5 +94,9 @@ private:
 	void UpdatePlayerSize();
 	bool CheckCanStand();
 	void UpdateStandPush();
+
+	void RenderSmall(float cameraX);
+	void RenderBig(float cameraX);
+	void RenderFire(float cameraX);
 };
 
