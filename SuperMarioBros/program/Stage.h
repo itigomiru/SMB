@@ -24,6 +24,7 @@ private :
 	void CameraUpdate();
 	void CheckHit();
 	void CheckHitFireballandEnemy();
+	void CheckHitShellandEnemy();
 public:
 	void Init() override;
 	void Update() override;

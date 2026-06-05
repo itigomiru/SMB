@@ -65,7 +65,7 @@ void EnemySpawner::Update(float cameraX)
             continue;
         }
 
-        // ‰æ–Ê‰E‘¤‚É‹ß‚Ã‚¢‚½‚çoŒ»
+        // ç”»é¢å³å´ã«è¿‘ã¥ã„ãŸã‚‰å‡ºç¾
         if (data.x < cameraX + SCREEN_W + 64)
         {
             std::unique_ptr<Object> enemy;

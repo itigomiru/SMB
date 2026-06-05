@@ -13,6 +13,7 @@
 #include "EnemySpawner.h"
 #include "PlayerData.h"
 #include "Enemy.h"
+#include "Object.h"
 #include "Goal.h"
 
 void Stage::Init()
@@ -192,6 +193,7 @@ void Stage::CheckHit()
 		}
 	}
 	CheckHitFireballandEnemy();
+	CheckHitShellandEnemy();
 
 }
 
@@ -219,4 +221,52 @@ void Stage::CheckHitFireballandEnemy()
             }
         }
     }
+}
+
+void Stage::CheckHitShellandEnemy()
+{
+	for (const auto& shellObj : objectManager.GetObjects())
+	{
+		if (shellObj->objectType != Object::OT_SHELL)continue;
+
+		if (objectManager.HitObjects(shellObj.get(), player))
+		{
+			Enemy* shellEnemy = static_cast<Enemy*>(shellObj.get());
+			if (player->CheckSquashEnemy(shellEnemy))
+			{
+				if (shellEnemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
+				{
+					KoopaTroopa* koopa = static_cast<KoopaTroopa*>(shellEnemy);
+					if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
+						koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+					{
+						koopa->OnKicked(player->pos.x);
+					}
+					else
+					{
+						shellEnemy->OnSquashed();
+					}
+				}
+				else
+				{
+					shellEnemy->OnSquashed();
+				}
+			}
+		}
+
+		for (const auto& enemyObj : objectManager.GetObjects())
+		{
+			if (enemyObj->objectType != Object::OT_ENEMY)continue;
+			if (enemyObj->isDead)continue;
+			if (shellObj.get() == enemyObj.get())continue;
+			if (objectManager.HitObjects(shellObj.get(), enemyObj.get()))
+			{
+				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
+
+				enemy->Death();
+				//enemyの死亡エフェクト
+				break;
+			}
+		}
+	}
 }
