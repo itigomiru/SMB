@@ -11,6 +11,7 @@ enum IMAGE_LIST {
 	//里--------------
 	IMAGE_PLAYER_SMALL_TO_BIG,
 	IMAGE_PLAYER_BIG_TO_FIRE,
+	IMAGE_PLAYER_SMALL_STAR,
 	//----------------
 	//丸山
 	IMAGE_BLOCK,

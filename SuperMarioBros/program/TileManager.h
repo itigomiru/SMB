@@ -33,7 +33,7 @@ private:
 	void AddPowerMash(Float2 pos);
 	void Add1UPMash(Float2 pos);
 	void AddFireFlower(Float2 pos);
-	void AddStar(Float2 pos, int type);
+	void AddStar(Float2 pos);
 
 public:
 	enum ItemType {

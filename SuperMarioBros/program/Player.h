@@ -18,6 +18,7 @@ public:
 	void GetSuperMashroom();
 	void GetFireFlower();
 	void Get1UpMushroom();
+	void GetStar();
 
 	bool CheckSquashEnemy(Enemy* enemy);
 	void PowerUpUpdate();
@@ -47,6 +48,7 @@ private:
 	const int INVINCIBLE_TIME = 180;
 	const int DEATH_TIME = 120;
 	const int POWER_UP_TIME = 60;
+	const int STAR_TIME = 600;
 
 	const Float2 SPEED_MAX = { 2.0f, 7.0f };
 	const float DASH_SPEED_MAX = 3.0f;
@@ -106,5 +108,6 @@ private:
 	void RenderSmall(float cameraX);
 	void RenderBig(float cameraX);
 	void RenderFire(float cameraX);
+	void RenderStar(float cameraX);
 };
 
