@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="program\CoinEffect.cpp" />
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
     <ClCompile Include="program\EnemyDefeatedEffect.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="program\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="program\CoinEffect.h" />
     <ClInclude Include="program\Effect.h" />
     <ClInclude Include="program\EffectManager.h" />
     <ClInclude Include="program\Ending.h" />

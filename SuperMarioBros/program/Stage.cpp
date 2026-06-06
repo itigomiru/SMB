@@ -100,7 +100,6 @@ bool Stage::UpdateFreeze()
 	if (player->invincibleTimer > 0)
 	{
 		player->invincibleTimer--;
-		if (player->invincibleTimer > player->INVINCIBLE_FREEZE_TIME)return true;
 	}
 
 	return false;
@@ -217,6 +216,10 @@ void Stage::CheckHit()
 					case TileManager::ITEM_FIREFLOWER:
 						player->GetFireFlower();
 						break;
+					case TileManager::ITEM_STAR:
+						player->GetStar();
+						break;
+
 					}
 				}
 			}

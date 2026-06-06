@@ -14,12 +14,14 @@ Star::Star(float tileX, float tileY, int type)
 	isDead = false;
 	renderLayer = RL_UNDER_TILE;
 	objectType = OT_ITEM;
+	itemType = type;
 
 	size = { 16, 16 };
 }
 
 void Star::Update(float cameraX)
 {
+	CheckOutOfScreen(cameraX);
 	if (state == IS_SPAWNING)
 	{
 		if (SpawnUpdate())

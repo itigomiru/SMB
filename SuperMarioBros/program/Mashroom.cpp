@@ -22,6 +22,7 @@ Mashroom::Mashroom(float tileX, float tileY,int type)
 
 void Mashroom::Update(float cameraX)
 {
+	CheckOutOfScreen(cameraX);
 	if (state == IS_SPAWNING)
 	{
 		if (SpawnUpdate())

@@ -755,6 +755,7 @@ void Player::Render(float cameraX)
 	}
 	else
 	{
+		if (starTimer / 4 % 2 == 1)SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 		// 通常時の描画
 		switch (state)
 		{
@@ -762,6 +763,7 @@ void Player::Render(float cameraX)
 		case SUPER: RenderBig(cameraX);   break;
 		case FIRE:  RenderFire(cameraX);  break;
 		}
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 }
 void Player::RenderSmall(float cameraX)

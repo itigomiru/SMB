@@ -19,6 +19,7 @@ private:
     const int ANIM_SPEED = 3;
     const int ANIM_FRAMES = 4;
 
+
     Float2 prevPos;
 
     void CheckCollisionX();

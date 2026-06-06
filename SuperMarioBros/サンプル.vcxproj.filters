@@ -85,6 +85,9 @@
     <ClCompile Include="program\Star.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="program\CoinEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="program\Star.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\CoinEffect.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
