@@ -43,7 +43,7 @@ private:
 	const int FIREBALL_MAX = 2;
 	const float DASH_JUDGE_SPEED = 1.8f;
 	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
-	const float OVERLAP_JUDGE = 4.0f;
+	const float OVERLAP_JUDGE = 6.0f;
 	const int INVINCIBLE_TIME = 120;
 	const int DEATH_TIME = 120;
 	const int POWER_UP_TIME = 60;
