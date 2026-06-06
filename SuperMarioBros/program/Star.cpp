@@ -1,6 +1,7 @@
 #include "Star.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "ImageManager.h"
 
 Star::Star(float tileX, float tileY, int type)
 {
@@ -39,6 +40,9 @@ void Star::Update(float cameraX)
 		pos.y += speed.y;
 		CheckCollisionY();
 	}
+
+	animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
+
 }
 
 void Star::Render(float cameraX)
@@ -46,7 +50,14 @@ void Star::Render(float cameraX)
 	if (spawnWait > 0)return;
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
-	DrawBox(drawX, drawY, drawX + TILE_SIZE, drawY + TILE_SIZE, GetColor(255, 255, 0), true);
+	int currentFrame = animationCounter / ANIM_SPEED;
+
+	int srcX = currentFrame * size.w;
+	int srcY = 0;
+
+	int imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ITEM_STAR);
+
+	DrawRectGraph(drawX, drawY, srcX, srcY, size.w, size.h, imgHandle, TRUE, FALSE);
 }
 void Star::CheckCollisionX()
 {
