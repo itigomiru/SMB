@@ -30,7 +30,6 @@ public:
 	int freezeTimer;
 	int deathTimer;
 	int invincibleTimer;
-	const int INVINCIBLE_FREEZE_TIME = 120;
 	int starTimer;
 
 private:
@@ -45,7 +44,7 @@ private:
 	const float DASH_JUDGE_SPEED = 1.8f;
 	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
 	const float OVERLAP_JUDGE = 4.0f;
-	const int INVINCIBLE_TIME = 180;
+	const int INVINCIBLE_TIME = 120;
 	const int DEATH_TIME = 120;
 	const int POWER_UP_TIME = 60;
 	const int STAR_TIME = 600;

@@ -14,6 +14,7 @@ private:
     const float BOUNCE_POWER = -4.0f;    // 跳ねる強さ
 
 
+
     Float2 prevPos;
 
     void CheckCollisionX();

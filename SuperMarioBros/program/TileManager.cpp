@@ -5,6 +5,8 @@
 #include "Enemy.h"
 #include "DxLib.h"
 #include "Star.h"
+#include "EffectManager.h"
+#include "CoinEffect.h"
 #include <memory>
 #include"ImageManager.h"
 void TileManager::SetTile()
@@ -183,6 +185,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 		{
 		case ITEM_COIN:
 			// コインを出す
+			EffectManager::GetInstance().AddEffect(std::make_unique<CoinEffect>(map[y][x].basePosition.x + 4, map[y][x].basePosition.y));
 			break;
 		case ITEM_POWERUP:
 			if (isPlayerSmall) AddPowerMash(map[y][x].basePosition);
@@ -196,8 +199,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			break;
 		default:
 			break;
-		default:
-			break;
+
 		}
 	}
 }

@@ -4,7 +4,7 @@
 class Enemy : public Object
 {
 protected:
-	const int OUT_OF_SCREEN_MASS = 10; // 画面外に出るまでのマス数
+	const int OUT_OF_SCREEN_MASS = 3; // 画面外に出るまでのマス数
 	virtual void CheckOutOfScreen(float cameraX) { if (pos.x < cameraX - (OUT_OF_SCREEN_MASS * TILE_SIZE))isDead = true; };
 	bool isGrounded;
 	int state;

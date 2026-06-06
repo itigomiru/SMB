@@ -20,6 +20,7 @@ FireFlower::FireFlower(float tileX, float tileY, int type)
 
 void FireFlower::Update(float cameraX)
 {
+	
 	if (state == IS_SPAWNING)
 	{
 		if (SpawnUpdate())

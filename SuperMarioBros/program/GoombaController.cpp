@@ -29,6 +29,8 @@ void Goomba::Update(float cameraX)
         return;
     }
 
+	CheckOutOfScreen(cameraX);
+
     if (goombaState == STATE_SQUASHED)
     {
         squashTimer--;
@@ -182,8 +184,6 @@ void Goomba::Render(float cameraX)
     int imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_GOOMBA);
 
     DrawRectGraph(drawX, drawY, srcX, srcY, size.w, size.h, imgHandle, TRUE, FALSE);
-
-    DrawFormatString(0, 0, 0xFFFFFF, "Goomba pos: (%.2f, %.2f)", pos.x, pos.y);
 
 
 }
