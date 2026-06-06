@@ -23,12 +23,12 @@ private:
 	const float HIT_TILE_SPEED = 1.5f;
 
 	int animationCounter = 0;    
-	const int ANIM_SPEED = 12;      
+	const int ANIM_SPEED = 10;      
 	const int ANIM_FRAMES = 3;   
 
 	bool isWait = false;
 	int animWaitCounter = 0;
-	const int ANIM_WAIT_TIME = 120;
+	const int ANIM_WAIT_TIME = 20;
 
 	void AddPowerMash(Float2 pos);
 	void Add1UPMash(Float2 pos);

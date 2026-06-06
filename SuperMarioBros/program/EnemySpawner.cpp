@@ -28,7 +28,7 @@ void EnemySpawner::SetSpawner()
 	SpawnData data6 = { GOOMBA, 1312.0f, 62.0f, false, true };
 	SpawnData data7 = { GOOMBA, 1552.0f, 190.0f, false, true };
 	SpawnData data8 = { GOOMBA, 1584.0f, 190.0f, false, true };
-	SpawnData data9 = { KOOPA_TROOPA, 1696.0f, 190.0f, false, true };
+	SpawnData data9 = { KOOPA_TROOPA, 1696.0f, 182.0f, false, true };
     SpawnData data10 = { GOOMBA, 1840.0f, 190.0f, false, true };
     SpawnData data11 = { GOOMBA, 1872.0f, 190.0f, false, true };
     SpawnData data12 = { GOOMBA, 2016.0f, 190.0f, false, true };

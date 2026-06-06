@@ -27,13 +27,19 @@ private:
 		STATE_SQUASHED,
 	};
 
-	GoombaState goombaState;
-	int squashTimer;
+	GoombaState goombaState = STATE_WALK;
+
+	int animationCounter = 0;
+	int squashTimer = 0;
+
+	const int ANIM_SPEED = 14;
+	const int ANIM_FRAMES = 2;
+	const int SQUASH_DURATION = 30;
 
 	const float HEIGHT = 16.0f;
 	const float WIDTH = 16.0f;
 
-	const Float2 VEL_MAX = { 5.0f, 10.0f };
+	const Float2 SPEED = { 0.5f, 7.0f };
 	Float2 prevPos;
 
 	TileManager* tileManager = nullptr;

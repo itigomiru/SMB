@@ -156,6 +156,7 @@
     <ClCompile Include="program\Ending.cpp" />
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
+    <ClCompile Include="program\FireballEffect.cpp" />
     <ClCompile Include="program\FireFlower.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />

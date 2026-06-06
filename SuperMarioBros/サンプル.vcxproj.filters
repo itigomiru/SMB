@@ -76,6 +76,7 @@
     <ClCompile Include="program\KoopaTroopaController.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="program\FireballEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">

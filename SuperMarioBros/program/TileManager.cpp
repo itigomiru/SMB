@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Mashroom.h"
 #include "FireFlower.h"
+#include "Enemy.h"
 #include "DxLib.h"
 #include <memory>
 #include"ImageManager.h"
@@ -121,50 +122,100 @@ bool TileManager::IsSolid(int x, int y)
 
 void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 {
+	// 範囲外チェック（安全のため）
+	if (y < 0 || y >= map.size() || x < 0 || x >= map[y].size()) return;
+
+	// 叩かれたタイルの物理的な位置をピクセル換算（引数の x, y を使用するように修正）
+	float blockLeft = x * TILE_SIZE;
+	float blockRight = (x + 1) * TILE_SIZE;
+	float blockTop = y * TILE_SIZE;
+		if (objectManager == nullptr) return;
+		auto checkAndHitEnemyAbove = [&]() {
+			if (objectManager == nullptr) return;
+		auto& objects = objectManager->GetObjects();
+
+		for (auto& obj : objects)
+		{
+			if (obj && obj->objectType == Object::OT_ENEMY)
+			{
+				Enemy* enemy = static_cast<Enemy*>(obj.get());
+
+				// エネミーの足元、左右の範囲を計算
+				float enemyBottom = enemy->pos.y + enemy->size.h;
+				float enemyLeft = enemy->pos.x;
+				float enemyRight = enemy->pos.x + enemy->size.w;
+
+				if (enemyBottom >= blockTop - 4.0f && enemyBottom <= blockTop + 2.0f)
+				{
+					if (enemyRight > blockLeft && enemyLeft < blockRight)
+					{
+						enemy->Death();
+					}
+				}
+			}
+		}
+		};
+
 	if (map[y][x].breakable && !isPlayerSmall)
 	{
+		
+		checkAndHitEnemyAbove();
+
 		map[y][x].type = TILE_EMPTY;
-		//エフェクトを出す
+		return; 
 	}
+
 	if (map[y][x].type == TILE_BLOCK || map[y][x].type == TILE_QUESTION)
 	{
 		map[y][x].speedY = -HIT_TILE_SPEED;
+
+		
+		checkAndHitEnemyAbove();
 	}
+
+	
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK)
 	{
 		map[y][x].type = TILE_HITTED_BLOCK;
+
 		switch (ItemType(map[y][x].itemType))
 		{
 		case ITEM_COIN:
-			//コインを出す
+			// コインを出す
 			break;
 		case ITEM_POWERUP:
-			if (isPlayerSmall)AddPowerMash(map[y][x].basePosition);
-			else AddFireFlower(map[y][x].basePosition);
+			if (isPlayerSmall) AddPowerMash(map[y][x].basePosition);
+			else               AddFireFlower(map[y][x].basePosition);
 			break;
 		case ITEM_1UPMASHROOM:
-			//アイテムを出す
 			Add1UPMash(map[y][x].basePosition);
 			break;
 		case ITEM_STAR:
 			AddStar(map[y][x].basePosition, map[y][x].itemType);
 			break;
+		default:
+			break;
 		}
 	}
 }
+
 void TileManager::Update()
 {
 
-	if (animationCounter == 0 && isWait)
+	if (animWaitCounter > 0)
 	{
-		animWaitCounter = ANIM_WAIT_TIME;
-		isWait = true;
+		animWaitCounter--;
 	}
-	if(animWaitCounter > 0) animWaitCounter--;
-	if (animWaitCounter == 0)
+	else
 	{
-		isWait = false;
+		int prevFrame = animationCounter / ANIM_SPEED; 
 		animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
+		int nextFrame = animationCounter / ANIM_SPEED; 
+
+		if (prevFrame != 0 && nextFrame == 0)
+		{
+			animWaitCounter = ANIM_WAIT_TIME; 
+		}
 	}
 	for (int y = 0; y < map.size(); y++)
 	{

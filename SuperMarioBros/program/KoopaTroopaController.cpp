@@ -1,14 +1,15 @@
 #include "KoopaTroopaController.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "ImageManager.h"
 #include "Main.h"
 
 KoopaTroopa::KoopaTroopa()
 {
-    pos = { 100.0f, 200.0f };
+    pos = { 100.0f, 190.0f };
     prevPos = pos;
     objectType = OT_ENEMY;
-    speed = { -1.0f, 0.0f };
+    speed = { -SPEED.x, 0.0f };
     size = { WIDTH, HEIGHT };
 
     renderLayer = RL_ENEMY;
@@ -17,7 +18,7 @@ KoopaTroopa::KoopaTroopa()
     state = 0;
     canSquashed = true;
     canDamage = true;
-    KoopaTroopaState = STATE_WALK;
+    koopaTroopaState = STATE_WALK;
     wakeUpTimer = 0;
 	shakeOffset = { 0.0f, 0.0f };
 }
@@ -30,31 +31,34 @@ void KoopaTroopa::Update(float cameraX)
     }
     CheckOutOfScreen(cameraX);
 
-    if (KoopaTroopaState == STATE_SHELL_STOP || KoopaTroopaState == STATE_SHELL_WAKEUP)
+    if (koopaTroopaState == STATE_SHELL_STOP || koopaTroopaState == STATE_SHELL_WAKEUP)
     {
         wakeUpTimer--;
         canDamage = false;
-
         shakeOffset = { 0.0f, 0.0f };
 
         if (wakeUpTimer <= 0)
         {
-            KoopaTroopaState = STATE_WALK;
+            koopaTroopaState = STATE_WALK;
             canSquashed = true;
             canDamage = true;
-            speed.x = -1.0f; 
+            speed.x = -SPEED.x;
+			wakeUpTimer = 0;
+
+			size.h = HEIGHT;
+			pos.y -= (HEIGHT - SHELL_HEIGHT);
         }
         else if (wakeUpTimer <= SHELL_START_TIME)
         {
-			KoopaTroopaState = STATE_SHELL_WAKEUP;
+			koopaTroopaState = STATE_SHELL_WAKEUP;
 
-            if (wakeUpTimer % 2 == 0) shakeOffset.x;
-			else shakeOffset.x = -1.0f;
+            if (wakeUpTimer % 2 == 0) shakeOffset.x = 1.0f;
+			else                      shakeOffset.x = -1.0f;
         }
         return;
     }
 
-    if (KoopaTroopaState == STATE_SHELL_ROLL)
+    if (koopaTroopaState == STATE_SHELL_ROLL)
     {
         canDamage = true;
     }
@@ -78,29 +82,32 @@ void KoopaTroopa::Move()
 
 void KoopaTroopa::OnSquashed()
 {
-    if (KoopaTroopaState == STATE_WALK)
+    if (koopaTroopaState == STATE_WALK)
     {
-        KoopaTroopaState = STATE_SHELL_STOP;
+        koopaTroopaState = STATE_SHELL_STOP;
         wakeUpTimer = WAKEUP_TIME;
         speed = { 0.0f, 0.0f };
+        size.h = SHELL_HEIGHT;
+		pos.y += (HEIGHT - SHELL_HEIGHT); 
     }
-    else if (KoopaTroopaState == STATE_SHELL_STOP || KoopaTroopaState == STATE_SHELL_WAKEUP)
+    else if (koopaTroopaState == STATE_SHELL_STOP || koopaTroopaState == STATE_SHELL_WAKEUP)
     {
-        KoopaTroopaState = STATE_SHELL_ROLL;
+        koopaTroopaState = STATE_SHELL_ROLL;
 		canSquashed = true;
     }
-    else if (KoopaTroopaState == STATE_SHELL_ROLL)
+    else if (koopaTroopaState == STATE_SHELL_ROLL)
     {
-        KoopaTroopaState = STATE_SHELL_STOP;
+        koopaTroopaState = STATE_SHELL_STOP;
 		objectType = OT_ENEMY;
 		wakeUpTimer = WAKEUP_TIME;
         speed = { 0.0f, 0.0f };
+		size.h = SHELL_HEIGHT;
     }
 }
 
 void KoopaTroopa::OnKicked(float marioX)
 {
-	KoopaTroopaState = STATE_SHELL_ROLL;
+	koopaTroopaState = STATE_SHELL_ROLL;
 	objectType = OT_SHELL;
     canSquashed = true;
 
@@ -121,9 +128,9 @@ void KoopaTroopa::ApplyGravity()
     {
         speed.y += SceneManager::GetInstance().GRAVITY;
 
-        if (speed.y > VEL_MAX.y)
+        if (speed.y > SPEED.y)
         {
-            speed.y = VEL_MAX.y;
+            speed.y = SPEED.y;
         }
     }
     else
@@ -202,6 +209,7 @@ bool KoopaTroopa::CheckGround()
     return tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom);
 }
 
+// 描画関数
 void KoopaTroopa::Render(float cameraX)
 {
     int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
@@ -209,15 +217,37 @@ void KoopaTroopa::Render(float cameraX)
 
     int shakeDrawX = drawX + static_cast<int>(shakeOffset.x);
 
+    int srcX = 0;
+    int srcY = 0;
+
 	int color = GetColor(255, 255, 255); 
-    switch (KoopaTroopaState)
+    switch (koopaTroopaState)
     {       
-        case STATE_WALK:         color = GetColor(0, 0, 128);   break; 
-        case STATE_SHELL_STOP:   color = GetColor(255, 255, 0); break; 
-        case STATE_SHELL_ROLL:   color = GetColor(255, 128, 0); break; 
-        case STATE_SHELL_WAKEUP: color = GetColor(255, 0, 0);   break; 
+    case STATE_WALK:
+        {
+            int walkFrame = (GetNowCount() / 150) % 2;
+            srcX = walkFrame * static_cast<int>(WIDTH);
+			srcY = 0;
+        }
+        break;
+
+    case STATE_SHELL_STOP:
+    case STATE_SHELL_ROLL:   
+            srcX = 2 * static_cast<int>(WIDTH);
+			srcY = HEIGHT - SHELL_HEIGHT;
+            break;
+
+    case STATE_SHELL_WAKEUP:
+    {
+        int wakeFrame = (wakeUpTimer / 4) % 2;
+        srcX = (2 + wakeFrame) * static_cast<int>(WIDTH);
+		srcY = HEIGHT - SHELL_HEIGHT;
     }
-    DrawBox(shakeDrawX, drawY, shakeDrawX + size.w, drawY + size.h, color, true);
+            break;
+    }
+    int imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_KOOPATROOPA);
+
+	DrawRectGraph(shakeDrawX, drawY, srcX, srcY, static_cast<int>(WIDTH), static_cast<int>(size.h), imgHandle, TRUE, (speed.x > 0.0f));
 
 }
 

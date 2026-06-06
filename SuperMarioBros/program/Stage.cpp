@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Stage.h"
 #include "Float2.h"
-#include "Hit.h"
+#include "Fireball.h"
 #include "ObjectManager.h"
 #include "Player.h"
 #include"ImageManager.h"
@@ -37,10 +37,11 @@ void Stage::Update()
 {
 	if (UpdateFreeze())return;
 	CameraUpdate();
-	
+
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
 	tileManager.Update();
+	EffectManager::GetInstance().Update();
 
 	CheckHit();
 
@@ -60,7 +61,7 @@ void Stage::Render()
 	objectManager.Render(Object::RL_PLAYER, cameraX);
 	objectManager.Render(Object::RL_ITEM, cameraX);
 	objectManager.Render(Object::RL_CASTLE, cameraX);
-	objectManager.Render(Object::RL_EFFECT, cameraX);
+	EffectManager::GetInstance().Render(cameraX);
 }
 Stage::~Stage()
 {
@@ -142,17 +143,25 @@ void Stage::CheckHit()
 			{
 				if (objectManager.HitObjects(player, enemy))
 				{
-
-					// 踏んだかどうか
-					if (player->CheckSquashEnemy(enemy))
+					if (player->starTimer <= 0)
 					{
-						if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
+
+
+						// 踏んだかどうか
+						if (player->CheckSquashEnemy(enemy))
 						{
-							KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
-							if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-								koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
 							{
-								koopa->OnKicked(player->pos.x);
+								KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
+								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
+									koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								{
+									koopa->OnKicked(player->pos.x);
+								}
+								else
+								{
+									enemy->OnSquashed();
+								}
 							}
 							else
 							{
@@ -161,28 +170,24 @@ void Stage::CheckHit()
 						}
 						else
 						{
-							enemy->OnSquashed();
-						}
-					}
-					else
-					{
-						if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
-						{
-							KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
-
-							if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-								koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
 							{
-								koopatroopa->OnKicked(player->pos.x);
+								KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
+
+								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
+									koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								{
+									koopatroopa->OnKicked(player->pos.x);
+								}
+								else
+								{
+									if (enemy->canDamage) player->Damage();
+								}
 							}
 							else
 							{
 								if (enemy->canDamage) player->Damage();
 							}
-						}
-						else
-						{
-							if (enemy->canDamage) player->Damage();
 						}
 					}
 				}
@@ -197,6 +202,7 @@ void Stage::CheckHit()
 			{
 				if (objectManager.HitObjects(player, item))
 				{
+					item->isDead = true; // アイテムを消す
 					switch (item->itemType)
 					{
 					case TileManager::ITEM_SUPERMASHROOM:
@@ -209,7 +215,6 @@ void Stage::CheckHit()
 						player->GetFireFlower();
 						break;
 					}
-					item->isDead = true; // アイテムを消す
 				}
 			}
 		}
@@ -221,38 +226,39 @@ void Stage::CheckHit()
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_CLEAR);
 			}
 		}
-		CheckHitFireballandEnemy();
-		CheckHitShellandEnemy();
+		CheckHitFireballAndEnemy();
+		CheckHitShellAndEnemy();
+		CheckHitEnemyAndEnemy();
 	}
 }
 
-void Stage::CheckHitFireballandEnemy()
+void Stage::CheckHitFireballAndEnemy()
 {
-    for (const auto& fireObj : objectManager.GetObjects())
-    {
-        if (fireObj->objectType != Object::OT_FIREBALL)continue;
+	for (const auto& fireObj : objectManager.GetObjects())
+	{
+		if (fireObj->objectType != Object::OT_FIREBALL)continue;
+		Fireball* fireball = static_cast<Fireball*>(fireObj.get());
 
-        for (const auto& enemyObj : objectManager.GetObjects())
-        {
-            if (enemyObj->objectType != Object::OT_ENEMY)continue;
+		for (const auto& enemyObj : objectManager.GetObjects())
+		{
+			if (enemyObj->objectType != Object::OT_ENEMY)continue;
 
-            if (enemyObj->isDead)continue;
+			if (enemyObj->isDead)continue;
 
-            if (objectManager.HitObjects(fireObj.get(),enemyObj.get()))
-            {
-                Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
+			if (objectManager.HitObjects(fireObj.get(), enemyObj.get()))
+			{
+				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
 				enemy->Death();
 				//enemyの死亡エフェクト
-                fireObj->isDead = true;
-				//fireballの消滅エフェクト
-                break;
-            }
-        }
-    }
+				fireball->DeathAndEffect();
+				break;
+			}
+		}
+	}
 }
 
-void Stage::CheckHitShellandEnemy()
+void Stage::CheckHitShellAndEnemy()
 {
 	for (const auto& shellObj : objectManager.GetObjects())
 	{
@@ -295,6 +301,53 @@ void Stage::CheckHitShellandEnemy()
 				enemy->Death();
 				//enemyの死亡エフェクト
 				break;
+			}
+		}
+	}
+}
+void Stage::CheckHitEnemyAndEnemy()
+{
+	auto& objects = objectManager.GetObjects();
+
+	// 敵同士の総当たり判定 (二重ループ)
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (objects[i]->objectType != Object::OT_ENEMY || objects[i]->isDead) continue;
+
+		for (size_t j = i + 1; j < objects.size(); j++)
+		{
+			if (objects[j]->objectType != Object::OT_ENEMY || objects[j]->isDead) continue;
+
+			// 同じオブジェクト同士でなければ判定
+			if (objectManager.HitObjects(objects[i].get(), objects[j].get()))
+			{
+				Enemy* enemyA = static_cast<Enemy*>(objects[i].get());
+				Enemy* enemyB = static_cast<Enemy*>(objects[j].get());
+
+				if (enemyA->GetEnemyType() == Enemy::ET_KOOPATROOPA) {
+					KoopaTroopa* kA = static_cast<KoopaTroopa*>(enemyA);
+					if (kA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
+				}
+				if (enemyB->GetEnemyType() == Enemy::ET_KOOPATROOPA) {
+					KoopaTroopa* kB = static_cast<KoopaTroopa*>(enemyB);
+					if (kB->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
+				}
+
+				// 反転
+				enemyA->speed.x = -enemyA->speed.x;
+				enemyB->speed.x = -enemyB->speed.x;
+
+				// めり込み防止
+				if (enemyA->pos.x < enemyB->pos.x)
+				{
+					enemyA->pos.x -= 1.0f;
+					enemyB->pos.x += 1.0f;
+				}
+				else
+				{
+					enemyA->pos.x += 1.0f;
+					enemyB->pos.x -= 1.0f;
+				}
 			}
 		}
 	}

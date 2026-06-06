@@ -1,6 +1,7 @@
 #include "GoombaController.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "ImageManager.h"
 #include "Main.h"
 
 Goomba::Goomba()
@@ -8,7 +9,7 @@ Goomba::Goomba()
 	pos = { 100.0f, 200.0f };
 	prevPos = pos;
 	objectType = OT_ENEMY;
-	speed = { -1, 0.0f };
+	speed = { -SPEED.x, 0.0f };
 	size = { WIDTH, HEIGHT };
 
 	renderLayer = RL_ENEMY;
@@ -46,6 +47,8 @@ void Goomba::Update(float cameraX)
 	CheckCollisionX();
 	CheckCollisionY();
 
+    animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
+
 }
 
 void Goomba::Move()
@@ -73,9 +76,9 @@ void Goomba::ApplyGravity()
     {
         speed.y += SceneManager::GetInstance().GRAVITY;
 
-        if (speed.y > VEL_MAX.y)
+        if (speed.y > SPEED.y)
         {
-            speed.y = VEL_MAX.y;
+            speed.y = SPEED.y;
         }
     }
     else
@@ -156,19 +159,30 @@ bool Goomba::CheckGround()
 
 void Goomba::Render(float cameraX)
 {
+    if (isDead) return;
+
     int drawX = (static_cast<int>(pos.x) - static_cast<int>(cameraX));
     int drawY = static_cast<int>(pos.y);
+
+    int srcX = 0;
+    int srcY = 0;
 
 	switch(goombaState)
 		{
 			case STATE_SQUASHED:
-				DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(255, 255, 0), true);
+                srcX = 2 * size.w;
 			break;
 			
 			default:
-				DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 0, 255), true);
+                int currentFrame = animationCounter / ANIM_SPEED;
+                srcX = currentFrame * size.w;
 			break;
 		}
+
+    int imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_GOOMBA);
+
+    DrawRectGraph(drawX, drawY, srcX, srcY, size.w, size.h, imgHandle, TRUE, FALSE);
+
     DrawFormatString(0, 0, 0xFFFFFF, "Goomba pos: (%.2f, %.2f)", pos.x, pos.y);
 
 

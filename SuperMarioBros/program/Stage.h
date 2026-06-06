@@ -23,8 +23,9 @@ private :
 	bool UpdateFreeze();
 	void CameraUpdate();
 	void CheckHit();
-	void CheckHitFireballandEnemy();
-	void CheckHitShellandEnemy();
+	void CheckHitFireballAndEnemy();
+	void CheckHitShellAndEnemy();
+	void CheckHitEnemyAndEnemy();
 public:
 	void Init() override;
 	void Update() override;
