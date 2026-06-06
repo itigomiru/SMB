@@ -1,26 +1,23 @@
-#include "Mashroom.h"
+#include "Star.h"
 #include "DxLib.h"
 #include "SceneManager.h"
-#include "ImageManager.h"
 
-Mashroom::Mashroom(float tileX, float tileY,int type)
+Star::Star(float tileX, float tileY, int type)
 {
 	pos = { tileX, tileY };
 	spawnWait = SPAWN_WAIT_TIME;
 	spawnPos = pos;
 	state = IS_SPAWNING;
-	speed.x = 1.0f;
+	speed.x = MOVE_SPEED;
 	speed.y = 0.0f;
 	isDead = false;
 	renderLayer = RL_UNDER_TILE;
 	objectType = OT_ITEM;
-	itemType = type;
-	if (itemType == TileManager::ITEM_SUPERMASHROOM)mashType = MT_SUPER;
-	if (itemType == TileManager::ITEM_1UPMASHROOM)mashType = MT_1UP;
+
 	size = { 16, 16 };
 }
 
-void Mashroom::Update(float cameraX)
+void Star::Update(float cameraX)
 {
 	if (state == IS_SPAWNING)
 	{
@@ -32,7 +29,7 @@ void Mashroom::Update(float cameraX)
 	}
 	else if (state == IS_MOVING)
 	{
-		speed.y += SceneManager::GetInstance().GRAVITY;
+		speed.y += SceneManager::GetInstance().GRAVITY / 2.0f;
 
 		pos.x += speed.x;
 		CheckCollisionX();
@@ -41,15 +38,15 @@ void Mashroom::Update(float cameraX)
 		CheckCollisionY();
 	}
 }
-void Mashroom::Render(float cameraX)
+
+void Star::Render(float cameraX)
 {
 	if (spawnWait > 0)return;
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
-	if (mashType == MT_SUPER)DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_ITEM_SUPERMASHROOM), true);
-	if (mashType == MT_1UP)DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_ITEM_1UPMASHROOM), true);
+	DrawBox(drawX, drawY, drawX + TILE_SIZE, drawY + TILE_SIZE, GetColor(255, 255, 0), true);
 }
-void Mashroom::CheckCollisionX()
+void Star::CheckCollisionX()
 {
 	int px = static_cast<int>(pos.x);
 
@@ -92,20 +89,12 @@ void Mashroom::CheckCollisionX()
 }
 
 
-void Mashroom::CheckCollisionY()
+void Star::CheckCollisionY()
 {
 	int px = static_cast<int>(pos.x);
-
 	int py = static_cast<int>(pos.y);
-
 	int left = px / TILE_SIZE;
-
 	int right = (px + size.w - 1) / TILE_SIZE;
-
-	//=========================================================
-	// 下方向
-	//=========================================================
-
 	if (speed.y > 0.0f)
 	{
 		int bottom =
@@ -118,7 +107,7 @@ void Mashroom::CheckCollisionY()
 				static_cast<float>(
 					bottom * TILE_SIZE - size.h);
 
-			speed.y = 0.0f;
+			speed.y = -3.5f;
 
 		}
 	}

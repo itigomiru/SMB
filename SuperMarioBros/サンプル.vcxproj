@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="program\EffectManager.cpp" />
     <ClCompile Include="program\Ending.cpp" />
+    <ClCompile Include="program\EnemyDefeatedEffect.cpp" />
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
     <ClCompile Include="program\FireballEffect.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="program\SoundManager.cpp" />
     <ClCompile Include="program\Stage.cpp" />
     <ClCompile Include="program\Mashroom.cpp" />
+    <ClCompile Include="program\Star.cpp" />
     <ClCompile Include="program\TileManager.cpp" />
     <ClCompile Include="program\Title.cpp" />
   </ItemGroup>
@@ -184,8 +186,10 @@
     <ClInclude Include="program\EffectManager.h" />
     <ClInclude Include="program\Ending.h" />
     <ClInclude Include="program\Enemy.h" />
+    <ClInclude Include="program\EnemyDefeatedEffect.h" />
     <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Fireball.h" />
+    <ClInclude Include="program\FireballEffect.h" />
     <ClInclude Include="program\FireFlower.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
@@ -207,6 +211,7 @@
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
     <ClInclude Include="program\Mashroom.h" />
+    <ClInclude Include="program\Star.h" />
     <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
   </ItemGroup>

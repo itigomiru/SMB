@@ -4,6 +4,7 @@
 #include "FireFlower.h"
 #include "Enemy.h"
 #include "DxLib.h"
+#include "Star.h"
 #include <memory>
 #include"ImageManager.h"
 void TileManager::SetTile()
@@ -174,7 +175,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 	}
 
 	
-	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK)
+	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK || (map[y][x].type == TILE_BLOCK && !map[y][x].breakable))
 	{
 		map[y][x].type = TILE_HITTED_BLOCK;
 
@@ -191,7 +192,9 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			Add1UPMash(map[y][x].basePosition);
 			break;
 		case ITEM_STAR:
-			AddStar(map[y][x].basePosition, map[y][x].itemType);
+			AddStar(map[y][x].basePosition);
+			break;
+		default:
 			break;
 		default:
 			break;
@@ -257,12 +260,12 @@ void TileManager::AddFireFlower(Float2 pos)
 	flower->SetTileManager(this);
 	objectManager->AddObject(std::move(flower));
 }
-void TileManager::AddStar(Float2 pos, int type)
-{
+void TileManager::AddStar(Float2 pos)
+ {
 	//starを出す
-	//auto star = std::make_unique<Star>(pos.x, pos.y, type);
-	//star->SetTileManager(this);
-	//objectManager->AddObject(std::move(star));
+	auto star = std::make_unique<Star>(pos.x, pos.y, ITEM_STAR);
+	star->SetTileManager(this);
+	objectManager->AddObject(std::move(star));
 }
 
 bool TileManager::IsHidden(int x, int y) {

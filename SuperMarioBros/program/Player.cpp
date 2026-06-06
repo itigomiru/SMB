@@ -56,6 +56,10 @@ void Player::Update(float cameraX)
 		PowerUpUpdate(); 
 		return;          
 	}
+	if (starTimer > 0)
+	{
+		starTimer--;
+	}
 
 	isGround = CheckGround();
 	if (isGround)isAnimJamping = false;
@@ -64,6 +68,7 @@ void Player::Update(float cameraX)
 	// デバッグ用キー
 	if (PushHitKey(KEY_INPUT_0)) { GetSuperMashroom(); }
 	if (PushHitKey(KEY_INPUT_9)) { GetFireFlower(); }
+	if (PushHitKey(KEY_INPUT_8)) { GetStar(); }
 #endif
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
@@ -481,6 +486,10 @@ void Player::GetFireFlower()
 		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
 	}
+}
+void Player::GetStar()
+{
+	starTimer = STAR_TIME;
 }
 
 void Player::UpdatePlayerSize()
@@ -901,4 +910,9 @@ void Player::RenderFire(float cameraX)
 	{
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true,true);
 	}
+}
+void Player::RenderStar(float cameraX)
+{
+		int chipW = 16;
+
 }

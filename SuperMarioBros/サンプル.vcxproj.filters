@@ -28,9 +28,6 @@
     <ClCompile Include="program\ImageManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="program\EffectManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="program\SoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -76,7 +73,18 @@
     <ClCompile Include="program\KoopaTroopaController.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="program\FireballEffect.cpp" />
+    <ClCompile Include="program\EffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\FireballEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\EnemyDefeatedEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Star.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -107,12 +115,6 @@
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="program\ImageManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="program\Effect.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="program\EffectManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="program\SoundManager.h">
@@ -166,6 +168,21 @@
     <ClInclude Include="program\KoopaTroopaController.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="program\Effect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\FireballEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EnemyDefeatedEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Star.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="System">
@@ -191,6 +208,9 @@
     </Filter>
     <Filter Include="Object\Item">
       <UniqueIdentifier>{468a5101-2b8e-485c-84b9-c451fb2a0da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{ab4a5596-b2a7-45fb-a0c1-91fc7c715e5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
