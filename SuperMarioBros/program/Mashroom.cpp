@@ -1,6 +1,7 @@
 #include "Mashroom.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "ImageManager.h"
 
 Mashroom::Mashroom(float tileX, float tileY,int type)
 {
@@ -45,8 +46,8 @@ void Mashroom::Render(float cameraX)
 	if (spawnWait > 0)return;
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
-	if(mashType == MT_SUPER)DrawBox(drawX, drawY, drawX + TILE_SIZE, drawY + TILE_SIZE, GetColor(255, 0, 128), true);
-	if(mashType == MT_1UP)DrawBox(drawX, drawY, drawX + TILE_SIZE, drawY + TILE_SIZE, GetColor(100, 255, 100), true);
+	if (mashType == MT_SUPER)DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_ITEM_SUPERMASHROOM), true);
+	if (mashType == MT_1UP)DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_ITEM_1UPMASHROOM), true);
 }
 void Mashroom::CheckCollisionX()
 {

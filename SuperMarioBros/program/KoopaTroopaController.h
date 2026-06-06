@@ -21,7 +21,7 @@ public:
 	void Move() override;
 	void ApplyGravity() override;
 
-	KoopaTroopaState GetState() const { return KoopaTroopaState; }
+	KoopaTroopaState GetState() const { return koopaTroopaState; }
 	int GetEnemyType() const override { return Enemy::ET_KOOPATROOPA; }
 
 	void SetPosition(float x, float y);
@@ -32,18 +32,24 @@ public:
 	void Death() override;
 private:
 	
-	KoopaTroopaState KoopaTroopaState;
+	KoopaTroopaState koopaTroopaState;
 	int wakeUpTimer;
 
 	const int WAKEUP_TIME = 480; 
 	const int SHELL_START_TIME = 80;
 
+	int animationCounter = 0;
+	const int ANIM_SPEED_WALK = 14;
+	const int ANIM_SPEED_WAKE = 12; 
+	const int WALK_FRAMES = 2;
+
 	Float2 shakeOffset;
 
 	const float SHELL_SPEED = 4.0f;
 
-	const float HEIGHT = 16.0f;
+	const float HEIGHT = 24.0f;
 	const float WIDTH = 16.0f;
+	const float SHELL_HEIGHT = 16.0f;
 
 	const Float2 SPEED = { 0.5f, 7.0f };
 	Float2 prevPos;

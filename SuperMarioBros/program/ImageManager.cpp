@@ -36,6 +36,15 @@ ImageManager::ImageManager()
 	images[IMAGE_PIPE_LEFT_BOTTOM] = LoadGraph("data/image/image_pipe_left_bottom.png");
 	images[IMAGE_PIPE_RIGHT_BOTTOM] = LoadGraph("data/image/image_pipe_right_bottom.png");
 
+	//------------------
+	//川野
+	images[IMAGE_ITEM_SUPERMASHROOM] = LoadGraph("data/image/image_supermashroom.png");
+	images[IMAGE_ITEM_1UPMASHROOM] = LoadGraph("data/image/image_1upmashroom.png");
+	images[IMAGE_ITEM_FIREFLOWER] = LoadGraph("data/image/image_fireflower.png");
+	images[IMAGE_ITEM_STAR] = LoadGraph("data/image/image_star.png");
+	images[IMAGE_COIN] = LoadGraph("data/image/image_coin.png");
+	images[IMAGE_ENEMY_GOOMBA] = LoadGraph("data/image/image_goomba.png");
+	images[IMAGE_ENEMY_KOOPATROOPA] = LoadGraph("data/image/image_koopatroopa.png");
 
 
 	//--------------------------------------------------------------
