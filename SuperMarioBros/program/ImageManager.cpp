@@ -23,6 +23,7 @@ ImageManager::ImageManager()
 	//里----------------
 	images[IMAGE_PLAYER_SMALL_TO_BIG] = LoadGraph("data/image/image_player_small_to_big.png");
 	images[IMAGE_PLAYER_BIG_TO_FIRE] = LoadGraph("data/image/image_player_big_to_fire.png");
+	images[IMAGE_BLOCK_BREAK] = LoadGraph("data/image/image_block_break.png");
 	
 	//------------------
 	//丸山

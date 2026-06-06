@@ -88,6 +88,9 @@
     <ClCompile Include="program\CoinEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="program\BlockBreakEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -187,6 +190,9 @@
       <Filter>Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="program\CoinEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\BlockBreakEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
