@@ -166,11 +166,37 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			}
 		}
 		};
+	auto checkAndHitMashAbove = [&]() {
+		if (objectManager == nullptr) return;
+		auto& objects = objectManager->GetObjects();
+
+		for (auto& obj : objects)
+		{
+			if (obj && obj->objectType == Object::OT_ITEM)
+			{
+				Item* mash = static_cast<Item*>(obj.get());
+
+				// エネミーの足元、左右の範囲を計算
+				float enemyBottom = mash->pos.y + mash->size.h;
+				float enemyLeft = mash->pos.x;
+				float enemyRight = mash->pos.x + mash->size.w;
+
+				if (enemyBottom >= blockTop - 4.0f && enemyBottom <= blockTop + 2.0f)
+				{
+					if (enemyRight > blockLeft && enemyLeft < blockRight)
+					{
+						mash->speed.y -= HIT_ITEM_HOP_SPEED;
+					}
+				}
+			}
+		}
+		};
 
 	if (map[y][x].breakable && !isPlayerSmall)
 	{
 
 		checkAndHitEnemyAbove();
+		checkAndHitMashAbove();
 		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x, map[y][x].basePosition.y));
 
 		map[y][x].type = TILE_EMPTY;
@@ -183,6 +209,8 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 
 
 		checkAndHitEnemyAbove();
+		checkAndHitMashAbove();
+
 	}
 
 

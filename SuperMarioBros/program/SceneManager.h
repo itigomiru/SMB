@@ -7,7 +7,7 @@
 #define SCREEN_W	256
 #define SCREEN_H	240
 
-	constexpr int TILE_SIZE = 16;
+constexpr int TILE_SIZE = 16;
 class SceneManager
 {
 public:
