@@ -196,8 +196,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			break;
 		default:
 			break;
-		default:
-			break;
+		
 		}
 	}
 }
