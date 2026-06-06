@@ -21,6 +21,7 @@ private:
 	int currentStage;
 	ObjectManager* objectManager;
 	const float HIT_TILE_SPEED = 1.5f;
+	const float HIT_ITEM_HOP_SPEED = 5.0f;
 
 	int animationCounter = 0;    
 	const int ANIM_SPEED = 10;      
