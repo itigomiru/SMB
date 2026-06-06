@@ -7,6 +7,7 @@
 #include "Star.h"
 #include "EffectManager.h"
 #include "CoinEffect.h"
+#include "blockBreakEffect.h"
 #include <memory>
 #include"ImageManager.h"
 void TileManager::SetTile()
@@ -35,6 +36,10 @@ void TileManager::SetTile()
 	for (int y = 0; y < map1.size(); y++)
 	{
 		map[y].resize(map1[y].size());
+	}
+#include "ItemData.inc"
+	for (int y = 0; y < map1.size(); y++)
+	{
 
 		for (int x = 0; x < map1[y].size(); x++)
 		{
@@ -51,10 +56,13 @@ void TileManager::SetTile()
 			if (map[y][x].type == TILE_BLOCK)
 			{
 				map[y][x].breakable = true;
+				if (ItemType(map[y][x].itemType) != ITEM_NONE)
+				{
+					map[y][x].breakable = false;
+				}
 			}
 		}
 	}
-#include "ItemData.inc"
 }
 
 
@@ -132,9 +140,9 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 	float blockLeft = x * TILE_SIZE;
 	float blockRight = (x + 1) * TILE_SIZE;
 	float blockTop = y * TILE_SIZE;
+	if (objectManager == nullptr) return;
+	auto checkAndHitEnemyAbove = [&]() {
 		if (objectManager == nullptr) return;
-		auto checkAndHitEnemyAbove = [&]() {
-			if (objectManager == nullptr) return;
 		auto& objects = objectManager->GetObjects();
 
 		for (auto& obj : objects)
@@ -161,22 +169,23 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 
 	if (map[y][x].breakable && !isPlayerSmall)
 	{
-		
+
 		checkAndHitEnemyAbove();
+		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x, map[y][x].basePosition.y));
 
 		map[y][x].type = TILE_EMPTY;
-		return; 
+		return;
 	}
 
 	if (map[y][x].type == TILE_BLOCK || map[y][x].type == TILE_QUESTION)
 	{
 		map[y][x].speedY = -HIT_TILE_SPEED;
 
-		
+
 		checkAndHitEnemyAbove();
 	}
 
-	
+
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK || (map[y][x].type == TILE_BLOCK && !map[y][x].breakable))
 	{
 		map[y][x].type = TILE_HITTED_BLOCK;
@@ -199,7 +208,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			break;
 		default:
 			break;
-		
+
 		}
 	}
 }
@@ -213,13 +222,13 @@ void TileManager::Update()
 	}
 	else
 	{
-		int prevFrame = animationCounter / ANIM_SPEED; 
+		int prevFrame = animationCounter / ANIM_SPEED;
 		animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
-		int nextFrame = animationCounter / ANIM_SPEED; 
+		int nextFrame = animationCounter / ANIM_SPEED;
 
 		if (prevFrame != 0 && nextFrame == 0)
 		{
-			animWaitCounter = ANIM_WAIT_TIME; 
+			animWaitCounter = ANIM_WAIT_TIME;
 		}
 	}
 	for (int y = 0; y < map.size(); y++)
@@ -263,7 +272,7 @@ void TileManager::AddFireFlower(Float2 pos)
 	objectManager->AddObject(std::move(flower));
 }
 void TileManager::AddStar(Float2 pos)
- {
+{
 	//starを出す
 	auto star = std::make_unique<Star>(pos.x, pos.y, ITEM_STAR);
 	star->SetTileManager(this);

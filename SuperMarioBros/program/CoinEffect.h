@@ -1,5 +1,6 @@
 #pragma once
 #include "Effect.h"
+#include "SceneManager.h"
 
 class CoinEffect : public Effect {
 private:
@@ -11,7 +12,7 @@ private:
 
 public:
     CoinEffect(float x, float y) : Effect(x, y) {
-        startY = y;
+        startY = y - TILE_SIZE;
         timer = 0;
         speedY = -8.0f; // 最初に上に跳ね上がる初速
     }
