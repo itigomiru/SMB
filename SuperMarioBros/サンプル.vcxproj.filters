@@ -82,6 +82,9 @@
     <ClCompile Include="program\EnemyDefeatedEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="program\Star.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="program\EnemyDefeatedEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Star.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

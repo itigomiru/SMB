@@ -143,9 +143,12 @@ void Stage::CheckHit()
 			{
 				if (objectManager.HitObjects(player, enemy))
 				{
-					if (player->starTimer <= 0)
+					if (player->starTimer > 0)
 					{
-
+						enemy->Death();
+					}
+					else
+					{
 
 						// 踏んだかどうか
 						if (player->CheckSquashEnemy(enemy))
