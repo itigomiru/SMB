@@ -28,6 +28,7 @@ private:
 		BOWSER,
 
 	};
+	const int ENEMY_SPAWN_OFFSET = 16 * 5 ; 
 public:
 	EnemySpawner();
 	void SetTileManager(TileManager* tm);
