@@ -232,5 +232,8 @@
     <None Include="program\ItemData.inc">
       <Filter>Include</Filter>
     </None>
+    <None Include="program\StageData.inc">
+      <Filter>Include</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -222,6 +222,7 @@
   <ItemGroup>
     <None Include="program\ItemData.inc" />
     <None Include="program\SpawnData.inc" />
+    <None Include="program\StageData.inc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
