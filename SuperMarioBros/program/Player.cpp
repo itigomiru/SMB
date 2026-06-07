@@ -43,6 +43,9 @@ void Player::Init()
 	fireballCount = 0;
 	fireCooldown = 0;
 	firePoseTimer = 0;
+	isFallenDeath = false;
+	deathSpeedY = 0.0f;
+	firePoseTimer = 0;
 }
 
 
@@ -338,6 +341,7 @@ void Player::CheckCollisionY()
 	}
 	if (py > SCREEN_H)
 	{
+		isFallenDeath = true;
 		Death();
 	}
 
@@ -642,14 +646,35 @@ void Player::PowerUpUpdate()
 
 void Player::Death()
 {
+	if (isDead) return; 
+
 	isDead = true;
-	deathTimer = DEATH_TIME;
+	deathTimer = DEATH_TIME; // 例: 120フレームなど
+
+	if (!isFallenDeath)
+	{
+		// 敵に当たって死んだ場合：
+		// 1. 当たり判定をなくす（これ以上地形と干渉させない）
+		// 2. 最初の一瞬（例えば20フレーム）はその場で静止させるための準備
+		deathSpeedY = 0.0f;
+	}
 }
 
 void Player::DeathUpdate()
 {
 	deathTimer--;
-	// 死亡アニメーション
+
+	if (isFallenDeath) return;
+
+	if (deathTimer == DEATH_TIME - 20)
+	{
+		deathSpeedY = -DEATH_JUMP_POWER;
+	}
+	else if (deathTimer < DEATH_TIME - 20)
+	{
+		pos.y += deathSpeedY;
+		deathSpeedY += SceneManager::GetInstance().GRAVITY;
+	}
 }
 
 void Player::Damage()
@@ -668,12 +693,25 @@ void Player::Damage()
 	}
 	else
 	{
+		isFallenDeath = false;
 		Death();
 	}
 }
 
 void Player::Render(float cameraX)
 {
+	if (isDead)
+	{
+		if (isFallenDeath) return;
+
+		int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
+		int drawY = static_cast<int>(pos.y);
+
+		DrawBox(drawX, drawY, drawX + static_cast<int>(size.w), drawY + static_cast<int>(size.h), GetColor(255, 0, 0), true);
+		//DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_DEAD), true);
+
+		return;
+	}
 	// 被弾後の通常の点滅（変身アニメーション中でない場合のみ）
 	if (!isChangingState && invincibleTimer > 0)
 	{
@@ -693,7 +731,7 @@ void Player::Render(float cameraX)
 
 	if (isChangingState)
 	{
-		int drawX = static_cast<int>(pos.x - cameraX);
+		int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 		int drawY = static_cast<int>(pos.y);
 		int srcX = 0;
 		int chipW = 16;
