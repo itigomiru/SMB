@@ -31,6 +31,10 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 		 {
 			 obj->Render(cameraX);
 		 }
+		 if (obj->objectType == Object::OT_PLAYER && obj->isDead)
+		 {
+			 obj->Render(cameraX);
+		 }
 	 }
  }
 

@@ -27,8 +27,8 @@ public:
 	void Damage();
 
 
-	int freezeTimer;
 	int deathTimer;
+	int freezeTimer;
 	int invincibleTimer;
 	int starTimer;
 
@@ -73,10 +73,12 @@ private:
 	bool isTryingToStand;
 	float standPushDir;
 	int fireCooldown;
-	int firePoseTimer = 0;
+	int firePoseTimer;
 	const int FIRE_POSE_TIME = 12;
 
-
+	float deathSpeedY;
+	bool isFallenDeath;
+	const float DEATH_JUMP_POWER = 7.0f;
 
 	int fireballCount;
 	enum PlayerState
