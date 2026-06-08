@@ -19,8 +19,19 @@
 
 void Stage::Init()
 {
-	auto p = std::make_unique<Player>();
+
+	switch (tileManager.GetCurrentStage())
+	{
+	case 0:
+		playerStartPos = { 32.0f, TILE_SIZE * 12};
+		break;
+	case 1:
+		playerStartPos = { 32.0f, TILE_SIZE * 6};
+		break;
+	}
+	auto p = std::make_unique<Player>(playerStartPos);
 	player = p.get();
+	player->SetStage(this);
 	player->SetTileManager(&tileManager);
 	player->SetObjectManager(&objectManager);
 	objectManager.AddObject(std::move(p));
@@ -36,7 +47,7 @@ void Stage::Init()
 void Stage::Update()
 {
 	if (UpdateFreeze())return;
-	CameraUpdate();
+	if(tileManager.GetCurrentStage() != 2)CameraUpdate();
 
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
@@ -82,7 +93,7 @@ bool Stage::UpdateFreeze()
 			if (PlayerData::GetInstance().GetStock() > 1)
 			{
 				PlayerData::GetInstance().AddStock(-1);
-				player->Init();
+				player->Init(playerStartPos);
 				cameraX = 0.0f;
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);//debug
 				//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE);

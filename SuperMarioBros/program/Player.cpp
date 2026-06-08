@@ -7,23 +7,24 @@
 #include "ObjectManager.h"
 #include "ImageManager.h"
 #include "PlayerData.h"
+#include "Stage.h"
 #include "Hit.h"
 
-Player::Player()
+Player::Player(Float2 position)
 {
 	objectType = OT_PLAYER;
 	renderLayer = RL_PLAYER;
-	Init();
+	Init(position);
 }
 
-void Player::Init()
+void Player::Init(Float2 position)
 {
 	isFacingRight = true;
 	isDead = false;
 	isGround = false;
 	isCrouching = false;
 	speed = { 0.0f, 0.0f };
-	pos = { 20.0f, 150.0f };
+	pos = position;
 	prevPos = pos;
 	state = SMALL;
 	size =
@@ -53,11 +54,11 @@ void Player::Update(float cameraX)
 {
 	prevPos = pos;
 
-	
+
 	if (freezeTimer > 0)
 	{
-		PowerUpUpdate(); 
-		return;          
+		PowerUpUpdate();
+		return;
 	}
 	if (starTimer > 0)
 	{
@@ -76,6 +77,7 @@ void Player::Update(float cameraX)
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
 
+	PipeCheck();
 	Input();
 	UpdatePlayerSize();
 	UpdateStandPush();
@@ -91,7 +93,7 @@ void Player::Update(float cameraX)
 void Player::Input()
 {
 	// しゃがみ
-	if (CheckHitKey(KEY_INPUT_S) &&state != SMALL)
+	if (CheckHitKey(KEY_INPUT_S) && state != SMALL)
 	{
 		if (!isCrouching)
 		{
@@ -123,14 +125,14 @@ void Player::Input()
 	{
 		speed.x -= MOVE_ACCEL;
 		if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
-		if(isGround)isFacingRight = false;
+		if (isGround)isFacingRight = false;
 	}
 	else if
 		(CheckHitKey(KEY_INPUT_D) && !isCrouching)
 	{
 		speed.x += MOVE_ACCEL;
 		if (speed.x < 0.05)speed.x += MOVE_ACCEL * 2;
-		if(isGround)isFacingRight = true;
+		if (isGround)isFacingRight = true;
 	}
 	else
 	{
@@ -159,7 +161,7 @@ void Player::Input()
 	}
 
 	fireballCount = objectManager->GetFireballCount();
-	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX &&!isCrouching)
+	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX && !isCrouching)
 	{
 		Float2 fireballPos = pos;
 		fireballPos.x += isFacingRight ? size.w : 0;
@@ -168,7 +170,7 @@ void Player::Input()
 		objectManager->AddObject(std::move(fireball));
 
 		fireCooldown = FIRE_COOLDOWN_TIME;
-		firePoseTimer = FIRE_POSE_TIME; 
+		firePoseTimer = FIRE_POSE_TIME;
 	}
 
 	//=========================================================
@@ -461,7 +463,7 @@ void Player::GetSuperMashroom()
 		oldState = SMALL;
 		newState = SUPER;
 		isChangingState = true;
-		freezeTimer = POWER_UP_TIME; 
+		freezeTimer = POWER_UP_TIME;
 
 		pos.y -= (SUPER_H - SMALL_H);
 	}
@@ -637,16 +639,16 @@ void Player::PowerUpUpdate()
 			pos.y += (SUPER_H - SMALL_H);
 		}
 
-		state = newState;        
-		isChangingState = false; 
+		state = newState;
+		isChangingState = false;
 
-		UpdatePlayerSize();      
+		UpdatePlayerSize();
 	}
 }
 
 void Player::Death()
 {
-	if (isDead) return; 
+	if (isDead) return;
 
 	isDead = true;
 	deathTimer = DEATH_TIME; // 例: 120フレームなど
@@ -700,6 +702,9 @@ void Player::Damage()
 
 void Player::Render(float cameraX)
 {
+	int tileX = static_cast<int>(pos.x + size.w / 2) / TILE_SIZE;
+	int tileY = static_cast<int>(pos.y + size.h + 1) / TILE_SIZE;
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "TileX: %d TileY: %d", tileX, tileY);
 	if (isDead)
 	{
 		if (isFallenDeath) return;
@@ -741,16 +746,16 @@ void Player::Render(float cameraX)
 			if (freezeTimer <= 12)
 			{
 				if (newState == SUPER) {
-					srcX = 32; 
+					srcX = 32;
 				}
 				else {
-					srcX = 0;  
+					srcX = 0;
 				}
 			}
 			else
 			{
 				int framePattern;
-				if(oldState == SMALL && newState == SUPER)framePattern = ((POWER_UP_TIME - freezeTimer) / 4) % 3;
+				if (oldState == SMALL && newState == SUPER)framePattern = ((POWER_UP_TIME - freezeTimer) / 4) % 3;
 				else  framePattern = (freezeTimer / 4) % 3;
 
 				srcX = framePattern * chipW;
@@ -823,9 +828,9 @@ void Player::RenderSmall(float cameraX)
 		srcX = chipW * 5; // ジャンプポーズ
 	}
 	else if (isBraking) {
-		srcX = chipW * 4; 
+		srcX = chipW * 4;
 	}
-	else if (std::abs(speed.x) > 0.05f) 
+	else if (std::abs(speed.x) > 0.05f)
 	{
 		int frame = (animeCount / 6) % 3;
 		srcX = chipW + (frame * chipW); // 走りアニメーション
@@ -841,9 +846,9 @@ void Player::RenderSmall(float cameraX)
 	if (isFacingRight) {
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true);
 	}
-	else 
+	else
 	{
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true,true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true, true);
 	}
 }
 void Player::RenderBig(float cameraX)
@@ -891,7 +896,7 @@ void Player::RenderBig(float cameraX)
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true);
 	}
 	else {
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true,true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true, true);
 	}
 }
 
@@ -936,7 +941,7 @@ void Player::RenderFire(float cameraX)
 		drawY -= 16;
 		srcX = chipW * 6; // しゃがみポーズ
 	}
-    if (firePoseTimer > 0)
+	if (firePoseTimer > 0)
 	{
 		srcX = chipW * 7;
 	}
@@ -945,13 +950,59 @@ void Player::RenderFire(float cameraX)
 	if (isFacingRight) {
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true);
 	}
-	else 
+	else
 	{
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true,true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true, true);
 	}
 }
 void Player::RenderStar(float cameraX)
 {
-		int chipW = 16;
+	int chipW = 16;
 
+}
+
+void Player::PipeCheck()
+{
+	int currentStage = tileManager->GetCurrentStage();
+	// プレイヤーの中心位置から、現在いるタイルのX, Yインデックスを計算
+	int tileX = static_cast<int>(pos.x + size.w / 2) / TILE_SIZE;
+	int tileY = static_cast<int>(pos.y + size.h + 1) / TILE_SIZE;
+	if (currentStage == 0)
+	{
+		if ((tileX == 57 || tileX == 58) && tileY == 9)
+		{
+			if (CheckHitKey(KEY_INPUT_S))
+			{
+				// ステージを「2 (地下)」に切り替える
+				tileManager->ChangeStage(2);
+
+				pos.x = 2 * TILE_SIZE;
+				pos.y = 2 * TILE_SIZE;
+				speed.x = 0;
+				speed.y = 0;
+
+				stage->cameraX = 0;
+				return;
+			}
+		}
+	}
+	else if (currentStage == 2)
+	{
+		if (tileX >= 12 && tileY <= 12)
+		{
+			tileManager->ChangeStage(0);
+
+			stage->cameraX = 163 * TILE_SIZE;
+			pos.x = 163 * TILE_SIZE;
+			pos.y = 9 * TILE_SIZE;
+			speed.x = 0;
+			speed.y = 0;
+			return;
+		}
+	}
+}
+
+void Player::SetStage(Stage * st)
+{
+	stage = st;
 }

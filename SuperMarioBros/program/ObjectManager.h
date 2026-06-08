@@ -17,4 +17,6 @@ public:
 	const std::vector<std::unique_ptr<Object>>& GetObjects() const { return objects; }
 
 	int GetFireballCount() const;
+
+	void AllClear();
 };

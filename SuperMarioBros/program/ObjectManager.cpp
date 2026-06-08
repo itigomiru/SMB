@@ -51,3 +51,13 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 	  }
 	  return count;
   }
+
+  void ObjectManager::AllClear() {
+	  objects.erase(
+		  std::remove_if(objects.begin(), objects.end(),
+			  [](const std::unique_ptr<Object>& obj) {
+				  return obj->objectType != Object::OT_PLAYER;
+			  }),
+		  objects.end());
+	  newObjects.clear();
+  }
