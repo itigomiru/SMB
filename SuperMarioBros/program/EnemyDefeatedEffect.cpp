@@ -1,4 +1,6 @@
 #include "EnemyDefeatedEffect.h"
+#include "ImageManager.h"
+#include "Enemy.h"
 
 EnemyDefeatedEffect::EnemyDefeatedEffect(float startX, float startY, int type, bool toRight)
 	: Effect(startX, startY), enemyType(type)
@@ -16,8 +18,7 @@ void EnemyDefeatedEffect::Update() {
 	speedY += GRAVITY; // 下方向へ加速（重力）
 	y += speedY;
 
-	// 回転を少しずつ進める（1フレームごとに約5度）
-	angle += 0.08f;
+
 
 	// 画面外（例えば y 座標が 600 以上など）に落ちたら自動消滅
 	// ※SCREEN_H などの定数があればそれに書き換えてください
@@ -32,18 +33,25 @@ void EnemyDefeatedEffect::Render(float cameraX) {
 	int drawX = static_cast<int>(x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(y);
 
-	//// 敵の種類に応じて描画する画像（ImageManagerのキー）を切り替える
-	//int imageID = 0;
-	//switch (enemyType) {
-	//case ET_GOOMBA: imageID = IMAGE_ENEMY_GOOMBA; break;
-	//case ET_KOOPA:  imageID = IMAGE_ENEMY_KOOPA;  break;
-	//default:        imageID = IMAGE_ENEMY_GOOMBA; break;
-	//}
-
-	//int imgHandle = ImageManager::GetInstance().GetImage(imageID);
-
+	// 敵の種類に応じて描画する画像（ImageManagerのキー）を切り替える
+	int imageID = 0;
+	int srcX = 0;
 	int sizeW = 16;
 	int sizeH = 16;
+	switch (enemyType) {
+	case Enemy::ET_GOOMBA:
+		imageID = IMAGE_ENEMY_GOOMBA;
+		break;
+	case Enemy::ET_KOOPATROOPA:
+		imageID = IMAGE_ENEMY_KOOPATROOPA;
+		srcX = 32;
+		sizeH = 24;
+		break;
+	default:        imageID = IMAGE_ENEMY_GOOMBA; break;
+	}
 
-	//DrawRectGraph(drawX, drawY,0, 0,sizeW, sizeH,imgHandle,true,(speedX < 0.0f),true);
+	int imgHandle = ImageManager::GetInstance().GetImage(imageID);
+
+
+	DrawRectGraph(drawX, drawY, srcX, 0, sizeW, sizeH, imgHandle, true, (speedX < 0.0f), true);
 }

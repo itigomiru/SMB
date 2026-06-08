@@ -10,8 +10,8 @@ private:
     float angle = 0.0f; 
 
     const float GRAVITY = 0.4f;       
-    const float INITIAL_JUMP = -7.0f; 
-    const float HORIZONTAL_SPEED = 3.0f; 
+    const float INITIAL_JUMP = -4.0f; 
+    const float HORIZONTAL_SPEED = 2.0f; 
 
 public:
     EnemyDefeatedEffect(float startX, float startY, int type, bool toRight);

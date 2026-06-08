@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "SceneManager.h"
 #include "ImageManager.h"
+#include"EffectManager.h"
+#include"EnemyDefeatedEffect.h"
 #include "Main.h"
 
 Goomba::Goomba()
@@ -200,8 +202,8 @@ void Goomba::SetTileManager(TileManager* tm)
 	tileManager = tm;
 }
 
-void Goomba::Death()
+void Goomba::Death(bool isRight)
 {
 	isDead = true;
-	//Todo: 死亡エフェクトやスコア加算などの処理
+	EffectManager::GetInstance().AddEffect(std::make_unique<EnemyDefeatedEffect>(pos.x, pos.y, ET_GOOMBA, isRight));
 }

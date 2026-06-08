@@ -144,7 +144,7 @@ void Stage::CheckHit()
 				{
 					if (player->starTimer > 0)
 					{
-						enemy->Death();
+						enemy->Death(player->pos.x < enemy->pos.x);
 					}
 					else
 					{
@@ -256,7 +256,7 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death();
+				enemy->Death(player->pos.x < enemy->pos.x);
 				//enemyの死亡エフェクト
 				fireball->DeathAndEffect();
 				break;
@@ -305,7 +305,7 @@ void Stage::CheckHitShellAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death();
+				enemy->Death(shellObj->speed.x > 0.0f);
 				//enemyの死亡エフェクト
 				break;
 			}

@@ -707,8 +707,7 @@ void Player::Render(float cameraX)
 		int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 		int drawY = static_cast<int>(pos.y);
 
-		DrawBox(drawX, drawY, drawX + static_cast<int>(size.w), drawY + static_cast<int>(size.h), GetColor(255, 0, 0), true);
-		//DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_DEAD), true);
+		DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_DEATH), true);
 
 		return;
 	}

@@ -26,7 +26,7 @@ public:
 		ET_GOOMBA,
 		ET_KOOPATROOPA,
 	};
-	virtual void Death() {}
+	virtual void Death(bool isRight) {}
 	virtual void OnSquashed() {}
 	virtual void Move() = 0;
 	virtual void ApplyGravity() = 0;

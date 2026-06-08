@@ -160,7 +160,8 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 				{
 					if (enemyRight > blockLeft && enemyLeft < blockRight)
 					{
-						enemy->Death();
+						
+						enemy->Death(enemy->speed.x > 0.0f);
 					}
 				}
 			}

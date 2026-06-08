@@ -29,7 +29,7 @@ public:
 
 	void OnSquashed() override;
 	void OnKicked(float marioX);
-	void Death() override;
+	void Death(bool isRight) override;
 private:
 	
 	KoopaTroopaState koopaTroopaState;
