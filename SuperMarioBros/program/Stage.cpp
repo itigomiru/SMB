@@ -229,8 +229,8 @@ void Stage::CheckHit()
 			Goal* goal = static_cast<Goal*>(obj.get());
 			if (goal && objectManager.HitObjects(player, goal))
 			{
-				//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_CLEAR);
-				//クリア時の処理
+				float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
+				player->OnGoal(poleCenterX);
 			}
 		}
 		CheckHitFireballAndEnemy();

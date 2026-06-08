@@ -46,6 +46,8 @@ void Player::Init()
 	isFallenDeath = false;
 	deathSpeedY = 0.0f;
 	firePoseTimer = 0;
+	isGoal = false;
+	goalPhase = GP_DOWN;
 }
 
 
@@ -75,6 +77,17 @@ void Player::Update(float cameraX)
 #endif
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
+
+	if (isGoal)
+	{
+		GoalUpdate();
+		UpdatePlayerSize();
+		ApplyGravity();
+		MoveX();
+		MoveY();
+		CheckCollisionY();
+		return;
+	}
 
 	Input();
 	UpdatePlayerSize();
@@ -950,8 +963,67 @@ void Player::RenderFire(float cameraX)
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true,true);
 	}
 }
+
+
+
 void Player::RenderStar(float cameraX)
 {
 		int chipW = 16;
 
+}
+
+void Player::OnGoal(float poleCenterX)
+{
+	if (isGoal || isDead) return;
+
+	isGoal = true;
+	goalPhase = GP_DOWN;    
+
+	pos.x = poleCenterX - size.w;
+
+	speed.x = 0.0f;     
+	speed.y = 0.0f;     
+	isFacingRight = true;
+
+	
+	isCrouching = false;
+	isJumping = false;
+	isAnimJamping = false;
+}
+void Player::GoalUpdate()
+{
+	switch (goalPhase)
+	{
+	case GP_DOWN: // ポールをスライドして降りる
+		speed.x = 0.0f;
+		speed.y = 2.0f; // 一定速度で下へ
+
+		// 地面に着地したら次のフェーズへ
+		if (isGround)
+		{
+			goalPhase = 1;
+			speed.y = 0.0f;
+			isFacingRight = true; // 右を向く
+		}
+		break;
+
+	case GP_WALK: 
+		speed.x = SPEED_MAX.x / 2;
+	
+		/*
+		if (pos.x > CASTLE_ENTER_X)
+		{
+			goalPhase = 2;
+			speed.x = 0.0f;
+			// SceneManager等にクリア情報を送る
+			// SceneManager::GetInstance().ChangeScene(SCENE_CLEAR);
+		}
+		*/
+		break;
+
+	case GP_CASTLE: 
+		speed.x = 0.0f;
+		speed.y = 0.0f;
+		break;
+	}
 }
