@@ -27,13 +27,14 @@ private :
 	void CheckHitFireballAndEnemy();
 	void CheckHitShellAndEnemy();
 	void CheckHitEnemyAndEnemy();
+	void SetLift();
+	
 
 public:
 	void Init() override;
 	void Update() override;
 	void Render() override;
 	~Stage() override;
-
 
 
 	float cameraX = 0.0f;

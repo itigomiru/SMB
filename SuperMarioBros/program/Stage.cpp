@@ -17,6 +17,7 @@
 #include "KoopaTroopaController.h"
 #include "Goal.h"
 #include "FirebarController.h"
+#include "LiftController.h"
 
 void Stage::Init()
 {
@@ -42,6 +43,7 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
+	SetLift();
 	objectManager.AddObject(std::make_unique<Goal>());
 }
 
@@ -56,7 +58,6 @@ void Stage::Update()
 	EffectManager::GetInstance().Update();
 
 	CheckHit();
-
 }
 
 void Stage::Render()
@@ -70,6 +71,7 @@ void Stage::Render()
 	tileManager.Render(cameraX);
 	objectManager.Render(Object::RL_GOAL, cameraX);
 	objectManager.Render(Object::RL_ENEMY, cameraX);
+	objectManager.Render(Object::RL_LIFT, cameraX);
 	objectManager.Render(Object::RL_PLAYER, cameraX);
 	objectManager.Render(Object::RL_ITEM, cameraX);
 	objectManager.Render(Object::RL_CASTLE, cameraX);
@@ -264,10 +266,10 @@ void Stage::CheckHit()
 				//クリア時の処理
 			}
 		}
-		CheckHitFireballAndEnemy();
-		CheckHitShellAndEnemy();
-		CheckHitEnemyAndEnemy();
 	}
+	CheckHitFireballAndEnemy();
+	CheckHitShellAndEnemy();
+	CheckHitEnemyAndEnemy();
 }
 
 void Stage::CheckHitFireballAndEnemy()
@@ -388,5 +390,17 @@ void Stage::CheckHitEnemyAndEnemy()
 				}
 			}
 		}
+	}
+}
+
+void Stage::SetLift()
+{
+	if (tileManager.GetCurrentStage() == 0)
+	{
+		objectManager.AddObject(std::make_unique<Lift>(
+			TILE_SIZE * 10.0f,
+			TILE_SIZE * 7.0f,
+			TILE_SIZE * 4.0f
+		));
 	}
 }

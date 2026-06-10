@@ -94,6 +94,9 @@
     <ClCompile Include="program\FirebarController.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="program\LiftController.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="program\FirebarController.h">
       <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\LiftController.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

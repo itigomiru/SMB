@@ -25,12 +25,14 @@ public:
 		OT_ITEM,
 		OT_SHELL,
 		OT_GOAL,
+		OT_LIFT,
 	};
 	enum RenderLayer
 	{
 		RL_UNDER_TILE,
 		RL_ENEMY,
 		RL_GOAL,
+		RL_LIFT,
 		RL_PLAYER,
 		RL_ITEM,
 		RL_CASTLE,
