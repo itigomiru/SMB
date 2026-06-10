@@ -91,6 +91,9 @@
     <ClCompile Include="program\BlockBreakEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="program\FirebarController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -194,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="program\BlockBreakEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\FirebarController.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

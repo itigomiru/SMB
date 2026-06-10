@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "GoombaController.h"
 #include "KoopaTroopaController.h"
+#include "FirebarController.h"
 #include "TileManager.h"
 
 EnemySpawner::EnemySpawner()
@@ -36,6 +37,7 @@ void EnemySpawner::SetSpawner()
     SpawnData data14 = { GOOMBA,        2096.0f, 190.0f, false, true };
     SpawnData data15 = { GOOMBA,        2784.0f, 190.0f, false, true };
     SpawnData data16 = { GOOMBA,        2816.0f, 190.0f, false, true };
+    
 
 	spawnDataList.push_back(data1);
 	spawnDataList.push_back(data2);
@@ -53,6 +55,7 @@ void EnemySpawner::SetSpawner()
 	spawnDataList.push_back(data14);
 	spawnDataList.push_back(data15);
 	spawnDataList.push_back(data16);
+    
 
 
 }
@@ -93,6 +96,26 @@ void EnemySpawner::Update(float cameraX)
                 koopatroopa->SetTileManager(tileManager);
                 enemy = std::move(koopatroopa);
 
+                break;
+            }
+            case FIREBAR:
+            {
+                int fireCount = 6;
+                bool isClockwise = true;
+
+                for (int i = 0; i < fireCount; i++)
+                {
+                    float distance = i * 8.0f; 
+
+                    float tileX = data.x / TILE_SIZE;
+                    float tileY = data.y / TILE_SIZE;
+
+                    auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
+ 
+                    objectManager->AddObject(std::move(fireballElement));
+                }
+
+                data.spawned = true;
                 break;
             }
             case PIRANHA_PLANT:
