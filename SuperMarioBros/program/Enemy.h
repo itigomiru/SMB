@@ -25,6 +25,7 @@ public:
 	{
 		ET_GOOMBA,
 		ET_KOOPATROOPA,
+		ET_FIREBAR,
 	};
 	virtual void Death(bool isRight) {}
 	virtual void OnSquashed() {}

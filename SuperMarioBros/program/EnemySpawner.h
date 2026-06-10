@@ -24,6 +24,7 @@ private:
 	{
 		GOOMBA,
 		KOOPA_TROOPA,
+		FIREBAR,
 		PIRANHA_PLANT,
 		BOWSER,
 
