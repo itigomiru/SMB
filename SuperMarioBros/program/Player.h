@@ -31,8 +31,6 @@ public:
 	void Damage();
 
 	void LandingOnGround();
-	void SetOnLift(bool flag);
-	bool IsOnLift() const;
 
 	bool isOnLift;
 

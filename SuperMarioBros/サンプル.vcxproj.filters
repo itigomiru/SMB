@@ -99,7 +99,7 @@
     </ClCompile>
     <ClCompile Include="program\LiftController.cpp">
       <Filter>Object</Filter>
-      </ClInclude>
+	</ClCompile>
     <ClCompile Include="program\Ui.cpp">
       <Filter>Scene</Filter>
     </ClCompile>

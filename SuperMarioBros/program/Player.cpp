@@ -1088,7 +1088,7 @@ bool Player::CheckLift()
 	}
 
 	return false;
-
+}
 void Player::OnGoal(float poleCenterX)
 {
 	if (isGoal || isDead) return;
