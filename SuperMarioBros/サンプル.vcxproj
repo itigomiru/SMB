@@ -178,6 +178,7 @@
     <ClCompile Include="program\Hit.cpp" />
     <ClCompile Include="program\Main.cpp" />
     <ClCompile Include="program\Clear.cpp" />
+    <ClCompile Include="program\ScoreEffect.cpp" />
     <ClCompile Include="program\SoundManager.cpp" />
     <ClCompile Include="program\Stage.cpp" />
     <ClCompile Include="program\Mashroom.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="program\Hit.h" />
     <ClInclude Include="program\Main.h" />
     <ClInclude Include="program\Clear.h" />
+    <ClInclude Include="program\ScoreEffect.h" />
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
     <ClInclude Include="program\Mashroom.h" />

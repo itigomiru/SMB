@@ -8,6 +8,8 @@
 #include "ImageManager.h"
 #include "PlayerData.h"
 #include "Stage.h"
+#include "ScoreEffect.h"
+#include "EffectManager.h"
 #include "Hit.h"
 
 Player::Player(Float2 position)
@@ -47,6 +49,7 @@ void Player::Init(Float2 position)
 	isFallenDeath = false;
 	deathSpeedY = 0.0f;
 	firePoseTimer = 0;
+	comboCount = 0;
 }
 
 
@@ -66,13 +69,18 @@ void Player::Update(float cameraX)
 	}
 
 	isGround = CheckGround();
-	if (isGround)isAnimJamping = false;
+	if (isGround)
+	{
+		isAnimJamping = false;
+		comboCount = 0;
+	}
 
 #if 1
 	// デバッグ用キー
 	if (PushHitKey(KEY_INPUT_0)) { GetSuperMashroom(); }
 	if (PushHitKey(KEY_INPUT_9)) { GetFireFlower(); }
 	if (PushHitKey(KEY_INPUT_8)) { GetStar(); }
+	if (PushHitKey(KEY_INPUT_7)) { Get1UpMushroom(); }
 #endif
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
@@ -467,11 +475,13 @@ void Player::GetSuperMashroom()
 
 		pos.y -= (SUPER_H - SMALL_H);
 	}
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 
 void Player::Get1UpMushroom()
 {
 	PlayerData::GetInstance().AddStock(1);
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1UP));
 }
 
 void Player::GetFireFlower()
@@ -492,10 +502,13 @@ void Player::GetFireFlower()
 		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
 	}
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 void Player::GetStar()
 {
 	starTimer = STAR_TIME;
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
+
 }
 
 void Player::UpdatePlayerSize()
@@ -620,6 +633,13 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 		pos.y = enemy->pos.y - size.h;
 
 		speed.y = -SQUASH_BOUNCE_POWER;
+		EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(enemy->pos, static_cast<ScoreEffect::SCORE>(comboCount)));
+		if (comboCount == ScoreEffect::SCORE_1UP)
+		{
+			PlayerData::GetInstance().AddStock(1);
+		}
+		comboCount++;
+		if (comboCount > ScoreEffect::SCORE_1UP) comboCount = ScoreEffect::SCORE_1UP;
 		return true;
 	}
 

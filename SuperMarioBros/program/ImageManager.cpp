@@ -37,6 +37,7 @@ ImageManager::ImageManager()
 	images[IMAGE_PIPE_RIGHT_TOP] = LoadGraph("data/image/image_pipe_right_top.png");
 	images[IMAGE_PIPE_LEFT_BOTTOM] = LoadGraph("data/image/image_pipe_left_bottom.png");
 	images[IMAGE_PIPE_RIGHT_BOTTOM] = LoadGraph("data/image/image_pipe_right_bottom.png");
+	images[IMAGE_SCORE] = LoadGraph("data/image/image_score.png");
 	images[IMAGE_UI_WORLD] = LoadGraph("data/image/image_ui_world.png");
 	images[IMAGE_UI_LINE] = LoadGraph("data/image/image_ui_line.png");
 	images[IMAGE_UI_NUMBER] = LoadGraph("data/image/image_ui_number.png");
@@ -52,8 +53,6 @@ ImageManager::ImageManager()
 	images[IMAGE_COIN] = LoadGraph("data/image/image_coin.png");
 	images[IMAGE_ENEMY_GOOMBA] = LoadGraph("data/image/image_goomba.png");
 	images[IMAGE_ENEMY_KOOPATROOPA] = LoadGraph("data/image/image_koopatroopa.png");
-
-
 	//--------------------------------------------------------------
 }
 
