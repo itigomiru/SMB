@@ -53,6 +53,9 @@ ImageManager::ImageManager()
 	images[IMAGE_COIN] = LoadGraph("data/image/image_coin.png");
 	images[IMAGE_ENEMY_GOOMBA] = LoadGraph("data/image/image_goomba.png");
 	images[IMAGE_ENEMY_KOOPATROOPA] = LoadGraph("data/image/image_koopatroopa.png");
+	images[IMAGE_LIFT] = LoadGraph("data/image/image_lift.png");
+
+
 	//--------------------------------------------------------------
 }
 

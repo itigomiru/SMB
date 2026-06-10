@@ -30,6 +30,11 @@ public:
 
 	void Damage();
 
+	void LandingOnGround();
+	void SetOnLift(bool flag);
+	bool IsOnLift() const;
+
+	bool isOnLift;
 
 	int deathTimer;
 	int freezeTimer;
@@ -62,6 +67,8 @@ private:
 	bool isJumping;
 	bool isAnimJamping;
 	int animeCount = 0;
+
+	bool CheckLift();
 
 	int state;
 	bool isFacingRight;
@@ -126,5 +133,7 @@ private:
 	void RenderStar(float cameraX);
 
 	void PipeCheck();
+
+	
 };
 

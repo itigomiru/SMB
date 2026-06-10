@@ -11,6 +11,7 @@
 #include "ScoreEffect.h"
 #include "EffectManager.h"
 #include "Hit.h"
+#include "LiftController.h"
 
 Player::Player(Float2 position)
 {
@@ -49,6 +50,7 @@ void Player::Init(Float2 position)
 	isFallenDeath = false;
 	deathSpeedY = 0.0f;
 	firePoseTimer = 0;
+	isOnLift = false;
 	isGoal = false;
 	goalPhase = GP_DOWN;
 	comboCount = 0;
@@ -71,6 +73,12 @@ void Player::Update(float cameraX)
 	}
 
 	isGround = CheckGround();
+	if (CheckLift())
+	{
+		isGround = true;
+		isJumping = false;
+		isAnimJamping = false;
+	}
 	if (isGround)
 	{
 		isAnimJamping = false;
@@ -355,13 +363,12 @@ void Player::CheckCollisionY()
 		if (tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom))
 		{
 			pos.y = static_cast<float>(bottom * TILE_SIZE - size.h);
-
 			speed.y = 0.0f;
-
 			isGround = true;
 			isAnimJamping = false;
 		}
 	}
+
 	if (py > SCREEN_H)
 	{
 		isFallenDeath = true;
@@ -1041,6 +1048,47 @@ void Player::SetStage(Stage* st)
 {
 	stage = st;
 }
+
+void Player::LandingOnGround()
+{
+	speed.y = 0.0f;
+	isGround = true;
+	isJumping = false;
+	isAnimJamping = false;
+}
+
+bool Player::CheckLift()
+{
+	if (speed.y < 0.0f) return false;
+
+	for (const auto& obj : objectManager->GetObjects())
+	{
+		if (obj->objectType != Object::OT_LIFT) continue;
+		if (obj->isDead) continue;
+
+		Lift* lift = static_cast<Lift*>(obj.get());
+
+		bool hitX =
+			pos.x + size.w > lift->pos.x &&
+			pos.x < lift->pos.x + lift->size.w;
+
+		bool onTop =
+			pos.y + size.h >= lift->pos.y - 2.0f &&
+			pos.y + size.h <= lift->pos.y + 6.0f;
+
+		if (hitX && onTop)
+		{
+			pos.y = lift->pos.y - size.h;
+			speed.y = 0.0f;
+
+			pos.x += lift->GetMoveX();
+
+			return true;
+		}
+	}
+
+	return false;
+
 void Player::OnGoal(float poleCenterX)
 {
 	if (isGoal || isDead) return;
