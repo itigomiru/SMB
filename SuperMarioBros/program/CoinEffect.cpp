@@ -1,5 +1,7 @@
 #include "CoinEffect.h"
+#include "ScoreEffect.h"
 #include "SceneManager.h"
+#include "EffectManager.h"
 
 void CoinEffect::Update() {
     // 速度を更新
@@ -12,6 +14,7 @@ void CoinEffect::Update() {
 
     if (speedY > 0 && y >= startY) {
         isDead = true;
+		EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(Float2{ x, y }, ScoreEffect::SCORE_100));
     }
 }
 

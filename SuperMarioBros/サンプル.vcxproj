@@ -160,6 +160,7 @@
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
     <ClCompile Include="program\FireballEffect.cpp" />
+    <ClCompile Include="program\FirebarController.cpp" />
     <ClCompile Include="program\FireFlower.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
@@ -171,17 +172,20 @@
     <ClCompile Include="program\ObjectManager.cpp" />
     <ClCompile Include="program\Player.cpp" />
     <ClCompile Include="program\PlayerData.cpp" />
+    <ClCompile Include="program\PreStage.cpp" />
     <ClCompile Include="program\Random.cpp" />
     <ClCompile Include="program\SceneManager.cpp" />
     <ClCompile Include="program\Hit.cpp" />
     <ClCompile Include="program\Main.cpp" />
     <ClCompile Include="program\Clear.cpp" />
+    <ClCompile Include="program\ScoreEffect.cpp" />
     <ClCompile Include="program\SoundManager.cpp" />
     <ClCompile Include="program\Stage.cpp" />
     <ClCompile Include="program\Mashroom.cpp" />
     <ClCompile Include="program\Star.cpp" />
     <ClCompile Include="program\TileManager.cpp" />
     <ClCompile Include="program\Title.cpp" />
+    <ClCompile Include="program\Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\BlockBreakEffect.h" />
@@ -194,6 +198,7 @@
     <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Fireball.h" />
     <ClInclude Include="program\FireballEffect.h" />
+    <ClInclude Include="program\FirebarController.h" />
     <ClInclude Include="program\FireFlower.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />
@@ -206,18 +211,21 @@
     <ClInclude Include="program\ObjectManager.h" />
     <ClInclude Include="program\Player.h" />
     <ClInclude Include="program\PlayerData.h" />
+    <ClInclude Include="program\PreStage.h" />
     <ClInclude Include="program\Random.h" />
     <ClInclude Include="program\Scene.h" />
     <ClInclude Include="program\SceneManager.h" />
     <ClInclude Include="program\Hit.h" />
     <ClInclude Include="program\Main.h" />
     <ClInclude Include="program\Clear.h" />
+    <ClInclude Include="program\ScoreEffect.h" />
     <ClInclude Include="program\SoundManager.h" />
     <ClInclude Include="program\Stage.h" />
     <ClInclude Include="program\Mashroom.h" />
     <ClInclude Include="program\Star.h" />
     <ClInclude Include="program\TileManager.h" />
     <ClInclude Include="program\Title.h" />
+    <ClInclude Include="program\Ui.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="program\ItemData.inc" />

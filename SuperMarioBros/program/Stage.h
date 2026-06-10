@@ -20,17 +20,20 @@ private :
 		ST_CLEAR,
 		ST_DEATH,
 	};
+	Float2 playerStartPos;
 	bool UpdateFreeze();
 	void CameraUpdate();
 	void CheckHit();
 	void CheckHitFireballAndEnemy();
 	void CheckHitShellAndEnemy();
 	void CheckHitEnemyAndEnemy();
+
 public:
 	void Init() override;
 	void Update() override;
 	void Render() override;
 	~Stage() override;
+
 
 
 	float cameraX = 0.0f;

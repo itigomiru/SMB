@@ -7,7 +7,7 @@
 #include "Player.h"
 #include"ImageManager.h"
 #include "EffectManager.h"
-#include "Stage.h"
+#include "ScoreEffect.h"
 #include "Item.h"
 #include "TileManager.h"
 #include "EnemySpawner.h"
@@ -16,11 +16,23 @@
 #include "Object.h"
 #include "KoopaTroopaController.h"
 #include "Goal.h"
+#include "FirebarController.h"
 
 void Stage::Init()
 {
-	auto p = std::make_unique<Player>();
+
+	switch (tileManager.GetCurrentStage())
+	{
+	case 0:
+		playerStartPos = { 32.0f, TILE_SIZE * 12};
+		break;
+	case 1:
+		playerStartPos = { 32.0f, TILE_SIZE * 6};
+		break;
+	}
+	auto p = std::make_unique<Player>(playerStartPos);
 	player = p.get();
+	player->SetStage(this);
 	player->SetTileManager(&tileManager);
 	player->SetObjectManager(&objectManager);
 	objectManager.AddObject(std::move(p));
@@ -35,13 +47,13 @@ void Stage::Init()
 
 void Stage::Update()
 {
+	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
-	CameraUpdate();
+	if(tileManager.GetCurrentStage() != 2)CameraUpdate();
 
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
 	tileManager.Update();
-	EffectManager::GetInstance().Update();
 
 	CheckHit();
 
@@ -82,12 +94,11 @@ bool Stage::UpdateFreeze()
 			if (PlayerData::GetInstance().GetStock() > 1)
 			{
 				PlayerData::GetInstance().AddStock(-1);
-				player->Init();
+				player->Init(playerStartPos);
 				cameraX = 0.0f;
-				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);//debug
-				//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE);
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE,tileManager.GetCurrentStage());
 			}
-			else;//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
+			else SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
 		}
 
 		return true;
@@ -140,11 +151,30 @@ void Stage::CheckHit()
 
 			if (enemy)
 			{
+				if (enemy->GetEnemyType() == Enemy::ET_FIREBAR)
+				{
+					Firebar* firebar = static_cast<Firebar*>(enemy);
+
+					if (firebar->HitPlayer(player))
+					{
+						if (player->starTimer <= 0)
+						{
+							if (enemy->canDamage)
+							{
+								player->Damage();
+							}
+						}
+					}
+
+					continue;
+				}
+
 				if (objectManager.HitObjects(player, enemy))
 				{
+					
 					if (player->starTimer > 0)
 					{
-						enemy->Death(player->pos.x < enemy->pos.x);
+						enemy->Death(player->pos.x < enemy->pos.x,0);
 					}
 					else
 					{
@@ -155,8 +185,7 @@ void Stage::CheckHit()
 							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
 							{
 								KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
-								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-									koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP || koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
 								{
 									koopa->OnKicked(player->pos.x);
 								}
@@ -176,8 +205,7 @@ void Stage::CheckHit()
 							{
 								KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
 
-								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-									koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
 								{
 									koopatroopa->OnKicked(player->pos.x);
 								}
@@ -256,7 +284,7 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death(player->pos.x < enemy->pos.x);
+				enemy->Death(player->pos.x < enemy->pos.x,0);
 				//enemyの死亡エフェクト
 				fireball->DeathAndEffect();
 				break;
@@ -304,9 +332,11 @@ void Stage::CheckHitShellAndEnemy()
 			if (objectManager.HitObjects(shellObj.get(), enemyObj.get()))
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
+				KoopaTroopa* shellEnemy = static_cast<KoopaTroopa*>(shellObj.get());
 
-				enemy->Death(shellObj->speed.x > 0.0f);
-				//enemyの死亡エフェクト
+				enemy->Death(shellObj->speed.x > 0.0f,shellEnemy->comboCount);
+				shellEnemy->comboCount++;
+				if (shellEnemy->comboCount > ScoreEffect::SCORE_1UP) shellEnemy->comboCount = ScoreEffect::SCORE_1UP;
 				break;
 			}
 		}

@@ -18,7 +18,7 @@ class TileManager
 {
 private:
 	std::vector<std::vector<Tile>> map;
-	int currentStage;
+	int currentStage = 0;
 	ObjectManager* objectManager;
 	const float HIT_TILE_SPEED = 1.5f;
 	const float HIT_ITEM_HOP_SPEED = 5.0f;
@@ -74,4 +74,8 @@ public:
 	void SetObjectManager(ObjectManager* manager) { objectManager = manager; }
 
 	bool IsHidden(int x, int y);
+
+	int GetCurrentStage() const { return currentStage; }
+
+	void ChangeStage(int stage);
 };

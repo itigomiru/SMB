@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 
+class Stage;
 class TileManager;
 class ObjectManager;
 class Enemy;
@@ -8,13 +9,14 @@ class Enemy;
 class Player : public Object
 {
 public:
-	Player();
-	void Init();
+	Player(Float2 position);
+	void Init(Float2 postion);
 	void Update(float cameraX) override;
 	void Render(float cameraX) override;
 
 	void SetTileManager(TileManager* tm);
 	void SetObjectManager(ObjectManager* om);
+	void SetStage(Stage* st);
 	void GetSuperMashroom();
 	void GetFireFlower();
 	void Get1UpMushroom();
@@ -67,6 +69,7 @@ private:
 	int oldState;
 	int newState;
 	bool isChangingState = false;
+	int comboCount = 0;
 
 	Float2 prevPos;
 
@@ -100,6 +103,7 @@ private:
 
 	TileManager* tileManager = nullptr;
 	ObjectManager* objectManager = nullptr;
+	Stage* stage = nullptr;
 
 	void Input();
 	void MoveX();
@@ -120,5 +124,7 @@ private:
 	void RenderBig(float cameraX);
 	void RenderFire(float cameraX);
 	void RenderStar(float cameraX);
+
+	void PipeCheck();
 };
 

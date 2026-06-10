@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "GoombaController.h"
 #include "KoopaTroopaController.h"
+#include "FirebarController.h"
 #include "TileManager.h"
 
 EnemySpawner::EnemySpawner()
@@ -18,43 +19,27 @@ void EnemySpawner::SetTileManager(TileManager* tm)
     tileManager = tm;
 }
 
-void EnemySpawner::SetSpawner()
-{
-	SpawnData data1 = { GOOMBA,          320.0f, 190.0f, false, true };
-	SpawnData data2 = { GOOMBA,          640.0f, 190.0f, false, true };
-	SpawnData data3 = { GOOMBA,          800.0f, 190.0f, false, true };
-	SpawnData data4 = { GOOMBA,          832.0f, 190.0f, false, true };
-	SpawnData data5 = { GOOMBA,         1280.0f, 62.0f, false, true };
-	SpawnData data6 = { GOOMBA,         1312.0f, 62.0f, false, true };
-	SpawnData data7 = { GOOMBA,         1552.0f, 190.0f, false, true };
-	SpawnData data8 = { GOOMBA,         1584.0f, 190.0f, false, true };
-	SpawnData data9 = { KOOPA_TROOPA,   1696.0f, 182.0f, false, true };
-    SpawnData data10 = { GOOMBA,        1840.0f, 190.0f, false, true };
-    SpawnData data11 = { GOOMBA,        1872.0f, 190.0f, false, true };
-    SpawnData data12 = { GOOMBA,        2016.0f, 190.0f, false, true };
-    SpawnData data13 = { GOOMBA,        2048.0f, 190.0f, false, true };
-    SpawnData data14 = { GOOMBA,        2096.0f, 190.0f, false, true };
-    SpawnData data15 = { GOOMBA,        2784.0f, 190.0f, false, true };
-    SpawnData data16 = { GOOMBA,        2816.0f, 190.0f, false, true };
+void EnemySpawner::SetSpawner() {
+    spawnDataList.clear();
 
-	spawnDataList.push_back(data1);
-	spawnDataList.push_back(data2);
-	spawnDataList.push_back(data3);
-	spawnDataList.push_back(data4);
-	spawnDataList.push_back(data5);
-	spawnDataList.push_back(data6);
-	spawnDataList.push_back(data7);
-	spawnDataList.push_back(data8);
-	spawnDataList.push_back(data9);
-	spawnDataList.push_back(data10);
-	spawnDataList.push_back(data11);
-	spawnDataList.push_back(data12);
-	spawnDataList.push_back(data13);
-	spawnDataList.push_back(data14);
-	spawnDataList.push_back(data15);
-	spawnDataList.push_back(data16);
-
-
+    spawnDataList = {
+        { GOOMBA,          320.0f, 190.0f, false, true },
+        { GOOMBA,          640.0f, 190.0f, false, true },
+        { GOOMBA,          800.0f, 190.0f, false, true },
+        { GOOMBA,          832.0f, 190.0f, false, true },
+        { GOOMBA,         1280.0f,  62.0f, false, true },
+        { GOOMBA,         1312.0f,  62.0f, false, true },
+        { GOOMBA,         1552.0f, 190.0f, false, true },
+        { GOOMBA,         1584.0f, 190.0f, false, true },
+        { KOOPA_TROOPA,   1696.0f, 182.0f, false, true },
+        { GOOMBA,         1840.0f, 190.0f, false, true },
+        { GOOMBA,         1872.0f, 190.0f, false, true },
+        { GOOMBA,         2016.0f, 190.0f, false, true },
+        { GOOMBA,         2048.0f, 190.0f, false, true },
+        { GOOMBA,         2096.0f, 190.0f, false, true },
+        { GOOMBA,         2784.0f, 190.0f, false, true },
+        { GOOMBA,         2816.0f, 190.0f, false, true }
+    };
 }
 
 void EnemySpawner::Update(float cameraX)
@@ -93,6 +78,26 @@ void EnemySpawner::Update(float cameraX)
                 koopatroopa->SetTileManager(tileManager);
                 enemy = std::move(koopatroopa);
 
+                break;
+            }
+            case FIREBAR:
+            {
+                int fireCount = 6;
+                bool isClockwise = true;
+
+                for (int i = 0; i < fireCount; i++)
+                {
+                    float distance = i * 8.0f; 
+
+                    float tileX = data.x / TILE_SIZE;
+                    float tileY = data.y / TILE_SIZE;
+
+                    auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
+ 
+                    objectManager->AddObject(std::move(fireballElement));
+                }
+
+                data.spawned = true;
                 break;
             }
             case PIRANHA_PLANT:

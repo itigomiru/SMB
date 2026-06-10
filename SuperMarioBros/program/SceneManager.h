@@ -14,9 +14,10 @@ public:
 	static SceneManager& GetInstance();
 	//	各シーンの番号
 	enum {
-		SCENE_TITLE,	//	０：タイトル
-		SCENE_STAGE,	//	１：ステージ
-		SCENE_CLEAR,	//	２：リザルト（結果表示画面）
+		SCENE_TITLE,
+		SCENE_PRESTAGE,
+		SCENE_STAGE,	
+		SCENE_CLEAR,	
 		SCENE_ENDING,
 		SCENE_GAMEOVER,
 	};
@@ -33,5 +34,5 @@ public:
 	void Render();	//	描画処理
 	const float GRAVITY = 0.5f;
 
-	void ChangeScene(int nextScene);
+	void ChangeScene(int nextScene,int nextStage = 0);
 };

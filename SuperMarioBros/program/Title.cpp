@@ -4,15 +4,18 @@
 #include "Float2.h"
 #include "ImageManager.h"
 #include "SoundManager.h"
+#include "PlayerData.h"
 
 void Title::Init()
 {
+	PlayerData::GetInstance().Reset();
+
 }
 
 void Title::Update()
 {
     if (CheckHitKey(KEY_INPUT_RETURN)) {
-        SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_STAGE);
+        SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE,0);
     }
 }
 
