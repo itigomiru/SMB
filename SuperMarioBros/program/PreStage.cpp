@@ -12,7 +12,9 @@ void PreStage::Init()
 
 void PreStage::Update()
 {
-    
+	if (CheckHitKey(KEY_INPUT_RETURN)) {
+		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_STAGE);
+	}
 }
 
 void PreStage::Render()
