@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "GoombaController.h"
 #include "KoopaTroopaController.h"
+#include "FirebarController.h"
 #include "TileManager.h"
 
 EnemySpawner::EnemySpawner()
@@ -77,6 +78,26 @@ void EnemySpawner::Update(float cameraX)
                 koopatroopa->SetTileManager(tileManager);
                 enemy = std::move(koopatroopa);
 
+                break;
+            }
+            case FIREBAR:
+            {
+                int fireCount = 6;
+                bool isClockwise = true;
+
+                for (int i = 0; i < fireCount; i++)
+                {
+                    float distance = i * 8.0f; 
+
+                    float tileX = data.x / TILE_SIZE;
+                    float tileY = data.y / TILE_SIZE;
+
+                    auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
+ 
+                    objectManager->AddObject(std::move(fireballElement));
+                }
+
+                data.spawned = true;
                 break;
             }
             case PIRANHA_PLANT:

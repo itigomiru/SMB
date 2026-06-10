@@ -93,6 +93,10 @@
     </ClCompile>
     <ClCompile Include="program\ScoreEffect.cpp">
       <Filter>Effect</Filter>
+    <ClCompile Include="program\PreStage.cpp">
+      <Filter>Scene</Filter>
+    <ClCompile Include="program\FirebarController.cpp">
+      <Filter>Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +204,10 @@
     </ClInclude>
     <ClInclude Include="program\ScoreEffect.h">
       <Filter>Effect</Filter>
+    <ClInclude Include="program\PreStage.h">
+      <Filter>Scene</Filter>
+    <ClInclude Include="program\FirebarController.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

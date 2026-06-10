@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 
 #include "Title.h"	//	タイトル関係の関数を呼びたいので
+#include "PreStage.h"	//	プレステージ関係の関数を呼びたいので
 #include "Stage.h"	//	ステージ関係の関数を呼びたいので
 #include "Clear.h"	//	リザルト（結果表示画面）関係の関数を呼びたいので
 #include "Ending.h"	//	エンディング関係の関数を呼びたいので
@@ -35,7 +36,7 @@ void SceneManager::Render()
 
 SceneManager::SceneManager()
 {
-	currentScene = std::make_unique<Title>();
+	currentScene = std::make_unique<PreStage>();
 }
 
 SceneManager::~SceneManager()

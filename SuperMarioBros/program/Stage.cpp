@@ -16,6 +16,7 @@
 #include "Object.h"
 #include "KoopaTroopaController.h"
 #include "Goal.h"
+#include "FirebarController.h"
 
 void Stage::Init()
 {
@@ -151,8 +152,27 @@ void Stage::CheckHit()
 
 			if (enemy)
 			{
+				if (enemy->GetEnemyType() == Enemy::ET_FIREBAR)
+				{
+					Firebar* firebar = static_cast<Firebar*>(enemy);
+
+					if (firebar->HitPlayer(player))
+					{
+						if (player->starTimer <= 0)
+						{
+							if (enemy->canDamage)
+							{
+								player->Damage();
+							}
+						}
+					}
+
+					continue;
+				}
+
 				if (objectManager.HitObjects(player, enemy))
 				{
+					
 					if (player->starTimer > 0)
 					{
 						enemy->Death(player->pos.x < enemy->pos.x,0);
