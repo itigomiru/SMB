@@ -172,6 +172,7 @@
     <ClCompile Include="program\ObjectManager.cpp" />
     <ClCompile Include="program\Player.cpp" />
     <ClCompile Include="program\PlayerData.cpp" />
+    <ClCompile Include="program\PreStage.cpp" />
     <ClCompile Include="program\Random.cpp" />
     <ClCompile Include="program\SceneManager.cpp" />
     <ClCompile Include="program\Hit.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="program\ObjectManager.h" />
     <ClInclude Include="program\Player.h" />
     <ClInclude Include="program\PlayerData.h" />
+    <ClInclude Include="program\PreStage.h" />
     <ClInclude Include="program\Random.h" />
     <ClInclude Include="program\Scene.h" />
     <ClInclude Include="program\SceneManager.h" />
