@@ -19,7 +19,7 @@ public:
 	void SetTileManager(TileManager* tm);
 
 	void OnSquashed();
-	void Death(bool isRight) override;
+	void Death(bool isRight,int score) override;
 private:
 	enum GoombaState
 	{

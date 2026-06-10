@@ -16,5 +16,6 @@ public:
 	void AddStock(int num);
 	void AddScore(int num);
 	void AddCoin(int num);
+	void Reset();
 	int GetStock() const;
 };

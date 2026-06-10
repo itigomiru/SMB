@@ -27,7 +27,7 @@ public:
 		ET_KOOPATROOPA,
 		ET_FIREBAR,
 	};
-	virtual void Death(bool isRight) {}
+	virtual void Death(bool isRight,int score) {}
 	virtual void OnSquashed() {}
 	virtual void Move() = 0;
 	virtual void ApplyGravity() = 0;

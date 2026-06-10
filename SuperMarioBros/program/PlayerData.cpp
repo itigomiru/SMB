@@ -16,7 +16,6 @@ void PlayerData::AddStock(int num)
 void PlayerData::AddScore(int num)
 {
 	score += num; 
-	//エフェクトを出す
 }
 
 void PlayerData::AddCoin(int num)
@@ -32,6 +31,10 @@ void PlayerData::AddCoin(int num)
 int PlayerData::GetStock() const { return stock; }
 
 PlayerData::PlayerData()
+{
+	Reset();
+}
+void PlayerData::Reset()
 {
 	stock = BASE_STOCK;
 	score = 0;

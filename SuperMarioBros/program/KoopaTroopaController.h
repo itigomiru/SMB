@@ -14,6 +14,7 @@ public:
 		STATE_SHELL_ROLL,
 		STATE_SHELL_WAKEUP,
 	};
+	int comboCount = 0;
 
 	KoopaTroopa();
 	void Update(float cameraX) override;
@@ -29,7 +30,7 @@ public:
 
 	void OnSquashed() override;
 	void OnKicked(float marioX);
-	void Death(bool isRight) override;
+	void Death(bool isRight,int score) override;
 private:
 	
 	KoopaTroopaState koopaTroopaState;
@@ -55,6 +56,7 @@ private:
 	Float2 prevPos;
 
 	TileManager* tileManager = nullptr;
+	
 
 	void CheckCollisionX();
 	void CheckCollisionY();
