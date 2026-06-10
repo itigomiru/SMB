@@ -850,10 +850,10 @@ void Player::RenderSmall(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -893,10 +893,10 @@ void Player::RenderBig(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -942,10 +942,10 @@ void Player::RenderFire(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -1016,23 +1016,45 @@ void Player::PipeCheck()
 				pos.y = 2 * TILE_SIZE;
 				speed.x = 0;
 				speed.y = 0;
+				stage->cameraX = 0;
+			}
 
+		}
+	}
+	else if (currentStage == 2)
+	{
+		if (tileX >= 12 && tileY <= 12)
+		{
+			tileManager->ChangeStage(0);
+
+			stage->cameraX = 163 * TILE_SIZE;
+			pos.x = 163 * TILE_SIZE;
+			pos.y = 9 * TILE_SIZE;
+			speed.x = 0;
+			speed.y = 0;
+			return;
+		}
+	}
 }
 
+void Player::SetStage(Stage* st)
+{
+	stage = st;
+}
 void Player::OnGoal(float poleCenterX)
 {
 	if (isGoal || isDead) return;
 
 	isGoal = true;
-	goalPhase = GP_DOWN;    
+	goalPhase = GP_DOWN;
 
 	pos.x = poleCenterX - size.w;
 
-	speed.x = 0.0f;     
-	speed.y = 0.0f;     
+	speed.x = 0.0f;
+	speed.y = 0.0f;
 	isFacingRight = true;
 
-	
+
 	isCrouching = false;
 	isJumping = false;
 	isAnimJamping = false;
@@ -1054,9 +1076,9 @@ void Player::GoalUpdate()
 		}
 		break;
 
-	case GP_WALK: 
+	case GP_WALK:
 		speed.x = SPEED_MAX.x / 2;
-	
+
 		/*
 		if (pos.x > CASTLE_ENTER_X)
 		{
@@ -1068,33 +1090,11 @@ void Player::GoalUpdate()
 		*/
 		break;
 
-	case GP_CASTLE: 
+	case GP_CASTLE:
 		speed.x = 0.0f;
 		speed.y = 0.0f;
 		break;
 	}
-				stage->cameraX = 0;
-				return;
-			}
-		}
-	}
-	else if (currentStage == 2)
-	{
-		if (tileX >= 12 && tileY <= 12)
-		{
-			tileManager->ChangeStage(0);
 
-			stage->cameraX = 163 * TILE_SIZE;
-			pos.x = 163 * TILE_SIZE;
-			pos.y = 9 * TILE_SIZE;
-			speed.x = 0;
-			speed.y = 0;
-			return;
-		}
-	}
-}
-
-void Player::SetStage(Stage * st)
-{
-	stage = st;
+	return;
 }
