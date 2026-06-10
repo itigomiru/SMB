@@ -160,6 +160,7 @@
     <ClCompile Include="program\EnemySpawner.cpp" />
     <ClCompile Include="program\Fireball.cpp" />
     <ClCompile Include="program\FireballEffect.cpp" />
+    <ClCompile Include="program\FirebarController.cpp" />
     <ClCompile Include="program\FireFlower.cpp" />
     <ClCompile Include="program\Float2.cpp" />
     <ClCompile Include="program\Gameover.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="program\EnemySpawner.h" />
     <ClInclude Include="program\Fireball.h" />
     <ClInclude Include="program\FireballEffect.h" />
+    <ClInclude Include="program\FirebarController.h" />
     <ClInclude Include="program\FireFlower.h" />
     <ClInclude Include="program\Float2.h" />
     <ClInclude Include="program\Gameover.h" />

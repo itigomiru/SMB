@@ -93,6 +93,8 @@
     </ClCompile>
     <ClCompile Include="program\PreStage.cpp">
       <Filter>Scene</Filter>
+    <ClCompile Include="program\FirebarController.cpp">
+      <Filter>Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +202,8 @@
     </ClInclude>
     <ClInclude Include="program\PreStage.h">
       <Filter>Scene</Filter>
+    <ClInclude Include="program\FirebarController.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
