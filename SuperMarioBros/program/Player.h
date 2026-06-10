@@ -67,6 +67,7 @@ private:
 	int oldState;
 	int newState;
 	bool isChangingState = false;
+	int comboCount = 0;
 
 	Float2 prevPos;
 

@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include "EffectManager.h"
 #include "EnemyDefeatedEffect.h"
+#include "ScoreEffect.h"
 #include "Main.h"
 
 KoopaTroopa::KoopaTroopa()
@@ -37,6 +38,7 @@ void KoopaTroopa::Update(float cameraX)
     {
         wakeUpTimer--;
         canDamage = false;
+		comboCount = 0;
         shakeOffset = { 0.0f, 0.0f };
 
         if (wakeUpTimer <= 0)
@@ -111,6 +113,7 @@ void KoopaTroopa::OnKicked(float marioX)
 {
 	koopaTroopaState = STATE_SHELL_ROLL;
 	objectType = OT_SHELL;
+	canDamage = true;
     canSquashed = true;
 
     if (marioX < pos.x)
@@ -265,8 +268,9 @@ void KoopaTroopa::SetTileManager(TileManager* tm)
     tileManager = tm;
 }
 
-void KoopaTroopa::Death(bool isRight)
+void KoopaTroopa::Death(bool isRight,int score)
 {
     isDead = true;
 	EffectManager::GetInstance().AddEffect(std::make_unique<EnemyDefeatedEffect>(pos.x, pos.y, ET_KOOPATROOPA, isRight));
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(Float2{ pos.x, pos.y }, score));
 }

@@ -7,13 +7,15 @@ void ObjectManager::AddObject(std::unique_ptr<Object> object)
 	newObjects.push_back(std::move(object));
 }
 
- void ObjectManager::Update(float cameraX) {
+void ObjectManager::Update(float cameraX) {
+	if (!newObjects.empty()) {
+		objects.insert(objects.end(), std::make_move_iterator(newObjects.begin()), std::make_move_iterator(newObjects.end()));
+		newObjects.clear();
+	}
+
 	for (auto& obj : objects) {
 		obj->Update(cameraX);
 	}
-
-	objects.insert(objects.end(), std::make_move_iterator(newObjects.begin()), std::make_move_iterator(newObjects.end()));
-	newObjects.clear();
 
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(),

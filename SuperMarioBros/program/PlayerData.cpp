@@ -16,7 +16,6 @@ void PlayerData::AddStock(int num)
 void PlayerData::AddScore(int num)
 {
 	score += num; 
-	//エフェクトを出す
 }
 
 void PlayerData::AddCoin(int num)

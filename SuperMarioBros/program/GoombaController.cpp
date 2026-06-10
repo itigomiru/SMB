@@ -4,6 +4,7 @@
 #include "ImageManager.h"
 #include"EffectManager.h"
 #include"EnemyDefeatedEffect.h"
+#include "ScoreEffect.h"
 #include "Main.h"
 
 Goomba::Goomba()
@@ -68,9 +69,9 @@ void Goomba::OnSquashed()
 	if (goombaState == STATE_WALK)
 	{
         goombaState = STATE_SQUASHED;
-        canSquashed = false;  
-        squashTimer = 30;     
-        speed = { 0.0f, 0.0f }; 
+        canSquashed = false;
+        squashTimer = 30;
+        speed = { 0.0f, 0.0f };
 	}
 }
 
@@ -202,8 +203,9 @@ void Goomba::SetTileManager(TileManager* tm)
 	tileManager = tm;
 }
 
-void Goomba::Death(bool isRight)
+void Goomba::Death(bool isRight,int score)
 {
 	isDead = true;
 	EffectManager::GetInstance().AddEffect(std::make_unique<EnemyDefeatedEffect>(pos.x, pos.y, ET_GOOMBA, isRight));
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, score));
 }

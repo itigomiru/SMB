@@ -7,7 +7,7 @@
 #include "Player.h"
 #include"ImageManager.h"
 #include "EffectManager.h"
-#include "Stage.h"
+#include "ScoreEffect.h"
 #include "Item.h"
 #include "TileManager.h"
 #include "EnemySpawner.h"
@@ -46,13 +46,13 @@ void Stage::Init()
 
 void Stage::Update()
 {
+	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
 	if(tileManager.GetCurrentStage() != 2)CameraUpdate();
 
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
 	tileManager.Update();
-	EffectManager::GetInstance().Update();
 
 	CheckHit();
 
@@ -155,7 +155,7 @@ void Stage::CheckHit()
 				{
 					if (player->starTimer > 0)
 					{
-						enemy->Death(player->pos.x < enemy->pos.x);
+						enemy->Death(player->pos.x < enemy->pos.x,0);
 					}
 					else
 					{
@@ -166,8 +166,7 @@ void Stage::CheckHit()
 							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
 							{
 								KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
-								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-									koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP || koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
 								{
 									koopa->OnKicked(player->pos.x);
 								}
@@ -187,8 +186,7 @@ void Stage::CheckHit()
 							{
 								KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
 
-								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-									koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
 								{
 									koopatroopa->OnKicked(player->pos.x);
 								}
@@ -267,7 +265,7 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death(player->pos.x < enemy->pos.x);
+				enemy->Death(player->pos.x < enemy->pos.x,0);
 				//enemyの死亡エフェクト
 				fireball->DeathAndEffect();
 				break;
@@ -315,9 +313,11 @@ void Stage::CheckHitShellAndEnemy()
 			if (objectManager.HitObjects(shellObj.get(), enemyObj.get()))
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
+				KoopaTroopa* shellEnemy = static_cast<KoopaTroopa*>(shellObj.get());
 
-				enemy->Death(shellObj->speed.x > 0.0f);
-				//enemyの死亡エフェクト
+				enemy->Death(shellObj->speed.x > 0.0f,shellEnemy->comboCount);
+				shellEnemy->comboCount++;
+				if (shellEnemy->comboCount > ScoreEffect::SCORE_1UP) shellEnemy->comboCount = ScoreEffect::SCORE_1UP;
 				break;
 			}
 		}

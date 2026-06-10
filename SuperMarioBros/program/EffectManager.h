@@ -6,8 +6,8 @@
 class EffectManager {
 private:
 	std::vector<std::unique_ptr<Effect>> effects;
+	std::vector<std::unique_ptr<Effect>> pendingEffects;
 
-	// シングルトン化 (ImageManager等に合わせる)
 	EffectManager() {}
 	~EffectManager() {}
 
