@@ -32,6 +32,10 @@ int PlayerData::GetStock() const { return stock; }
 
 PlayerData::PlayerData()
 {
+	Reset();
+}
+void PlayerData::Reset()
+{
 	stock = BASE_STOCK;
 	score = 0;
 	coin = 0;

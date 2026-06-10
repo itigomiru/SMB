@@ -96,10 +96,9 @@ bool Stage::UpdateFreeze()
 				PlayerData::GetInstance().AddStock(-1);
 				player->Init(playerStartPos);
 				cameraX = 0.0f;
-				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);//debug
-				//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE);
+				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE,tileManager.GetCurrentStage());
 			}
-			else;//SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
+			else SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
 		}
 
 		return true;

@@ -1,84 +1,263 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="program\BlockBreakEffect.cpp" />
-    <ClCompile Include="program\CoinEffect.cpp" />
-    <ClCompile Include="program\EffectManager.cpp" />
-    <ClCompile Include="program\Ending.cpp" />
-    <ClCompile Include="program\EnemyDefeatedEffect.cpp" />
-    <ClCompile Include="program\EnemySpawner.cpp" />
-    <ClCompile Include="program\Fireball.cpp" />
-    <ClCompile Include="program\FireballEffect.cpp" />
-    <ClCompile Include="program\FirebarController.cpp" />
-    <ClCompile Include="program\FireFlower.cpp" />
-    <ClCompile Include="program\Float2.cpp" />
-    <ClCompile Include="program\Gameover.cpp" />
-    <ClCompile Include="program\Goal.cpp" />
-    <ClCompile Include="program\GoombaController.cpp" />
-    <ClCompile Include="program\ImageManager.cpp" />
-    <ClCompile Include="program\Item.cpp" />
-    <ClCompile Include="program\KoopaTroopaController.cpp" />
-    <ClCompile Include="program\ObjectManager.cpp" />
-    <ClCompile Include="program\Player.cpp" />
-    <ClCompile Include="program\PlayerData.cpp" />
-    <ClCompile Include="program\PreStage.cpp" />
-    <ClCompile Include="program\Random.cpp" />
-    <ClCompile Include="program\SceneManager.cpp" />
-    <ClCompile Include="program\Hit.cpp" />
-    <ClCompile Include="program\Main.cpp" />
-    <ClCompile Include="program\Clear.cpp" />
-    <ClCompile Include="program\ScoreEffect.cpp" />
-    <ClCompile Include="program\SoundManager.cpp" />
-    <ClCompile Include="program\Stage.cpp" />
-    <ClCompile Include="program\Mashroom.cpp" />
-    <ClCompile Include="program\Star.cpp" />
-    <ClCompile Include="program\TileManager.cpp" />
-    <ClCompile Include="program\Title.cpp" />
-    <ClCompile Include="program\Ui.cpp" />
+    <ClCompile Include="program\Float2.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Main.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Hit.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Clear.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Gameover.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Title.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\ObjectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\ImageManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\SoundManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\TileManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Stage.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Ending.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Random.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="program\EnemySpawner.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="program\GoombaController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Player.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Fireball.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Item.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="program\FireFlower.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Mashroom.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="program\PlayerData.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Goal.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="program\KoopaTroopaController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="program\EffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\FireballEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\EnemyDefeatedEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Star.cpp">
+      <Filter>Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="program\CoinEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\BlockBreakEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\PreStage.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\FirebarController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Ui.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="program\ScoreEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="program\BlockBreakEffect.h" />
-    <ClInclude Include="program\CoinEffect.h" />
-    <ClInclude Include="program\Effect.h" />
-    <ClInclude Include="program\EffectManager.h" />
-    <ClInclude Include="program\Ending.h" />
-    <ClInclude Include="program\Enemy.h" />
-    <ClInclude Include="program\EnemyDefeatedEffect.h" />
-    <ClInclude Include="program\EnemySpawner.h" />
-    <ClInclude Include="program\Fireball.h" />
-    <ClInclude Include="program\FireballEffect.h" />
-    <ClInclude Include="program\FirebarController.h" />
-    <ClInclude Include="program\FireFlower.h" />
-    <ClInclude Include="program\Float2.h" />
-    <ClInclude Include="program\Gameover.h" />
-    <ClInclude Include="program\Goal.h" />
-    <ClInclude Include="program\GoombaController.h" />
-    <ClInclude Include="program\ImageManager.h" />
-    <ClInclude Include="program\Item.h" />
-    <ClInclude Include="program\KoopaTroopaController.h" />
-    <ClInclude Include="program\Object.h" />
-    <ClInclude Include="program\ObjectManager.h" />
-    <ClInclude Include="program\Player.h" />
-    <ClInclude Include="program\PlayerData.h" />
-    <ClInclude Include="program\PreStage.h" />
-    <ClInclude Include="program\Random.h" />
-    <ClInclude Include="program\Scene.h" />
-    <ClInclude Include="program\SceneManager.h" />
-    <ClInclude Include="program\Hit.h" />
-    <ClInclude Include="program\Main.h" />
-    <ClInclude Include="program\Clear.h" />
-    <ClInclude Include="program\ScoreEffect.h" />
-    <ClInclude Include="program\SoundManager.h" />
-    <ClInclude Include="program\Stage.h" />
-    <ClInclude Include="program\Mashroom.h" />
-    <ClInclude Include="program\Star.h" />
-    <ClInclude Include="program\TileManager.h" />
-    <ClInclude Include="program\Title.h" />
-    <ClInclude Include="program\Ui.h" />
+    <ClInclude Include="program\Float2.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Main.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Hit.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Clear.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Gameover.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Title.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\ObjectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\ImageManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\SoundManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\TileManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Stage.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Ending.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Random.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Enemy.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EnemySpawner.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\GoombaController.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Player.h">
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Fireball.h">
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Item.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\FireFlower.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Mashroom.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\PlayerData.h">
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Goal.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="program\KoopaTroopaController.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Effect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\FireballEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\EnemyDefeatedEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Star.h">
+      <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\CoinEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\BlockBreakEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\PreStage.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\FirebarController.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Ui.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="program\ScoreEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="program\ItemData.inc" />
-    <None Include="program\SpawnData.inc" />
-    <None Include="program\StageData.inc" />
+    <Filter Include="System">
+      <UniqueIdentifier>{ab70fa01-1b9b-48d5-9590-2d477be5266d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{f697f473-b543-4a9f-aa0f-9f978c7e0856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{3e589dc2-1df0-4236-a817-799106720015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{003a1fcb-8cd7-420f-b02d-a457fc50aab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b1ef0639-438b-4034-9c36-2b6e66d0be59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy">
+      <UniqueIdentifier>{ad3af208-4a58-43de-8206-4ee64b831016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{b8696b2f-e335-4e59-9a89-d1a48a651136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Item">
+      <UniqueIdentifier>{468a5101-2b8e-485c-84b9-c451fb2a0da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{ab4a5596-b2a7-45fb-a0c1-91fc7c715e5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="program\SpawnData.inc">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="program\ItemData.inc">
+      <Filter>Include</Filter>
+    </None>
+    <None Include="program\StageData.inc">
+      <Filter>Include</Filter>
+    </None>
   </ItemGroup>
 </Project>
