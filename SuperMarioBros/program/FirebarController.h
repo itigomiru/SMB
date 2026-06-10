@@ -14,7 +14,7 @@ public:
 	int GetEnemyType() const override { return Enemy::ET_FIREBAR; }
 
 	void OnSquashed() override;
-	void Death(bool isRight) override;
+	void Death(bool isRight,int score) override;
 
 	void Move() override;
 	void ApplyGravity() override;

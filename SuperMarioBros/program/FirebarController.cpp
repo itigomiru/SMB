@@ -111,6 +111,6 @@ void Firebar::Render(float cameraX)
 }
 
 void Firebar::OnSquashed() {}
-void Firebar::Death(bool isRight) {}
+void Firebar::Death(bool isRight,int score) {}
 void Firebar::Move(){}
 void Firebar::ApplyGravity(){}
