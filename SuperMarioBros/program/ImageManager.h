@@ -46,6 +46,8 @@ enum IMAGE_LIST {
 	IMAGE_UI_NUMBER,
 	IMAGE_UI_MARIO,
 	IMAGE_UI_TIME,
+	IMAGE_TITLE,
+	IMAGE_TITLE_PLAY,
 	//-----------------------------------------
 	//川野
 	IMAGE_ITEM_SUPERMASHROOM,
