@@ -742,7 +742,7 @@ void Player::Death()
 	{
 		deathSpeedY = 0.0f;
 	}
-	else PlayerData::GetInstance().SetPlayerState(SMALL);
+	PlayerData::GetInstance().SetPlayerState(SMALL);
 }
 
 void Player::DeathUpdate()

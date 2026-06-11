@@ -15,6 +15,7 @@
 #include "Enemy.h"
 #include "Object.h"
 #include "KoopaTroopaController.h"
+#include "Coin.h"
 #include "Goal.h"
 #include "FirebarController.h"
 #include "LiftController.h"
@@ -50,8 +51,9 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
-	SetLift();
 	objectManager.AddObject(std::make_unique<Goal>());
+
+	objectManager.AddObject(std::make_unique<Coin>(30,130));
 }
 
 void Stage::Update()
@@ -272,6 +274,9 @@ void Stage::CheckHit()
 						break;
 					case TileManager::ITEM_STAR:
 						player->GetStar();
+						break;
+					case TileManager::ITEM_COIN:
+						PlayerData::GetInstance().AddCoin(1);
 						break;
 
 					}
