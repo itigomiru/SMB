@@ -18,4 +18,13 @@ switch(currentStage)
 		map[5][130].itemType = ITEM_COIN;
 		map[9][170].itemType = ITEM_COIN;
 	break;
+	case 1:
+		map[6][30].itemType = ITEM_POWERUP;
+		map[9][106].itemType = ITEM_COIN;
+		map[5][107].itemType = ITEM_COIN;
+		map[9][109].itemType = ITEM_COIN;
+		map[5][110].itemType = ITEM_COIN;
+		map[9][112].itemType = ITEM_COIN;
+		map[5][113].itemType = ITEM_COIN;
+	break;
 }
