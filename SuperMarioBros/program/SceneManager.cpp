@@ -8,6 +8,7 @@
 #include "Ending.h"	
 #include "Gameover.h"
 #include "ImageManager.h"
+#include"Ui.h"
 
 
 
@@ -31,6 +32,7 @@ void SceneManager::Update()
 void SceneManager::Render()
 {
 	currentScene->Render();
+	UI::GetInstance().Render();
 }
 //---------------------------------------------------------------------------------
 //	I—¹ˆ—

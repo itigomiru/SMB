@@ -55,6 +55,8 @@ ImageManager::ImageManager()
 	images[IMAGE_UI_NUMBER] = LoadGraph("data/image/image_ui_number.png");
 	images[IMAGE_COIN_SCENE] = LoadGraph("data/image/image_coin_scene.png");
 	images[IMAGE_X_SCENE] = LoadGraph("data/image/image_x_scene.png");
+	images[IMAGE_UI_MARIO] = LoadGraph("data/image/image_ui_mario.png");
+	images[IMAGE_UI_TIME] = LoadGraph("data/image/image_ui_time.png");
 
 	//------------------
 	//川野
