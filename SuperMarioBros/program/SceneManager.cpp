@@ -1,10 +1,11 @@
 #include "Main.h"
 #include "SceneManager.h"
 
-#include "Title.h"	//	タイトル関係の関数を呼びたいので
-#include "Stage.h"	//	ステージ関係の関数を呼びたいので
-#include "Clear.h"	//	リザルト（結果表示画面）関係の関数を呼びたいので
-#include "Ending.h"	//	エンディング関係の関数を呼びたいので
+#include "Title.h"	
+#include "PreStage.h"	
+#include "Stage.h"	
+#include "Clear.h"	
+#include "Ending.h"	
 #include "Gameover.h"
 #include "ImageManager.h"
 
@@ -49,10 +50,13 @@ SceneManager& SceneManager::GetInstance()
 }
 
 
-void SceneManager::ChangeScene(int nextScene) {
+void SceneManager::ChangeScene(int nextScene, int nextStage) {
 	switch (nextScene) {
 	case SCENE_TITLE:
 		currentScene = std::make_unique<Title>();
+		break;
+	case SCENE_PRESTAGE:
+		currentScene = std::make_unique<PreStage>(nextStage);
 		break;
 	case SCENE_STAGE:
 		currentScene = std::make_unique<Stage>();

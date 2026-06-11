@@ -8,6 +8,8 @@
 #include "ImageManager.h"
 #include "PlayerData.h"
 #include "Stage.h"
+#include "ScoreEffect.h"
+#include "EffectManager.h"
 #include "Hit.h"
 #include "LiftController.h"
 
@@ -49,6 +51,9 @@ void Player::Init(Float2 position)
 	deathSpeedY = 0.0f;
 	firePoseTimer = 0;
 	isOnLift = false;
+	isGoal = false;
+	goalPhase = GP_DOWN;
+	comboCount = 0;
 }
 
 
@@ -74,16 +79,32 @@ void Player::Update(float cameraX)
 		isJumping = false;
 		isAnimJamping = false;
 	}
-	if (isGround)isAnimJamping = false;
+	if (isGround)
+	{
+		isAnimJamping = false;
+		comboCount = 0;
+	}
 
 #if 1
 	// デバッグ用キー
 	if (PushHitKey(KEY_INPUT_0)) { GetSuperMashroom(); }
 	if (PushHitKey(KEY_INPUT_9)) { GetFireFlower(); }
 	if (PushHitKey(KEY_INPUT_8)) { GetStar(); }
+	if (PushHitKey(KEY_INPUT_7)) { Get1UpMushroom(); }
 #endif
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
+
+	if (isGoal)
+	{
+		GoalUpdate();
+		UpdatePlayerSize();
+		ApplyGravity();
+		MoveX();
+		MoveY();
+		CheckCollisionY();
+		return;
+	}
 
 	PipeCheck();
 	Input();
@@ -510,11 +531,13 @@ void Player::GetSuperMashroom()
 
 		pos.y -= (SUPER_H - SMALL_H);
 	}
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 
 void Player::Get1UpMushroom()
 {
 	PlayerData::GetInstance().AddStock(1);
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1UP));
 }
 
 void Player::GetFireFlower()
@@ -535,10 +558,13 @@ void Player::GetFireFlower()
 		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
 	}
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 void Player::GetStar()
 {
 	starTimer = STAR_TIME;
+	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
+
 }
 
 void Player::UpdatePlayerSize()
@@ -663,6 +689,13 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 		pos.y = enemy->pos.y - size.h;
 
 		speed.y = -SQUASH_BOUNCE_POWER;
+		EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(enemy->pos, static_cast<ScoreEffect::SCORE>(comboCount)));
+		if (comboCount == ScoreEffect::SCORE_1UP)
+		{
+			PlayerData::GetInstance().AddStock(1);
+		}
+		comboCount++;
+		if (comboCount > ScoreEffect::SCORE_1UP) comboCount = ScoreEffect::SCORE_1UP;
 		return true;
 	}
 
@@ -860,10 +893,10 @@ void Player::RenderSmall(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -903,10 +936,10 @@ void Player::RenderBig(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -952,10 +985,10 @@ void Player::RenderFire(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A)) {
+	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D)) {
+	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -998,6 +1031,9 @@ void Player::RenderFire(float cameraX)
 		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true, true);
 	}
 }
+
+
+
 void Player::RenderStar(float cameraX)
 {
 	int chipW = 16;
@@ -1023,10 +1059,9 @@ void Player::PipeCheck()
 				pos.y = 2 * TILE_SIZE;
 				speed.x = 0;
 				speed.y = 0;
-
 				stage->cameraX = 0;
-				return;
 			}
+
 		}
 	}
 	else if (currentStage == 2)
@@ -1045,7 +1080,7 @@ void Player::PipeCheck()
 	}
 }
 
-void Player::SetStage(Stage * st)
+void Player::SetStage(Stage* st)
 {
 	stage = st;
 }
@@ -1089,4 +1124,61 @@ bool Player::CheckLift()
 	}
 
 	return false;
+}
+void Player::OnGoal(float poleCenterX)
+{
+	if (isGoal || isDead) return;
+
+	isGoal = true;
+	goalPhase = GP_DOWN;
+
+	pos.x = poleCenterX - size.w;
+
+	speed.x = 0.0f;
+	speed.y = 0.0f;
+	isFacingRight = true;
+
+
+	isCrouching = false;
+	isJumping = false;
+	isAnimJamping = false;
+}
+void Player::GoalUpdate()
+{
+	switch (goalPhase)
+	{
+	case GP_DOWN: // ポールをスライドして降りる
+		speed.x = 0.0f;
+		speed.y = 2.0f; // 一定速度で下へ
+
+		// 地面に着地したら次のフェーズへ
+		if (isGround)
+		{
+			goalPhase = 1;
+			speed.y = 0.0f;
+			isFacingRight = true; // 右を向く
+		}
+		break;
+
+	case GP_WALK:
+		speed.x = SPEED_MAX.x / 2;
+
+		/*
+		if (pos.x > CASTLE_ENTER_X)
+		{
+			goalPhase = 2;
+			speed.x = 0.0f;
+			// SceneManager等にクリア情報を送る
+			// SceneManager::GetInstance().ChangeScene(SCENE_CLEAR);
+		}
+		*/
+		break;
+
+	case GP_CASTLE:
+		speed.x = 0.0f;
+		speed.y = 0.0f;
+		break;
+	}
+
+	return;
 }

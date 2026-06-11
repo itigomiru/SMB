@@ -25,12 +25,12 @@ public:
 	bool CheckSquashEnemy(Enemy* enemy);
 	void PowerUpUpdate();
 	void DeathUpdate();
+	void GoalUpdate();
+	void OnGoal(float poleCenterX); 
 
 	void Damage();
 
 	void LandingOnGround();
-	void SetOnLift(bool flag);
-	bool IsOnLift() const;
 
 	bool isOnLift;
 
@@ -74,6 +74,7 @@ private:
 	int oldState;
 	int newState;
 	bool isChangingState = false;
+	int comboCount = 0;
 
 	Float2 prevPos;
 
@@ -89,6 +90,14 @@ private:
 	bool isFallenDeath;
 	const float DEATH_JUMP_POWER = 7.0f;
 
+	bool isGoal;       // ゴール演出中かどうか
+	int goalPhase;     // ゴール演出の進行状態 (0: ポール降下中, 1: 右へ移動中, 2: 城到達)
+	enum GoalPhase
+	{
+		GP_DOWN,
+		GP_WALK,
+		GP_CASTLE,
+	};
 	int fireballCount;
 	enum PlayerState
 	{
