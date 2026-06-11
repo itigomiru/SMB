@@ -20,4 +20,5 @@ void Gameover::Render()
 }
 Gameover::~Gameover()
 {
+
 }
