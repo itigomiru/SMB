@@ -56,7 +56,7 @@ void Stage::Update()
 	enemySpawner.Update(cameraX);
 	tileManager.Update();
 	EffectManager::GetInstance().Update();
-
+	CheckHitPlayerAndLiftSide();
 	CheckHit();
 }
 
@@ -399,8 +399,47 @@ void Stage::SetLift()
 	{
 		objectManager.AddObject(std::make_unique<Lift>(
 			TILE_SIZE * 10.0f,
-			TILE_SIZE * 7.0f,
+			TILE_SIZE * 8.0f,
 			TILE_SIZE * 4.0f
 		));
+	}
+}
+
+void Stage::CheckHitPlayerAndLiftSide()
+{
+	for (const auto& obj : objectManager.GetObjects())
+	{
+		if (obj->objectType != Object::OT_LIFT) continue;
+		if (obj->isDead) continue;
+
+		Lift* lift = static_cast<Lift*>(obj.get());
+
+		bool hit =
+			player->pos.x + player->size.w > lift->pos.x &&
+			player->pos.x < lift->pos.x + lift->size.w &&
+			player->pos.y + player->size.h > lift->pos.y &&
+			player->pos.y < lift->pos.y + lift->size.h;
+
+		if (!hit) continue;
+
+		// 上に乗ってる時は横壁判定しない
+		if (player->pos.y + player->size.h <= lift->pos.y + 6.0f)
+		{
+			continue;
+		}
+
+		float playerCenterX = player->pos.x + player->size.w / 2.0f;
+		float liftCenterX = lift->pos.x + lift->size.w / 2.0f;
+
+		if (playerCenterX < liftCenterX)
+		{
+			player->pos.x = lift->pos.x - player->size.w;
+		}
+		else
+		{
+			player->pos.x = lift->pos.x + lift->size.w;
+		}
+
+		player->speed.x = 0.0f;
 	}
 }
