@@ -21,7 +21,7 @@
 
 void Stage::Init()
 {
-
+	PlayerData::GetInstance().ResetTime();
 	switch (tileManager.GetCurrentStage())
 	{
 	case 0:
@@ -30,6 +30,7 @@ void Stage::Init()
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		break;
+
 	}
 	auto p = std::make_unique<Player>(playerStartPos);
 	player = p.get();

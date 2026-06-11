@@ -15,7 +15,7 @@ public:
 	const int STOCK_MAX = 99;
 	const int SCORE_MAX = 999999;
 	const int COIN_MAX = 99;
-	const int TIME_MAX = 999;
+	const int BASE_TIME = 301;
 	static PlayerData& GetInstance();
 	void AddStock(int num);
 	void AddScore(int num);
