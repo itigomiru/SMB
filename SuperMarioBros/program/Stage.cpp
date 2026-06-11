@@ -18,6 +18,7 @@
 #include "Goal.h"
 #include "FirebarController.h"
 #include "LiftController.h"
+#include "Ui.h"
 
 void Stage::Init()
 {
@@ -31,6 +32,7 @@ void Stage::Init()
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		break;
 	}
+	UI::GetInstance().SetTileManager(&tileManager);
 	auto p = std::make_unique<Player>(playerStartPos);
 	player = p.get();
 	player->SetStage(this);

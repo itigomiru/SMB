@@ -6,19 +6,9 @@
 #include "SoundManager.h"
 #include "PlayerData.h"
 
-UI::UI(int stageNum)
+
+UI::UI()
 {
-	nextStage = stageNum;
-}
-
-void UI::Init()
-{
-
-}
-
-void UI::Update()
-{
-
 }
 void UI::SetTileManager(TileManager* tm)
 {
@@ -53,9 +43,13 @@ void UI::Render()
 	DrawGraph(135, 10, ImageManager::GetInstance().GetImage(IMAGE_UI_WORLD), true);
 	DrawRectGraph(143, 18, 8, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
 	DrawGraph(151, 18, ImageManager::GetInstance().GetImage(IMAGE_UI_LINE), true);
-	if (tileManager->GetCurrentStage() == 0)srcX = 1 * 8;
-	if (tileManager->GetCurrentStage() == 1)srcX = 4 * 8;
-	if (tileManager->GetCurrentStage() == 2)srcX = 1 * 8;
+	if (tileManager)
+	{
+		if (tileManager->GetCurrentStage() == 0)srcX = 1 * 8;
+		if (tileManager->GetCurrentStage() == 1)srcX = 4 * 8;
+		if (tileManager->GetCurrentStage() == 2)srcX = 1 * 8;
+	}
+	else(srcX = 1 * 8);
 	DrawRectGraph(159, 18, 8, srcX, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
 	//ƒ^ƒCƒ€
 	DrawGraph(190, 10, ImageManager::GetInstance().GetImage(IMAGE_UI_TIME), true);

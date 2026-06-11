@@ -7,14 +7,19 @@ private:
     int timer = 0;
     const int DISPLAY_TIME = 90;
     TileManager* tileManager = nullptr;
+	UI();
+    ~UI();
+	UI(const UI&) = delete;
+	UI& operator=(const UI&) = delete;
 
 
 public:
-    UI(int stageNum = 0);
-    void Init();
-    void Update();
+	static UI& GetInstance() {
+		static UI instance;
+		return instance;
+	}
+    
     void Render();
-    ~UI();
     void SetTileManager(TileManager* tm);
 
 };
