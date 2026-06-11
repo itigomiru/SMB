@@ -44,7 +44,8 @@ enum IMAGE_LIST {
 	IMAGE_COIN_SCENE,
 	IMAGE_X_SCENE,
 	IMAGE_UI_NUMBER,
-
+	IMAGE_UI_MARIO,
+	IMAGE_UI_TIME,
 	//-----------------------------------------
 	//川野
 	IMAGE_ITEM_SUPERMASHROOM,
