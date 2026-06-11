@@ -16,104 +16,86 @@ void EnemySpawner::SetObjectManager(ObjectManager* om)
 
 void EnemySpawner::SetTileManager(TileManager* tm)
 {
-    tileManager = tm;
+	tileManager = tm;
 }
 
 void EnemySpawner::SetSpawner() {
-    spawnDataList.clear();
-
-    spawnDataList = {
-        { GOOMBA,          320.0f, 190.0f, false, true },
-        { GOOMBA,          640.0f, 190.0f, false, true },
-        { GOOMBA,          800.0f, 190.0f, false, true },
-        { GOOMBA,          832.0f, 190.0f, false, true },
-        { GOOMBA,         1280.0f,  62.0f, false, true },
-        { GOOMBA,         1312.0f,  62.0f, false, true },
-        { GOOMBA,         1552.0f, 190.0f, false, true },
-        { GOOMBA,         1584.0f, 190.0f, false, true },
-        { KOOPA_TROOPA,   1696.0f, 182.0f, false, true },
-        { GOOMBA,         1840.0f, 190.0f, false, true },
-        { GOOMBA,         1872.0f, 190.0f, false, true },
-        { GOOMBA,         2016.0f, 190.0f, false, true },
-        { GOOMBA,         2048.0f, 190.0f, false, true },
-        { GOOMBA,         2096.0f, 190.0f, false, true },
-        { GOOMBA,         2784.0f, 190.0f, false, true },
-        { GOOMBA,         2816.0f, 190.0f, false, true }
-    };
+	spawnDataList.clear();
+#include "SpawnData.inc"
 }
 
 void EnemySpawner::Update(float cameraX)
 {
-    for (auto& data : spawnDataList)
-    {
-        if (data.spawned)
-        {
-            continue;
-        }
+	for (auto& data : spawnDataList)
+	{
+		if (data.spawned)
+		{
+			continue;
+		}
 
-        // 画面右側に近づいたら出現
-        if (data.x < cameraX + SCREEN_W + ENEMY_SPAWN_OFFSET)
-        {
-            std::unique_ptr<Object> enemy;
+		// 画面右側に近づいたら出現
+		if (data.x < cameraX + SCREEN_W + ENEMY_SPAWN_OFFSET)
+		{
+			std::unique_ptr<Object> enemy;
 
-            switch (data.type)
-            {
-            case GOOMBA:
-            {
-                auto goomba = std::make_unique<Goomba>();
+			switch (data.type)
+			{
+			case GOOMBA:
+			{
+				auto goomba = std::make_unique<Goomba>();
 
-                goomba->SetPosition(data.x, data.y);
+				goomba->SetPosition(data.x, data.y);
 				goomba->SetTileManager(tileManager);
-                enemy = std::move(goomba);
+				enemy = std::move(goomba);
 
-                break;
-            }
+				break;
+			}
 
-            case KOOPA_TROOPA:
-            {
+			case KOOPA_TROOPA:
+			{
 
-                auto koopatroopa = std::make_unique<KoopaTroopa>();
+				auto koopatroopa = std::make_unique<KoopaTroopa>();
 
-                koopatroopa->SetPosition(data.x, data.y);
-                koopatroopa->SetTileManager(tileManager);
-                enemy = std::move(koopatroopa);
+				koopatroopa->SetPosition(data.x, data.y);
+				koopatroopa->SetTileManager(tileManager);
+				enemy = std::move(koopatroopa);
 
-                break;
-            }
-            case FIREBAR:
-            {
-                int fireCount = 6;
-                bool isClockwise = true;
+				break;
+			}
+			case FIREBAR:
+			{
+				int fireCount = 6;
+				bool isClockwise = true;
 
-                for (int i = 0; i < fireCount; i++)
-                {
-                    float distance = i * 8.0f; 
+				for (int i = 0; i < fireCount; i++)
+				{
+					float distance = i * 8.0f;
 
-                    float tileX = data.x / TILE_SIZE;
-                    float tileY = data.y / TILE_SIZE;
+					float tileX = data.x / TILE_SIZE;
+					float tileY = data.y / TILE_SIZE;
 
-                    auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
- 
-                    objectManager->AddObject(std::move(fireballElement));
-                }
+					auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
 
-                data.spawned = true;
-                break;
-            }
-            case PIRANHA_PLANT:
-                break;
+					objectManager->AddObject(std::move(fireballElement));
+				}
 
-            case BOWSER:
-                break;
-            }
+				data.spawned = true;
+				break;
+			}
+			case PIRANHA_PLANT:
+				break;
 
-            if (enemy)
-            {
-                objectManager->AddObject(
-                    std::move(enemy));
+			case BOWSER:
+				break;
+			}
 
-                data.spawned = true;
-            }
-        }
-    }
+			if (enemy)
+			{
+				objectManager->AddObject(
+					std::move(enemy));
+
+				data.spawned = true;
+			}
+		}
+	}
 }

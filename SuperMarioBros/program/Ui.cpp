@@ -59,11 +59,11 @@ void UI::Render()
 	DrawRectGraph(166 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
 	//ƒ^ƒCƒ€
 	DrawGraph(197 , 10, ImageManager::GetInstance().GetImage(IMAGE_UI_TIME), true);
-	srcX = (PlayerData::GetInstance().GetTime() / 60 / 100) * 8;
+	srcX = (PlayerData::GetInstance().GetTime() / 24 / 100) * 8;
 	DrawRectGraph(204 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
-	srcX = ((PlayerData::GetInstance().GetTime() / 60 / 10) % 10) * 8;
+	srcX = ((PlayerData::GetInstance().GetTime() / 24 / 10) % 10) * 8;
 	DrawRectGraph(212 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
-	srcX = (PlayerData::GetInstance().GetTime() / 60 % 10) * 8;
+	srcX = (PlayerData::GetInstance().GetTime() / 24 % 10) * 8;
 	DrawRectGraph(220 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
 
 
