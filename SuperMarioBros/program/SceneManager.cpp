@@ -63,7 +63,7 @@ void SceneManager::ChangeScene() {
 		currentScene = std::make_unique<PreStage>(reserveStage);
 		break;
 	case SCENE_STAGE:
-		currentScene = std::make_unique<Stage>();
+		currentScene = std::make_unique<Stage>(reserveStage);
 		break;
 	case SCENE_CLEAR:
 		currentScene = std::make_unique<Clear>();

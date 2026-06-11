@@ -26,6 +26,7 @@ void PlayerData::AddScore(int num)
 void PlayerData::AddCoin(int num)
 {
 	coin += num; 
+	//sound
 	if (coin > COIN_MAX)
 	{
 		coin -= COIN_MAX;
@@ -44,6 +45,7 @@ PlayerData::PlayerData()
 }
 void PlayerData::Reset()
 {
+	time = BASE_TIME;
 	stock = BASE_STOCK;
 	score = 0;
 	coin = 0;

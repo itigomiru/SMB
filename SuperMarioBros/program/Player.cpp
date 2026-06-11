@@ -564,7 +564,6 @@ void Player::GetStar()
 {
 	starTimer = STAR_TIME;
 	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
-
 }
 
 void Player::UpdatePlayerSize()
