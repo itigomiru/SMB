@@ -9,7 +9,7 @@ void Gameover::Init()
 void Gameover::Update()
 {
 	if (CheckHitKey(KEY_INPUT_RETURN)) {
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);
+		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 	}
 }
 void Gameover::Render()

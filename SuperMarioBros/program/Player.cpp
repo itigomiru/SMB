@@ -1066,7 +1066,7 @@ void Player::PipeCheck()
 	}
 	else if (currentStage == 2)
 	{
-		if (tileX >= 12 && tileY <= 12)
+		if (tileX >= 12 && tileY >= 12 && CheckHitKey(KEY_INPUT_D))
 		{
 			tileManager->ChangeStage(0);
 
@@ -1154,6 +1154,7 @@ void Player::GoalUpdate()
 		// 地面に着地したら次のフェーズへ
 		if (isGround)
 		{
+			pos.x += size.w;
 			goalPhase = 1;
 			speed.y = 0.0f;
 			isFacingRight = true; // 右を向く
@@ -1163,15 +1164,12 @@ void Player::GoalUpdate()
 	case GP_WALK:
 		speed.x = SPEED_MAX.x / 2;
 
-		/*
-		if (pos.x > CASTLE_ENTER_X)
+		if (pos.x > 3264)
 		{
 			goalPhase = 2;
 			speed.x = 0.0f;
-			// SceneManager等にクリア情報を送る
-			// SceneManager::GetInstance().ChangeScene(SCENE_CLEAR);
+			SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
 		}
-		*/
 		break;
 
 	case GP_CASTLE:

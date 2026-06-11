@@ -22,6 +22,7 @@
 void SceneManager::Update()
 {
 	currentScene->Update();
+	ChangeScene();
 }
 
 //---------------------------------------------------------------------------------
@@ -50,13 +51,14 @@ SceneManager& SceneManager::GetInstance()
 }
 
 
-void SceneManager::ChangeScene(int nextScene, int nextStage) {
-	switch (nextScene) {
+void SceneManager::ChangeScene() {
+	if (reserveScene == -1) return; 
+	switch (reserveScene) {
 	case SCENE_TITLE:
 		currentScene = std::make_unique<Title>();
 		break;
 	case SCENE_PRESTAGE:
-		currentScene = std::make_unique<PreStage>(nextStage);
+		currentScene = std::make_unique<PreStage>(reserveStage);
 		break;
 	case SCENE_STAGE:
 		currentScene = std::make_unique<Stage>();
@@ -74,4 +76,6 @@ void SceneManager::ChangeScene(int nextScene, int nextStage) {
 		break;
 	}
 	currentScene->Init();
+	reserveScene = -1;
+	reserveStage = 0;
 }

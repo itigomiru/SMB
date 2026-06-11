@@ -25,7 +25,19 @@ ImageManager::ImageManager()
 	images[IMAGE_PLAYER_BIG_TO_FIRE] = LoadGraph("data/image/image_player_big_to_fire.png");
 	images[IMAGE_BLOCK_BREAK] = LoadGraph("data/image/image_block_break.png");
 	images[IMAGE_PLAYER_DEATH] = LoadGraph("data/image/image_player_death.png");
-	
+	images[IMAGE_UNDERGROUND] = LoadGraph("data/image/image_underground.png");
+	images[IMAGE_UNDERGROUND_BLOCK] = LoadGraph("data/image/image_underground_block.png");
+	images[IMAGE_UNDERGROUND_COIN] = LoadGraph("data/image/image_underground_coin.png");
+	images[IMAGE_CASTLE_GROUND] = LoadGraph("data/image/image_castle_ground.png");
+	images[IMAGE_CASTLE_BLOCK] = LoadGraph("data/image/image_castle_block.png");
+	images[IMAGE_CASTLE_HITTED_BLOCK] = LoadGraph("data/image/image_castle_hitted_block.png");
+	images[IMAGE_CASTLE_QUESTION_BLOCK] = LoadGraph("data/image/image_castle_question_block.png");
+	images[IMAGE_PIPE_LEFT_TOP_UNDERGROUND] = LoadGraph("data/image/image_pipe_left_top_underground.png");
+	images[IMAGE_PIPE_LEFT_BOTTOM_UNDERGROUND] = LoadGraph("data/image/image_pipe_left_bottom_underground.png");
+	images[IMAGE_PIPE_RIGHT_TOP_UNDERGROUND] = LoadGraph("data/image/image_pipe_right_top_underground.png");
+	images[IMAGE_PIPE_RIGHT_BOTTOM_UNDERGROUND] = LoadGraph("data/image/image_pipe_right_bottom_underground.png");
+	images[IMAGE_PIPE_TOP_UNDERGROUND] = LoadGraph("data/image/image_pipe_top_underground.png");
+	images[IMAGE_PIPE_BOTTOM_UNDERGROUND] = LoadGraph("data/image/image_pipe_bottom_underground.png");
 	//------------------
 	//丸山
 	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");

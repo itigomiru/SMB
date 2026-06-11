@@ -21,7 +21,7 @@ void PreStage::Update()
 	timer++;
 	if (timer > DISPLAY_TIME)
 	{
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_STAGE, nextStage);
+		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_STAGE, nextStage);
 	}
 }
 

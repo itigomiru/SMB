@@ -9,7 +9,7 @@ void Ending::Init()
 void Ending::Update()
 {
 	if (CheckHitKey(KEY_INPUT_RETURN)) {
-		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_TITLE);
+		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 	}
 }
 void Ending::Render()

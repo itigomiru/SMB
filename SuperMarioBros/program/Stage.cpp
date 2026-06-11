@@ -25,10 +25,10 @@ void Stage::Init()
 	switch (tileManager.GetCurrentStage())
 	{
 	case 0:
-		playerStartPos = { 32.0f, TILE_SIZE * 12};
+		playerStartPos = { 32.0f, TILE_SIZE * 12 };
 		break;
 	case 1:
-		playerStartPos = { 32.0f, TILE_SIZE * 6};
+		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		break;
 	}
 	auto p = std::make_unique<Player>(playerStartPos);
@@ -51,23 +51,38 @@ void Stage::Update()
 {
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
-	if(tileManager.GetCurrentStage() != 2)CameraUpdate();
+	if (tileManager.GetCurrentStage() != 2)CameraUpdate();
+	PlayerData::GetInstance().AddTime(-1);
+	if (PlayerData::GetInstance().GetTime() <= 0)
+	{
+		player->Death();
+	}
 
 	objectManager.Update(cameraX);
 	enemySpawner.Update(cameraX);
 	tileManager.Update();
-	EffectManager::GetInstance().Update();
-	
-  CheckHitPlayerAndLiftSide();
+
+	CheckHitPlayerAndLiftSide();
 	CheckHit();
 }
 
 void Stage::Render()
 {
-	DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
-	for (int i = 0; i < 5; i++)
+	switch (tileManager.GetCurrentStage())
 	{
-		DrawGraph(i * 768 - static_cast<int>(cameraX), TILE_SIZE * 2, ImageManager::GetInstance().GetImage(IMAGE_BACK_GROUND), true);
+	case 0:
+		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(132, 134, 225), true);
+		for (int i = 0; i < 5; i++)
+		{
+			DrawGraph(i * 768 - static_cast<int>(cameraX), TILE_SIZE * 2, ImageManager::GetInstance().GetImage(IMAGE_BACK_GROUND), true);
+		}
+		break;
+	case 1:
+		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+		break;
+	case 2:
+		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
+		break;
 	}
 	objectManager.Render(Object::RL_UNDER_TILE, cameraX);
 	tileManager.Render(cameraX);
@@ -100,9 +115,9 @@ bool Stage::UpdateFreeze()
 				PlayerData::GetInstance().AddStock(-1);
 				player->Init(playerStartPos);
 				cameraX = 0.0f;
-				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE,tileManager.GetCurrentStage());
+				SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, tileManager.GetCurrentStage());
 			}
-			else SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_GAMEOVER);
+			else SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_GAMEOVER);
 		}
 
 		return true;
@@ -175,10 +190,10 @@ void Stage::CheckHit()
 
 				if (objectManager.HitObjects(player, enemy))
 				{
-					
+
 					if (player->starTimer > 0)
 					{
-						enemy->Death(player->pos.x < enemy->pos.x,0);
+						enemy->Death(player->pos.x < enemy->pos.x, 0);
 					}
 					else
 					{
@@ -209,7 +224,7 @@ void Stage::CheckHit()
 							{
 								KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
 
-								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
+								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP || koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
 								{
 									koopatroopa->OnKicked(player->pos.x);
 								}
@@ -288,7 +303,7 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death(player->pos.x < enemy->pos.x,0);
+				enemy->Death(player->pos.x < enemy->pos.x, 0);
 				//enemyの死亡エフェクト
 				fireball->DeathAndEffect();
 				break;
@@ -338,7 +353,7 @@ void Stage::CheckHitShellAndEnemy()
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 				KoopaTroopa* shellEnemy = static_cast<KoopaTroopa*>(shellObj.get());
 
-				enemy->Death(shellObj->speed.x > 0.0f,shellEnemy->comboCount);
+				enemy->Death(shellObj->speed.x > 0.0f, shellEnemy->comboCount);
 				shellEnemy->comboCount++;
 				if (shellEnemy->comboCount > ScoreEffect::SCORE_1UP) shellEnemy->comboCount = ScoreEffect::SCORE_1UP;
 				break;
@@ -398,11 +413,7 @@ void Stage::SetLift()
 {
 	if (tileManager.GetCurrentStage() == 0)
 	{
-		objectManager.AddObject(std::make_unique<Lift>(
-			TILE_SIZE * 10.0f,
-			TILE_SIZE * 8.0f,
-			TILE_SIZE * 4.0f
-		));
+		objectManager.AddObject(std::make_unique<Lift>(TILE_SIZE * 10.0f, TILE_SIZE * 8.0f, TILE_SIZE * 4.0f));
 	}
 }
 

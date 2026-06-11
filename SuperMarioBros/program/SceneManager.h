@@ -28,11 +28,16 @@ private:
 
 	SceneManager(const SceneManager&) = delete;
 	SceneManager& operator=(const SceneManager&) = delete;
-
+	int reserveScene = -1;
+	int reserveStage = 0;
+	void ChangeScene();
 public:
 	void Update();	//	XVˆ—
 	void Render();	//	•`‰æˆ—
 	const float GRAVITY = 0.5f;
 
-	void ChangeScene(int nextScene,int nextStage = 0);
+	void ReserveScene(int nextScene, int nextStage = 0) {
+		reserveScene = nextScene;
+		reserveStage = nextStage;
+	}
 };

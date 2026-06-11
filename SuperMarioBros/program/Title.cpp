@@ -15,7 +15,7 @@ void Title::Init()
 void Title::Update()
 {
     if (CheckHitKey(KEY_INPUT_RETURN)) {
-        SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_PRESTAGE,0);
+        SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,0);
     }
 }
 

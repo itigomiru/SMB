@@ -29,7 +29,7 @@ public:
 	void OnGoal(float poleCenterX); 
 
 	void Damage();
-
+	void Death();
 	void LandingOnGround();
 
 	bool isOnLift;
@@ -119,7 +119,7 @@ private:
 	void CheckCollisionY();
 	bool CheckGround();
 
-	void Death();
+
 
 	void UpdatePlayerSize();
 	bool CheckCanStand();

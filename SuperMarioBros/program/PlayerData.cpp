@@ -7,6 +7,11 @@ PlayerData& PlayerData::GetInstance()
 	return instance;
 }
 
+void PlayerData::AddTime(int num)
+{
+	time += num;
+	if (time < 0)time = 0;
+}
 void PlayerData::AddStock(int num)
 {
 	stock += num;
@@ -21,14 +26,17 @@ void PlayerData::AddScore(int num)
 void PlayerData::AddCoin(int num)
 {
 	coin += num; 
-	if (coin >= 100)
+	if (coin > COIN_MAX)
 	{
-		coin -= 100;
+		coin -= COIN_MAX;
 		AddStock(1);
 	}
 }
 
 int PlayerData::GetStock() const { return stock; }
+int PlayerData::GetTime() const { return time; }
+int PlayerData::GetScore() const { return score; }
+int PlayerData::GetCoin() const { return coin; }
 
 PlayerData::PlayerData()
 {

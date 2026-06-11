@@ -133,19 +133,28 @@ void TileManager::Render(float cameraX) {
 
 			int drawX = (static_cast<int>(map[y][x].position.x) - static_cast<int>(cameraX));
 			int drawY = static_cast<int>(map[y][x].position.y);
+			int imgHandle = -1;
 			switch (type)
 			{
 			case TILE_EMPTY:
 				break;
 
 			case TILE_GROUND:
-				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_GROUND), true);
+				if (currentStage == 0)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_GROUND);
+				if (currentStage == 1)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_CASTLE_GROUND);
+				if (currentStage == 2)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_UNDERGROUND);
+				DrawGraph(drawX, drawY, imgHandle, true);
 				break;
 			case TILE_BLOCK:
-				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_BLOCK), true);
+				if (currentStage == 0)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_BLOCK);
+				if (currentStage == 1)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_CASTLE_BLOCK);
+				if (currentStage == 2)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_UNDERGROUND_BLOCK);
+				DrawGraph(drawX, drawY, imgHandle, true);
 				break;
 			case TILE_QUESTION:
-				DrawRectGraph(drawX, drawY, srcX, 0, TILE_SIZE, TILE_SIZE, ImageManager::GetInstance().GetImage(IMAGE_QUESTION_BLOCK), true, false);
+				if (currentStage == 0)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_QUESTION_BLOCK);
+				if (currentStage == 1)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_CASTLE_QUESTION_BLOCK);
+				DrawRectGraph(drawX, drawY, srcX, 0, TILE_SIZE, TILE_SIZE, imgHandle, true, false);
 				break;
 			case TILE_PIPE_LEFT_TOP:
 				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_LEFT_TOP), true);
@@ -162,12 +171,31 @@ void TileManager::Render(float cameraX) {
 			case TILE_HIDE_BLOCK:
 				break;
 			case TILE_HITTED_BLOCK:
-				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_HITTED_BLOCK), true);
+				if (currentStage == 0)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_HITTED_BLOCK);
+				if (currentStage == 1)imgHandle = ImageManager::GetInstance().GetImage(IMAGE_CASTLE_HITTED_BLOCK);
+				DrawGraph(drawX, drawY, imgHandle, true);
 				break;
 			case TILE_STAIR_BLOCK:
 				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_STAIR_BLOCK), true);
 				break;
-
+			case TILE_PIPE_LEFT_TOP2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_LEFT_TOP_UNDERGROUND), true);
+				break;
+			case TILE_PIPE_LEFT_BOTTOM2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_LEFT_BOTTOM_UNDERGROUND), true);
+				break;
+			case TILE_PIPE_TOP2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_TOP_UNDERGROUND), true);
+				break;
+			case TILE_PIPE_BOTTOM2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_BOTTOM_UNDERGROUND), true);
+				break;
+			case TILE_PIPE_RIGHT_TOP2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_RIGHT_TOP_UNDERGROUND), true);
+				break;
+			case TILE_PIPE_RIGHT_BOTTOM2:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_RIGHT_BOTTOM_UNDERGROUND), true);
+				break;
 			}
 		}
 	}
@@ -251,7 +279,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 
 		checkAndHitEnemyAbove();
 		checkAndHitMashAbove();
-		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x, map[y][x].basePosition.y));
+		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x + (TILE_SIZE * 0.5), map[y][x].basePosition.y + (TILE_SIZE * 0.5)));
 
 		map[y][x].type = TILE_EMPTY;
 		return;

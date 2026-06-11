@@ -23,6 +23,5 @@ void CoinEffect::Render(float cameraX) {
     int drawY = static_cast<int>(y);
     int chipW = 8;
 	int srcX = timer  / 2 % 4 * chipW; 
-    // コインを描画 (黄色の円などで代用)
 	DrawRectGraph(drawX, drawY, srcX, 0, 8, 16, ImageManager::GetInstance().GetImage(IMAGE_COIN), true);
 }
