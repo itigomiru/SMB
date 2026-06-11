@@ -99,12 +99,15 @@
     </ClCompile>
     <ClCompile Include="program\LiftController.cpp">
       <Filter>Object</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="program\Ui.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="program\ScoreEffect.cpp">
       <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="program\Coin.cpp">
+      <Filter>Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,12 +221,15 @@
     </ClInclude>
     <ClInclude Include="program\LiftController.h">
       <Filter>Object</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="program\Ui.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="program\ScoreEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="program\Coin.h">
+      <Filter>Object\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
