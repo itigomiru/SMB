@@ -10,6 +10,7 @@ private:
 	int score;
 	int coin;
 	int time;
+	int playerState;
 public:
 	const int BASE_STOCK = 3;
 	const int STOCK_MAX = 99;
@@ -21,10 +22,12 @@ public:
 	void AddScore(int num);
 	void AddCoin(int num);
 	void AddTime(int num);
+	void SetPlayerState(int state) { playerState = state; }
 	void Reset();
 	void ResetTime() { time = BASE_TIME; }
 	int GetStock() const;
 	int GetTime() const;
 	int GetScore() const;
 	int GetCoin() const;
+	int GetPlayerState() const { return playerState; }
 };

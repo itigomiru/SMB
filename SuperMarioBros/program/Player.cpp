@@ -20,6 +20,7 @@ Player::Player(Float2 position)
 	Init(position);
 }
 
+
 void Player::Init(Float2 position)
 {
 	isFacingRight = true;
@@ -519,6 +520,15 @@ void Player::SetObjectManager(ObjectManager* om)
 	objectManager = om;
 }
 
+void Player::SetState(int newState)
+{
+	state = newState;
+	UpdatePlayerSize();
+	if (state != SMALL)
+	{
+		pos.y -= (SUPER_H - SMALL_H);
+	}
+}
 
 void Player::GetSuperMashroom()
 {
@@ -726,15 +736,13 @@ void Player::Death()
 	if (isDead) return;
 
 	isDead = true;
-	deathTimer = DEATH_TIME; // 例: 120フレームなど
+	deathTimer = DEATH_TIME; 
 
 	if (!isFallenDeath)
 	{
-		// 敵に当たって死んだ場合：
-		// 1. 当たり判定をなくす（これ以上地形と干渉させない）
-		// 2. 最初の一瞬（例えば20フレーム）はその場で静止させるための準備
 		deathSpeedY = 0.0f;
 	}
+	else PlayerData::GetInstance().SetPlayerState(SMALL);
 }
 
 void Player::DeathUpdate()
@@ -1168,6 +1176,7 @@ void Player::GoalUpdate()
 			goalPhase = 2;
 			speed.x = 0.0f;
 			SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
+			PlayerData::GetInstance().SetPlayerState(state);
 		}
 		break;
 

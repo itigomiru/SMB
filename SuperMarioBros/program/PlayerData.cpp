@@ -45,6 +45,7 @@ PlayerData::PlayerData()
 }
 void PlayerData::Reset()
 {
+	playerState = 0;
 	time = BASE_TIME;
 	stock = BASE_STOCK;
 	score = 0;

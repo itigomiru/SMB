@@ -17,6 +17,7 @@ public:
 	void SetTileManager(TileManager* tm);
 	void SetObjectManager(ObjectManager* om);
 	void SetStage(Stage* st);
+	void SetState(int newState);
 	void GetSuperMashroom();
 	void GetFireFlower();
 	void Get1UpMushroom();
