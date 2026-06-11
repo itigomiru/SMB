@@ -59,6 +59,7 @@ ImageManager::ImageManager()
 	images[IMAGE_UI_TIME] = LoadGraph("data/image/image_ui_time.png");
 	images[IMAGE_TITLE] = LoadGraph("data/image/image_title.png");
 	images[IMAGE_TITLE_PLAY] = LoadGraph("data/image/image_title_play.png");
+	images[IMAGE_UI_GAMEOVER] = LoadGraph("data/image/image_ui_gameover.png");
 	//------------------
 	//川野
 	images[IMAGE_ITEM_SUPERMASHROOM] = LoadGraph("data/image/image_supermashroom.png");
