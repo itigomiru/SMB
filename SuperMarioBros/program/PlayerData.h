@@ -15,13 +15,14 @@ public:
 	const int STOCK_MAX = 99;
 	const int SCORE_MAX = 999999;
 	const int COIN_MAX = 99;
-	const int BASE_TIME = 301;
+	const int BASE_TIME = 301 * 60;
 	static PlayerData& GetInstance();
 	void AddStock(int num);
 	void AddScore(int num);
 	void AddCoin(int num);
 	void AddTime(int num);
 	void Reset();
+	void ResetTime() { time = BASE_TIME; }
 	int GetStock() const;
 	int GetTime() const;
 	int GetScore() const;

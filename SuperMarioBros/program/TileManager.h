@@ -84,4 +84,6 @@ public:
 	int GetCurrentStage() const { return currentStage; }
 
 	void ChangeStage(int stage);
+
+	void SetCurrentStage(int stage) { currentStage = stage; }
 };

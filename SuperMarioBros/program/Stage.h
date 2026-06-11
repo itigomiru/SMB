@@ -32,6 +32,7 @@ private :
 
 
 public:
+	Stage(int num = 0);
 	void Init() override;
 	void Update() override;
 	void Render() override;

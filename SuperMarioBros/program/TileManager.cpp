@@ -8,8 +8,9 @@
 #include "EffectManager.h"
 #include "CoinEffect.h"
 #include "blockBreakEffect.h"
-#include <memory>
 #include"ImageManager.h"
+#include "PlayerData.h"
+#include <memory>
 void TileManager::SetTile()
 {
 #include "StageData.inc"
@@ -217,7 +218,6 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 	// 範囲外チェック（安全のため）
 	if (y < 0 || y >= map.size() || x < 0 || x >= map[y].size()) return;
 
-	// 叩かれたタイルの物理的な位置をピクセル換算（引数の x, y を使用するように修正）
 	float blockLeft = x * TILE_SIZE;
 	float blockRight = (x + 1) * TILE_SIZE;
 	float blockTop = y * TILE_SIZE;
@@ -303,8 +303,8 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 		switch (ItemType(map[y][x].itemType))
 		{
 		case ITEM_COIN:
-			// コインを出す
 			EffectManager::GetInstance().AddEffect(std::make_unique<CoinEffect>(map[y][x].basePosition.x + 4, map[y][x].basePosition.y));
+			PlayerData::GetInstance().AddCoin(1);
 			break;
 		case ITEM_POWERUP:
 			if (isPlayerSmall) AddPowerMash(map[y][x].basePosition);

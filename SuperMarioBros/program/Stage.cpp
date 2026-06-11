@@ -19,7 +19,10 @@
 #include "FirebarController.h"
 #include "LiftController.h"
 #include "Ui.h"
-
+Stage::Stage(int num)
+{
+	tileManager.SetCurrentStage(num);
+}
 void Stage::Init()
 {
 	PlayerData::GetInstance().ResetTime();
