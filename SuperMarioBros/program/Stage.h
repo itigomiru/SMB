@@ -28,7 +28,8 @@ private :
 	void CheckHitShellAndEnemy();
 	void CheckHitEnemyAndEnemy();
 	void SetLift();
-	
+	void CheckHitPlayerAndLiftSide();
+
 
 public:
 	void Init() override;

@@ -454,6 +454,42 @@ void Player::CheckCollisionY()
 				}
 			}
 		}
+
+		// リフトの当たり判定
+		for (const auto& obj : objectManager->GetObjects())
+		{
+			if (obj->objectType != Object::OT_LIFT) continue;
+			if (obj->isDead) continue;
+
+			Lift* lift = static_cast<Lift*>(obj.get());
+
+			float playerLeft = pos.x;
+			float playerRight = pos.x + size.w;
+			float playerTop = pos.y;
+			float prevPlayerTop = prevPos.y;
+
+			float liftLeft = lift->pos.x;
+			float liftRight = lift->pos.x + lift->size.w;
+			float liftBottom = lift->pos.y + lift->size.h;
+
+			bool hitX =
+				playerRight > liftLeft &&
+				playerLeft < liftRight;
+
+			bool hitHead =
+				prevPlayerTop >= liftBottom &&
+				playerTop <= liftBottom;
+
+			if (hitX && hitHead)
+			{
+				pos.y = liftBottom;
+				speed.y = 0.0f;
+				isJumping = false;
+				break;
+			}
+		}
+
+
 	}
 }
 
