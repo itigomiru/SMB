@@ -135,7 +135,7 @@ void TileManager::SetTile()
 		objectManager->AddObject(std::make_unique<Coin>(128, 144));
 		objectManager->AddObject(std::make_unique<Coin>(144, 144));
 		objectManager->AddObject(std::make_unique<Coin>(160, 144));
-		
+
 		break;
 	}
 
@@ -220,6 +220,15 @@ void TileManager::Render(float cameraX) {
 			case TILE_PIPE_RIGHT_BOTTOM2:
 				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_RIGHT_BOTTOM_UNDERGROUND), true);
 				break;
+			case TILE_CASTLE_BRIDGE:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_CASTLE_BRIDGE), true);
+				break;
+			case TILE_MAGMA_TOP:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_MAGMA_TOP), true);
+				break;
+			case TILE_MAGMA_BOTTOM:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_MAGMA_BOTTOM), true);
+				break;
 			}
 		}
 	}
@@ -233,7 +242,7 @@ bool TileManager::IsSolid(int x, int y)
 	if (x < 0 || x >= map[y].size())
 		return false;
 
-	return (map[y][x].type != TILE_EMPTY && map[y][x].type != TILE_HIDE_BLOCK);
+	return (map[y][x].type != TILE_EMPTY && map[y][x].type != TILE_HIDE_BLOCK && map[y][x].type != TILE_MAGMA_TOP && map[y][x].type != TILE_MAGMA_BOTTOM);
 }
 
 void TileManager::HitTile(int x, int y, bool isPlayerSmall)
@@ -265,7 +274,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 					if (enemyRight > blockLeft && enemyLeft < blockRight)
 					{
 
-						enemy->Death(enemy->speed.x > 0.0f,0);
+						enemy->Death(enemy->speed.x > 0.0f, 0);
 					}
 				}
 			}
@@ -421,8 +430,19 @@ bool TileManager::IsHidden(int x, int y) {
 void TileManager::ChangeStage(int stageId)
 {
 	currentStage = stageId;
-	SetTile(); 
+	SetTile();
 
-	
+
 	//objectManager->AllClear();
+}
+
+void TileManager::CollapseBridge(int num)
+{
+	if (currentStage != 1) return;
+	map[BRIDGE_Y][BRIDGE_RIGHT - num].type = TILE_EMPTY;
+	bridgeTimer = 0;
+	if (map[BRIDGE_Y][BRIDGE_LEFT].type == TILE_EMPTY)
+	{
+		bridgeState = BS_COLLAPSED;
+	}
 }

@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="program\Axe.cpp" />
     <ClCompile Include="program\BlockBreakEffect.cpp" />
     <ClCompile Include="program\Coin.cpp" />
     <ClCompile Include="program\CoinEffect.cpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="program\Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="program\Axe.h" />
     <ClInclude Include="program\BlockBreakEffect.h" />
     <ClInclude Include="program\Coin.h" />
     <ClInclude Include="program\CoinEffect.h" />

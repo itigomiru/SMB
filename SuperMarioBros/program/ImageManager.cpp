@@ -41,6 +41,10 @@ ImageManager::ImageManager()
 	images[IMAGE_GOAL] = LoadGraph("data/image/image_goal.png");
 	images[IMAGE_GOAL_CASTLE] = LoadGraph("data/image/image_goal_castle.png");
 	images[IMAGE_GOAL_CASTLE_RIGHT] = LoadGraph("data/image/image_goal_castle_right.png");
+	images[IMAGE_CASTLE_BRIDGE] = LoadGraph("data/image/image_castle_bridge.png");
+	images[IMAGE_MAGMA_TOP] = LoadGraph("data/image/image_magma_top.png");
+	images[IMAGE_MAGMA_BOTTOM] = LoadGraph("data/image/image_magma_bottom.png");
+	images[IMAGE_AXE] = LoadGraph("data/image/image_axe.png");
 	//------------------
 	//丸山
 	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");
