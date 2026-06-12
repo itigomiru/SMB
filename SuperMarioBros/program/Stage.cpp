@@ -53,7 +53,6 @@ void Stage::Init()
 	enemySpawner.SetSpawner();
 	objectManager.AddObject(std::make_unique<Goal>());
 
-	objectManager.AddObject(std::make_unique<Coin>(30, 130));
 }
 
 void Stage::Update()
