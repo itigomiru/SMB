@@ -1,6 +1,7 @@
 #include "Goal.h"
 #include "DxLib.h"
 #include "ImageManager.h"
+#include"ScoreEffect.h"
 Goal::Goal()
 {
 	pos = { 3168.0f,32.0f };
@@ -24,10 +25,10 @@ int Goal::GetScore(float playerY)
 {
 	float rate = (playerY - pos.y) / size.h;
 
-	if (rate < 0.2f) return 5000;
-	if (rate < 0.4f) return 2000;
-	if (rate < 0.6f) return 800;
-	if (rate < 0.8f) return 400;
+	if (rate < 0.2f) return ScoreEffect::SCORE_5000;
+	if (rate < 0.4f) return ScoreEffect::SCORE_2000;
+	if (rate < 0.6f) return ScoreEffect::SCORE_800;
+	if (rate < 0.8f) return ScoreEffect::SCORE_400;
 
-	return 100;
+	return ScoreEffect::SCORE_100;
 }

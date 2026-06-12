@@ -287,8 +287,8 @@ void Stage::CheckHit()
 			if (goal && objectManager.HitObjects(player, goal))
 			{
 				float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
+ 				if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
 				player->OnGoal(poleCenterX);
-				if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
 			}
 		}
 	}
