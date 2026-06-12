@@ -53,7 +53,7 @@ void Stage::Init()
 	enemySpawner.SetSpawner();
 	objectManager.AddObject(std::make_unique<Goal>());
 
-	objectManager.AddObject(std::make_unique<Coin>(30,130));
+	objectManager.AddObject(std::make_unique<Coin>(30, 130));
 }
 
 void Stage::Update()
@@ -172,85 +172,79 @@ void Stage::CheckHit()
 {
 	for (const auto& obj : objectManager.GetObjects())
 	{
-		// 相手が「敵（OT_ENEMY）」であり、まだ死んでいない場合のみ処理
-		if (obj->objectType == Object::OT_ENEMY && !obj->isDead)
+		if (obj->isDead)continue;
+		if (obj->objectType == Object::OT_SHELL)
 		{
-			Enemy* enemy = static_cast<Enemy*>(obj.get());
+			KoopaTroopa* shell = static_cast<KoopaTroopa*>(obj.get());
+			if (!shell) continue;
 
-			if (enemy)
+			if (objectManager.HitObjects(player, shell))
 			{
-				if (enemy->GetEnemyType() == Enemy::ET_FIREBAR)
+				if (player->starTimer > 0)
 				{
-					Firebar* firebar = static_cast<Firebar*>(enemy);
-
-					if (firebar->HitPlayer(player))
-					{
-						if (player->starTimer <= 0)
-						{
-							if (enemy->canDamage)
-							{
-								player->Damage();
-							}
-						}
-					}
-
-					continue;
+					shell->Death(player->pos.x < shell->pos.x, 0);
 				}
-
-				if (objectManager.HitObjects(player, enemy))
+				else
 				{
+					auto state = shell->GetState();
 
-					if (player->starTimer > 0)
+					if (state == KoopaTroopa::STATE_SHELL_STOP || state == KoopaTroopa::STATE_SHELL_WAKEUP)
 					{
-						enemy->Death(player->pos.x < enemy->pos.x, 0);
+						shell->OnKicked(player->pos.x);
 					}
-					else
+					else if (state == KoopaTroopa::STATE_SHELL_ROLL)
 					{
-
-						// 踏んだかどうか
-						if (player->CheckSquashEnemy(enemy))
+						if (player->CheckSquashEnemy(shell))
 						{
-							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
-							{
-								KoopaTroopa* koopa = static_cast<KoopaTroopa*>(enemy);
-								if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP || koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
-								{
-									koopa->OnKicked(player->pos.x);
-								}
-								else
-								{
-									enemy->OnSquashed();
-								}
-							}
-							else
-							{
-								enemy->OnSquashed();
-							}
+							shell->OnSquashed();
 						}
-						else
+						else if (shell->canDamage)
 						{
-							if (enemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
-							{
-								KoopaTroopa* koopatroopa = static_cast<KoopaTroopa*>(enemy);
-
-								if (koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_STOP || koopatroopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
-								{
-									koopatroopa->OnKicked(player->pos.x);
-								}
-								else
-								{
-									if (enemy->canDamage) player->Damage();
-								}
-							}
-							else
-							{
-								if (enemy->canDamage) player->Damage();
-							}
+							player->Damage();
 						}
 					}
 				}
 			}
 		}
+
+		if (obj->objectType == Object::OT_ENEMY)
+		{
+			Enemy* enemy = static_cast<Enemy*>(obj.get());
+			if (!enemy) continue;
+
+			// ファイアバーの特殊判定
+			if (enemy->GetEnemyType() == Enemy::ET_FIREBAR)
+			{
+				Firebar* firebar = static_cast<Firebar*>(enemy);
+				if (firebar->HitPlayer(player) && player->starTimer <= 0 && enemy->canDamage)
+				{
+					player->Damage();
+				}
+				continue;
+			}
+
+			// 通常の敵（歩いているノコノコやクリボーなど）との接触
+			if (objectManager.HitObjects(player, enemy))
+			{
+				if (player->starTimer > 0)
+				{
+					enemy->Death(player->pos.x < enemy->pos.x, 0);
+				}
+				else
+				{
+					if (player->CheckSquashEnemy(enemy))
+					{
+						enemy->OnSquashed();
+					}
+					else if (enemy->canDamage)
+					{
+						player->Damage();
+					}
+				}
+			}
+		}
+
+
 
 		if (obj->objectType == Object::OT_ITEM && !obj->isDead)
 		{
@@ -329,31 +323,8 @@ void Stage::CheckHitShellAndEnemy()
 	for (const auto& shellObj : objectManager.GetObjects())
 	{
 		if (shellObj->objectType != Object::OT_SHELL)continue;
-
-		if (objectManager.HitObjects(shellObj.get(), player))
-		{
-			Enemy* shellEnemy = static_cast<Enemy*>(shellObj.get());
-			if (player->CheckSquashEnemy(shellEnemy))
-			{
-				if (shellEnemy->GetEnemyType() == Enemy::ET_KOOPATROOPA)
-				{
-					KoopaTroopa* koopa = static_cast<KoopaTroopa*>(shellEnemy);
-					if (koopa->GetState() == KoopaTroopa::STATE_SHELL_STOP ||
-						koopa->GetState() == KoopaTroopa::STATE_SHELL_WAKEUP)
-					{
-						koopa->OnKicked(player->pos.x);
-					}
-					else
-					{
-						shellEnemy->OnSquashed();
-					}
-				}
-				else
-				{
-					shellEnemy->OnSquashed();
-				}
-			}
-		}
+		KoopaTroopa* shellEnemy = static_cast<KoopaTroopa*>(shellObj.get());
+		if (shellEnemy->GetState() != KoopaTroopa::STATE_SHELL_ROLL)continue;
 
 		for (const auto& enemyObj : objectManager.GetObjects())
 		{
@@ -380,47 +351,69 @@ void Stage::CheckHitEnemyAndEnemy()
 	// 敵同士の総当たり判定 (二重ループ)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->objectType != Object::OT_ENEMY || objects[i]->isDead) continue;
+		if (objects[i]->isDead) continue;
+
+		Enemy* enemyA = nullptr;
+
+
+		if (objects[i]->objectType == Object::OT_ENEMY)
+		{
+			enemyA = static_cast<Enemy*>(objects[i].get());
+		}
+		else if (objects[i]->objectType == Object::OT_SHELL)
+		{
+			KoopaTroopa* koopaA = static_cast<KoopaTroopa*>(objects[i].get());
+			if (koopaA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue; 
+			enemyA = koopaA;
+		}
+
+		if (!enemyA) continue; 
 
 		for (size_t j = i + 1; j < objects.size(); j++)
 		{
-			if (objects[j]->objectType != Object::OT_ENEMY || objects[j]->isDead) continue;
+			if (objects[j]->isDead) continue;
 
-			// 同じオブジェクト同士でなければ判定
-			if (objectManager.HitObjects(objects[i].get(), objects[j].get()))
+			Enemy* enemyB = nullptr;
+
+			if (objects[j]->objectType == Object::OT_ENEMY)
 			{
-				Enemy* enemyA = static_cast<Enemy*>(objects[i].get());
-				Enemy* enemyB = static_cast<Enemy*>(objects[j].get());
+				enemyB = static_cast<Enemy*>(objects[j].get());
+			}
+			else if (objects[j]->objectType == Object::OT_SHELL)
+			{
+				KoopaTroopa* koopaB = static_cast<KoopaTroopa*>(objects[j].get());
+				if (koopaB->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
+				enemyB = koopaB;
+			}
 
-				if (enemyA->GetEnemyType() == Enemy::ET_KOOPATROOPA) {
-					KoopaTroopa* kA = static_cast<KoopaTroopa*>(enemyA);
-					if (kA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
+			if (!enemyB) continue; // どちらでもなければスキップ
+
+			// 衝突判定
+			if (objectManager.HitObjects(enemyA, enemyB))
+			{
+				if (objects[i]->objectType == Object::OT_ENEMY)
+				{
+					enemyA->speed.x = -enemyA->speed.x;
 				}
-				if (enemyB->GetEnemyType() == Enemy::ET_KOOPATROOPA) {
-					KoopaTroopa* kB = static_cast<KoopaTroopa*>(enemyB);
-					if (kB->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
+				if (objects[j]->objectType == Object::OT_ENEMY)
+				{
+					enemyB->speed.x = -enemyB->speed.x;
 				}
 
-				// 反転
-				enemyA->speed.x = -enemyA->speed.x;
-				enemyB->speed.x = -enemyB->speed.x;
-
-				// めり込み防止
 				if (enemyA->pos.x < enemyB->pos.x)
 				{
-					enemyA->pos.x -= 1.0f;
-					enemyB->pos.x += 1.0f;
+					if (objects[i]->objectType == Object::OT_ENEMY) enemyA->pos.x -= 1.0f;
+					if (objects[j]->objectType == Object::OT_ENEMY) enemyB->pos.x += 1.0f;
 				}
 				else
 				{
-					enemyA->pos.x += 1.0f;
-					enemyB->pos.x -= 1.0f;
+					if (objects[i]->objectType == Object::OT_ENEMY) enemyA->pos.x += 1.0f;
+					if (objects[j]->objectType == Object::OT_ENEMY) enemyB->pos.x -= 1.0f;
 				}
 			}
 		}
 	}
 }
-
 void Stage::SetLift()
 {
 	if (tileManager.GetCurrentStage() == 0)

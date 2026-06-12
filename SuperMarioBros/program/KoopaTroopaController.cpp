@@ -44,6 +44,7 @@ void KoopaTroopa::Update(float cameraX)
         if (wakeUpTimer <= 0)
         {
             koopaTroopaState = STATE_WALK;
+			objectType = OT_ENEMY;
             canSquashed = true;
             canDamage = true;
             speed.x = -SPEED.x;
@@ -93,16 +94,16 @@ void KoopaTroopa::OnSquashed()
         speed = { 0.0f, 0.0f };
         size.h = SHELL_HEIGHT;
 		pos.y += (HEIGHT - SHELL_HEIGHT); 
+		objectType = OT_SHELL;
     }
     else if (koopaTroopaState == STATE_SHELL_STOP || koopaTroopaState == STATE_SHELL_WAKEUP)
     {
-        koopaTroopaState = STATE_SHELL_ROLL;
-		canSquashed = true;
+        OnKicked(pos.x);
     }
     else if (koopaTroopaState == STATE_SHELL_ROLL)
     {
+		canDamage = false;
         koopaTroopaState = STATE_SHELL_STOP;
-		objectType = OT_ENEMY;
 		wakeUpTimer = WAKEUP_TIME;
         speed = { 0.0f, 0.0f };
 		size.h = SHELL_HEIGHT;
@@ -112,17 +113,18 @@ void KoopaTroopa::OnSquashed()
 void KoopaTroopa::OnKicked(float marioX)
 {
 	koopaTroopaState = STATE_SHELL_ROLL;
-	objectType = OT_SHELL;
 	canDamage = true;
     canSquashed = true;
 
     if (marioX < pos.x)
     {
         speed.x = SHELL_SPEED;
+        pos.x += SHELL_SPEED * 3;
     }
     else
     {
 		speed.x = -SHELL_SPEED;
+		pos.x -= SHELL_SPEED * 3;
     }
 
 }
