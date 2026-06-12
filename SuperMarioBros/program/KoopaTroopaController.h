@@ -52,7 +52,7 @@ private:
 	const float WIDTH = 16.0f;
 	const float SHELL_HEIGHT = 16.0f;
 
-	const Float2 SPEED = { 0.5f, 7.0f };
+	const Float2 SPEED = { 0.5f, 4.0f };
 	Float2 prevPos;
 
 	TileManager* tileManager = nullptr;
