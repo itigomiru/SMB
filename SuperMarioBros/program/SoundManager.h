@@ -2,13 +2,37 @@
 
 //--------------------------------------------------
 enum BGM_LIST {
-	BGM_FAKE,
+	BGM_GROUND,
+	BGM_UNDERGROUND,
+	BGM_CASTLE,
 	BGM_MAX,
 };
 //--------------------------------------------------
 enum SE_LIST {
-	SE_FAKE,
+	SE_1UP,
+	SE_BOWSERFALLS,
+	SE_BOWSERFIRE,
+	SE_BREAKBLOCK,
+	SE_BUMP,
+	SE_COIN,
+	SE_FIREBALL,
+	SE_FIREWORKS,
+	SE_FLAGPOLE,
+	SE_GAME_OVER,
+	SE_JUMP_SMALL,
+	SE_JUMP_SUPER,
+	SE_KICK,
+	SE_MARIODIE,
+	SE_PIPE,
+	SE_POWERUP,
+	SE_POWERUP_APPEARS,
+	SE_STAGE_CLEAR,
+	SE_STOMP,
+	SE_VINE,
+	SE_WARNING,
+	SE_WORLD_CLEAR,
 	SE_MAX,
+
 };
 //--------------------------------------------------
 class SoundManager

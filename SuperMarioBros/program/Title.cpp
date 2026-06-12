@@ -11,7 +11,8 @@ void Title::Init()
 	PlayerData::GetInstance().Reset();
 
 }
-
+  
+int debug = 0;
 void Title::Update()
 {
     if (CheckHitKey(KEY_INPUT_RETURN)) {
