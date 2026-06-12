@@ -9,6 +9,7 @@
 #include "CoinEffect.h"
 #include "blockBreakEffect.h"
 #include"ImageManager.h"
+#include "Coin.h"
 #include "PlayerData.h"
 #include <memory>
 void TileManager::SetTile()
@@ -112,7 +113,29 @@ void TileManager::SetTile()
 				}
 			}
 		}
-		//objectManager->AddObject(std::make_unique<Coin>(Float2{ 300.0f, 200.0f }));
+
+		objectManager->AddObject(std::make_unique<Coin>(80, 80));
+		objectManager->AddObject(std::make_unique<Coin>(96, 80));
+		objectManager->AddObject(std::make_unique<Coin>(112, 80));
+		objectManager->AddObject(std::make_unique<Coin>(128, 80));
+		objectManager->AddObject(std::make_unique<Coin>(144, 80));
+
+		objectManager->AddObject(std::make_unique<Coin>(64, 112));
+		objectManager->AddObject(std::make_unique<Coin>(80, 112));
+		objectManager->AddObject(std::make_unique<Coin>(96, 112));
+		objectManager->AddObject(std::make_unique<Coin>(112, 112));
+		objectManager->AddObject(std::make_unique<Coin>(128, 112));
+		objectManager->AddObject(std::make_unique<Coin>(144, 112));
+		objectManager->AddObject(std::make_unique<Coin>(160, 112));
+
+		objectManager->AddObject(std::make_unique<Coin>(64, 144));
+		objectManager->AddObject(std::make_unique<Coin>(80, 144));
+		objectManager->AddObject(std::make_unique<Coin>(96, 144));
+		objectManager->AddObject(std::make_unique<Coin>(112, 144));
+		objectManager->AddObject(std::make_unique<Coin>(128, 144));
+		objectManager->AddObject(std::make_unique<Coin>(144, 144));
+		objectManager->AddObject(std::make_unique<Coin>(160, 144));
+		
 		break;
 	}
 
