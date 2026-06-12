@@ -109,6 +109,12 @@
     <ClCompile Include="program\Coin.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="program\BowserController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="program\BreathController.cpp">
+      <Filter>Object\Enemy</Filter>
+     </ClCompile>
     <ClCompile Include="program\Axe.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -234,6 +240,12 @@
     <ClInclude Include="program\Coin.h">
       <Filter>Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="program\BowserController.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\BreathController.h">
+      <Filter>Object\Enemy</Filter>
+      </ClInclude>
     <ClInclude Include="program\Axe.h">
       <Filter>Object</Filter>
     </ClInclude>

@@ -154,6 +154,8 @@
   <ItemGroup>
     <ClCompile Include="program\Axe.cpp" />
     <ClCompile Include="program\BlockBreakEffect.cpp" />
+    <ClCompile Include="program\BowserController.cpp" />
+    <ClCompile Include="program\BreathController.cpp" />
     <ClCompile Include="program\Coin.cpp" />
     <ClCompile Include="program\CoinEffect.cpp" />
     <ClCompile Include="program\EffectManager.cpp" />
@@ -193,6 +195,8 @@
   <ItemGroup>
     <ClInclude Include="program\Axe.h" />
     <ClInclude Include="program\BlockBreakEffect.h" />
+    <ClInclude Include="program\BowserController.h" />
+    <ClInclude Include="program\BreathController.h" />
     <ClInclude Include="program\Coin.h" />
     <ClInclude Include="program\CoinEffect.h" />
     <ClInclude Include="program\Effect.h" />

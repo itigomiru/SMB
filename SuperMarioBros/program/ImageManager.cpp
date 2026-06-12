@@ -79,7 +79,9 @@ ImageManager::ImageManager()
 	images[IMAGE_ENEMY_GOOMBA] = LoadGraph("data/image/image_goomba.png");
 	images[IMAGE_ENEMY_KOOPATROOPA] = LoadGraph("data/image/image_koopatroopa.png");
 	images[IMAGE_LIFT] = LoadGraph("data/image/image_lift.png");
-
+	images[IMAGE_BULLET_BREATH] = LoadGraph("data/image/image_bullet_breath.png");
+	images[IMAGE_ENEMY_BOWSER_WALK] = LoadGraph("data/image/image_bowser_walk.png");
+	images[IMAGE_ENEMY_BOWSER_BREATH] = LoadGraph("data/image/image_bowser_breath.png");
 
 	//--------------------------------------------------------------
 }

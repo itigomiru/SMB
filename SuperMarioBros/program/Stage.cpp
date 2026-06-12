@@ -21,6 +21,7 @@
 #include "Axe.h"
 #include "FirebarController.h"
 #include "LiftController.h"
+#include "BowserController.h"
 #include "Ui.h"
 Stage::Stage(int num)
 {
@@ -52,6 +53,7 @@ void Stage::Init()
 	objectManager.AddObject(std::move(p));
 	enemySpawner.SetObjectManager(&objectManager);
 	enemySpawner.SetTileManager(&tileManager);
+	enemySpawner.SetPlayer(player);
 
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
@@ -275,7 +277,17 @@ void Stage::CheckHit()
 			}
 		}
 
+		if (obj->objectType == Object::OT_ENEMY_BULLET && !obj->isDead)
+		{
+			if (objectManager.HitObjects(player, obj.get()))
+			{
+				if (player->starTimer <= 0)
+				{
+					player->Damage();
+				}
 
+			}
+		}
 
 		if (obj->objectType == Object::OT_ITEM && !obj->isDead)
 		{
@@ -353,10 +365,19 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death(player->pos.x < enemy->pos.x, 0);
-				//enemyの死亡エフェクト
+				if (enemy->GetEnemyType() == Enemy::ET_BOWSER)
+				{
+					Bowser* bowser = static_cast<Bowser*>(enemy);
+					bowser->Damage();
+
+					fireball->DeathAndEffect();
+					break;
+				}
+
+				enemy->Death(player->pos.x < enemy->pos.x, 100);
 				fireball->DeathAndEffect();
 				break;
+
 			}
 		}
 	}
