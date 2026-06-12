@@ -1149,6 +1149,8 @@ void Player::OnGoal(float poleCenterX)
 	isCrouching = false;
 	isJumping = false;
 	isAnimJamping = false;
+
+	
 }
 void Player::GoalUpdate()
 {
@@ -1156,7 +1158,7 @@ void Player::GoalUpdate()
 	{
 	case GP_DOWN: // ポールをスライドして降りる
 		speed.x = 0.0f;
-		speed.y = 2.0f; // 一定速度で下へ
+		speed.y = 1.0f; // 一定速度で下へ
 
 		// 地面に着地したら次のフェーズへ
 		if (isGround)
@@ -1169,11 +1171,11 @@ void Player::GoalUpdate()
 		break;
 
 	case GP_WALK:
-		speed.x = SPEED_MAX.x / 2;
+		speed.x = 1.0f;
 
-		if (pos.x > 3264)
+		if (pos.x > 3280)
 		{
-			goalPhase = 2;
+			goalPhase = GP_CASTLE;
 			speed.x = 0.0f;
 			SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
 			PlayerData::GetInstance().SetPlayerState(state);

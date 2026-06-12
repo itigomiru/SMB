@@ -35,6 +35,5 @@ public:
 		RL_LIFT,
 		RL_PLAYER,
 		RL_ITEM,
-		RL_CASTLE,
 	};
 };

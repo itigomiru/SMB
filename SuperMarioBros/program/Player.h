@@ -39,6 +39,7 @@ public:
 	int freezeTimer;
 	int invincibleTimer;
 	int starTimer;
+	bool isGoal;       // ゴール演出中かどうか
 
 private:
 	const float SMALL_H = 16.0f;
@@ -91,7 +92,7 @@ private:
 	bool isFallenDeath;
 	const float DEATH_JUMP_POWER = 7.0f;
 
-	bool isGoal;       // ゴール演出中かどうか
+
 	int goalPhase;     // ゴール演出の進行状態 (0: ポール降下中, 1: 右へ移動中, 2: 城到達)
 	enum GoalPhase
 	{
