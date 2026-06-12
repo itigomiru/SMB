@@ -112,6 +112,9 @@
     <ClCompile Include="program\BowserController.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="program\BreathController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -235,6 +238,9 @@
       <Filter>Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="program\BowserController.h">
+      <Filter>Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="program\BreathController.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

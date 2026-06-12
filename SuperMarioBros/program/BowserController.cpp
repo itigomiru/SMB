@@ -3,7 +3,7 @@
 #include "ImageManager.h"
 #include "Main.h"
 #include "TileManager.h"
-#include"ScoreEffect.h"
+#include "ScoreEffect.h"
 #include "EffectManager.h"
 #include "EnemyDefeatedEffect.h"
 
