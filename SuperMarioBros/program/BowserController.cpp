@@ -6,6 +6,10 @@
 #include "ScoreEffect.h"
 #include "EffectManager.h"
 #include "EnemyDefeatedEffect.h"
+#include "BreathController.h"
+#include "Player.h"
+#include "ObjectManager.h"
+
 
 Bowser::Bowser(float x, float y, float leftLimit, float rightLimit)
 {
@@ -15,18 +19,27 @@ Bowser::Bowser(float x, float y, float leftLimit, float rightLimit)
 	speed.x = 0.0f;
 	speed.y = 0.0f;
 
+	hasBreath = false;
+	breathTimer = 0;
+	breathCoolDown = 0;
+
 	hp = MAX_HP;
 
 	size.w = BOWSER_W;
 	size.h = BOWSER_H;
 
 	tileManager = nullptr;
+	objectManager = nullptr;
+	player = nullptr;
+
 
 	objectType = Object::OT_ENEMY;
 	renderLayer = Object::RL_ENEMY;
 
 	moveLeftLimit = leftLimit;
 	moveRightLimit = rightLimit;
+
+	isFacingRight = false;
 
 	isDead = false;
 	isGrounded = false;
@@ -38,15 +51,28 @@ Bowser::Bowser(float x, float y, float leftLimit, float rightLimit)
 	actionTimer = 60;
 	jumpTimer = 0;
 	hasJumped = false;
+
+	animeFrame = 0;
+	animeTimer = 0;
 }
 
 void Bowser::Update(float cameraX)
 {
 	if (isDead) return;
 
+	if (player != nullptr)
+	{
+		isFacingRight = player->pos.x > pos.x;
+	}
+
 	if (actionTimer <= 0)
 	{
 		SelectAction();
+	}
+
+	if (breathCoolDown > 0)
+	{
+		breathCoolDown--;
 	}
 
 	switch (action)
@@ -61,8 +87,63 @@ void Bowser::Update(float cameraX)
 
 	case ACTION_BREATH:
 		speed.x = 0.0f;
+
+		if (!hasBreath && objectManager != nullptr)
+		{
+			Float2 breathPos;
+			breathPos.x = pos.x;
+			breathPos.y = pos.y + 4.0f;
+
+			float targetY = pos.y + 16.0f;
+
+			if (player != nullptr )
+			{
+				isFacingRight = player->pos.x > pos.x;
+			}
+
+			if (isFacingRight)
+			{
+				breathPos.x = pos.x + size.w; // ブレスの初期位置を調整
+			}
+			else
+			{
+				breathPos.x = pos.x;
+			}
+
+			if (player != nullptr && player->pos.y < pos.y + SIZE_H_HALF)
+			{
+				targetY = pos.y;
+			}
+
+			objectManager->AddObject(std::make_unique<Breath>(
+				isFacingRight,
+				breathPos,
+				targetY,
+				2.0f
+			));
+
+			hasBreath = true;
+			breathCoolDown = BREATH_COOLDOWN;
+		}
 		break;
 	}
+
+	animeTimer++;
+
+	if (animeTimer >= BOWSER_ANIME_INTERVAL)
+	{
+		animeTimer = 0;
+		animeFrame++;
+
+		if (animeFrame >= 2)
+		{
+			animeFrame = 0;
+		}
+
+	}
+
+	ApplyGravity();
+	Move();
 
 	actionTimer--;
 
@@ -78,38 +159,41 @@ void Bowser::Update(float cameraX)
 		jumpTimer = 90 + GetRand(90);
 	}
 
-	ApplyGravity();
-	Move();
-
 	CheckOutOfScreen(cameraX);
 }
 
 void Bowser::SelectAction()
 {
-	int r = GetRand(2); // 0〜2
-
-	bool canMoveLeft = pos.x + size.w > moveLeftLimit;
-	bool canMoveRight = pos.x < moveRightLimit;
-
+	hasBreath = false;
 	hasJumped = false;
 
-	if (r == 0 && canMoveRight)
+	while (true)
 	{
-		action = ACTION_MOVE_RIGHT;
-		actionTimer = 60;
-	}
-	else if (r == 1 && canMoveLeft)
-	{
-		action = ACTION_MOVE_LEFT;
-		actionTimer = 60;
-	}
-	else
-	{
-		action = ACTION_BREATH;
-		actionTimer = 90;
+		int r = GetRand(2); // 0〜2
+
+		bool canMoveLeft = pos.x > moveLeftLimit;
+		bool canMoveRight = pos.x + size.w < moveRightLimit;
+
+		if (r == 0 && canMoveRight)
+		{
+			action = ACTION_MOVE_RIGHT;
+			actionTimer = 60;
+			break;
+		}
+		else if (r == 1 && canMoveLeft)
+		{
+			action = ACTION_MOVE_LEFT;
+			actionTimer = 60;
+			break;
+		}
+		else if (r == 2 && breathCoolDown <= 0)
+		{
+			action = ACTION_BREATH;
+			actionTimer = 90;
+			break;
+		}
 	}
 }
-
 void Bowser::ApplyGravity()
 {
 	speed.y += GRAVITY;
@@ -146,17 +230,23 @@ void Bowser::Render(float cameraX)
 {
 	if (isDead) return;
 
+	int imgHandle;
+
+	if (action == ACTION_BREATH)
+	{
+		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_BREATH);
+	}
+	else
+	{
+		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_WALK);
+	}
+
 	int drawX = static_cast<int>(pos.x - cameraX);
 	int drawY = static_cast<int>(pos.y);
 
-	DrawBox(
-		drawX,
-		drawY,
-		drawX + static_cast<int>(size.w),
-		drawY + static_cast<int>(size.h),
-		GetColor(255, 80, 80),
-		TRUE
-	);
+	int srcX = animeFrame * BOWSER_FRAME_W;
+
+	DrawRectGraph(drawX,drawY,srcX,0,BOWSER_FRAME_W,BOWSER_FRAME_H,imgHandle,TRUE,isFacingRight);
 }
 
 void Bowser::OnSquashed()

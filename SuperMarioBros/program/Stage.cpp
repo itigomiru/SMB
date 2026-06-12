@@ -48,6 +48,7 @@ void Stage::Init()
 	objectManager.AddObject(std::move(p));
 	enemySpawner.SetObjectManager(&objectManager);
 	enemySpawner.SetTileManager(&tileManager);
+	enemySpawner.SetPlayer(player);
 
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
@@ -247,7 +248,17 @@ void Stage::CheckHit()
 			}
 		}
 
+		if (obj->objectType == Object::OT_ENEMY_BULLET && !obj->isDead)
+		{
+			if (objectManager.HitObjects(player, obj.get()))
+			{
+				if (player->starTimer <= 0)
+				{
+					player->Damage();
+				}
 
+			}
+		}
 
 		if (obj->objectType == Object::OT_ITEM && !obj->isDead)
 		{

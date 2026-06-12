@@ -21,6 +21,7 @@ void EnemySpawner::SetTileManager(TileManager* tm)
 	tileManager = tm;
 }
 
+
 void EnemySpawner::SetSpawner() {
 	spawnDataList.clear();
 #include "SpawnData.inc"
@@ -97,6 +98,9 @@ void EnemySpawner::Update(float cameraX)
 				);
 
 				bowser->SetTileManager(tileManager);
+				bowser->SetObjectManager(objectManager);
+				bowser->SetPlayer(player);
+
 				enemy = std::move(bowser);
 
 				break;

@@ -3,7 +3,6 @@
 	{
 	case 0:
 		spawnDataList = {
-			{ BOWSER,		   150.0f, 190.0f, false, true },  //ƒNƒbƒp
 			{ GOOMBA,          320.0f, 190.0f, false, true },
 			{ GOOMBA,          640.0f, 190.0f, false, true },
 			{ GOOMBA,          800.0f, 190.0f, false, true },

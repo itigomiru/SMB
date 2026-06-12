@@ -2,6 +2,7 @@
 #include "ObjectManager.h"
 #include<vector>
 class TileManager;
+class Player;
 
 struct SpawnData
 {
@@ -20,6 +21,7 @@ private:
 	std::vector<SpawnData> spawnDataList;	// 出現データのリスト
 	ObjectManager* objectManager = nullptr;	
 	TileManager* tileManager = nullptr;
+	Player* player = nullptr;
 	enum EnemyType
 	{
 		GOOMBA,
@@ -36,4 +38,5 @@ public:
 	void Update(float cameraX);
 	void SetObjectManager(ObjectManager* om);
 	void SetSpawner();
+	void SetPlayer(Player* p) { player = p; }
 };
