@@ -19,4 +19,5 @@ void Axe::Render(float cameraX)
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX) - 1;
 	int drawY = static_cast<int>(pos.y);
 	DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_AXE), true);
+	DrawGraph(drawX - 16, drawY + 16, ImageManager::GetInstance().GetImage(IMAGE_AXE_CHAIN), true);
 }

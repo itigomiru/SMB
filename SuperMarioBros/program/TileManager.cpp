@@ -248,6 +248,7 @@ bool TileManager::IsSolid(int x, int y)
 
 void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_BUMP);
 	// 範囲外チェック（安全のため）
 	if (y < 0 || y >= map.size() || x < 0 || x >= map[y].size()) return;
 
@@ -444,6 +445,7 @@ void TileManager::ChangeStage(int stageId)
 void TileManager::CollapseBridge(int num)
 {
 	if (currentStage != 1) return;
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_BREAKBLOCK);
 	map[BRIDGE_Y][BRIDGE_RIGHT - num].type = TILE_EMPTY;
 	bridgeTimer = 0;
 	if (map[BRIDGE_Y][BRIDGE_LEFT].type == TILE_EMPTY)

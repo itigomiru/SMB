@@ -39,7 +39,7 @@ void Stage::Init()
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
-		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_UNDERGROUND);
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
 		break;
 	}
 	UI::GetInstance().SetTileManager(&tileManager);
@@ -315,7 +315,7 @@ void Stage::CheckHit()
 				Goal* goal = static_cast<Goal*>(obj.get());
 				if (goal && objectManager.HitObjects(player, goal))
 				{
-					float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
+					float poleCenterX = goal->pos.x + 10;
 					if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
 					player->OnGoal(poleCenterX);
 				}

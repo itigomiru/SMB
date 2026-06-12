@@ -15,7 +15,7 @@ void PlayerData::AddTime(int num)
 }
 void PlayerData::AddStock(int num)
 {
-	SoundManager::GetInstance().PlaySE(SoundManager::SE_1UP);
+	if(num > 0)SoundManager::GetInstance().PlaySE(SoundManager::SE_1UP);
 	stock += num;
 	if (stock > STOCK_MAX)stock = STOCK_MAX;
 }

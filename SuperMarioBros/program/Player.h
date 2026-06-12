@@ -55,7 +55,7 @@ private:
 	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
 	const float OVERLAP_JUDGE = 6.0f;
 	const int INVINCIBLE_TIME = 120;
-	const int DEATH_TIME = 120;
+	const int DEATH_TIME = 200;
 	const int POWER_UP_TIME = 60;
 	const int STAR_TIME = 600;
 
@@ -73,6 +73,9 @@ private:
 
 	int state;
 	bool isFacingRight;
+	bool isEnteringPipe;
+	int pipeAnimationTimer;
+	const int PIPE_ANIMATION_TIME = 60;
 
 	int oldState;
 	int newState;

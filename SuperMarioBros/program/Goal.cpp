@@ -6,6 +6,7 @@ Goal::Goal()
 {
 	pos = { 3168.0f,32.0f };
 	size = { 16.0f, 176.0f };
+	flagPos = { 3160.0f, 48.0f };
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;
@@ -19,7 +20,10 @@ void Goal::Render(float cameraX)
 {
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
+	int flagDrawX = static_cast<int>(flagPos.x) - static_cast<int>(cameraX);
+	int flagDrawY = static_cast<int>(flagPos.y);
 	DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_GOAL),true);
+	DrawGraph(flagDrawX, flagDrawY, ImageManager::GetInstance().GetImage(IMAGE_GOAL_FLAG), true);
 }
 int Goal::GetScore(float playerY)
 {

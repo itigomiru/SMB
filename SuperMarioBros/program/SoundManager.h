@@ -9,10 +9,12 @@ public:
 		BGM_GROUND,
 		BGM_UNDERGROUND,
 		BGM_CASTLE,
-		SE_WORLD_CLEAR,
-		SE_STAGE_CLEAR,
-		SE_FLAGPOLE,
-		SE_GAME_OVER, 
+		BGM_WORLD_CLEAR,
+		BGM_STAGE_CLEAR,
+		BGM_FLAGPOLE,
+		BGM_GAME_OVER, 
+		BGM_MARIODIE,
+		BGM_STAR,
 		BGM_MAX,
 	};
 	//--------------------------------------------------
@@ -28,7 +30,6 @@ public:
 		SE_JUMP_SMALL,
 		SE_JUMP_SUPER,
 		SE_KICK,
-		SE_MARIODIE,
 		SE_PIPE,
 		SE_POWERUP,
 		SE_POWERUP_APPEARS,
@@ -40,7 +41,10 @@ public:
 	//--------------------------------------------------
 	void StopAllBGM();
 	void PlayBGM(int BGMnum);
+	void PlayShotBGM(int BGMnum);
 	void PlaySE(int SEnum);
+	int GetBGMHandle(int BGMnum) const { return BGMs[BGMnum]; }
+	int GetSEHandle(int SEnum) const { return SEs[SEnum]; }
 private:
 	SoundManager();
 	~SoundManager();
