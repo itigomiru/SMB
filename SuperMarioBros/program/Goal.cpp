@@ -1,9 +1,10 @@
 #include "Goal.h"
 #include "DxLib.h"
+#include "ImageManager.h"
 Goal::Goal()
 {
-	pos = { 3172.0f,32.0f };
-	size = { 8.0f, 176.0f };
+	pos = { 3168.0f,32.0f };
+	size = { 16.0f, 176.0f };
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;
@@ -17,7 +18,7 @@ void Goal::Render(float cameraX)
 {
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
-	DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 255, 0), true);
+	DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_GOAL),true);
 }
 int Goal::GetScore(float playerY)
 {

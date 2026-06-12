@@ -31,6 +31,7 @@ void Stage::Init()
 	{
 	case 0:
 		playerStartPos = { 32.0f, TILE_SIZE * 12 };
+		objectManager.AddObject(std::make_unique<Goal>());
 		break;
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
@@ -51,15 +52,18 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
-	objectManager.AddObject(std::make_unique<Goal>());
-
 }
 
 void Stage::Update()
 {
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
-	if (tileManager.GetCurrentStage() != 2)CameraUpdate();
+	if (tileManager.GetCurrentStage() != 2 && !player->isGoal)CameraUpdate();
+	if (player->isGoal)
+	{
+		cameraX += 1.0f;
+		if (cameraX > 3100) cameraX = 3100;
+	}
 	PlayerData::GetInstance().AddTime(-1);
 	if (PlayerData::GetInstance().GetTime() <= 0)
 	{
@@ -84,6 +88,7 @@ void Stage::Render()
 		{
 			DrawGraph(i * 768 - static_cast<int>(cameraX), TILE_SIZE * 2, ImageManager::GetInstance().GetImage(IMAGE_BACK_GROUND), true);
 		}
+		DrawGraph(3216 - static_cast<int>(cameraX), 128, ImageManager::GetInstance().GetImage(IMAGE_GOAL_CASTLE), true);
 		break;
 	case 1:
 		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
@@ -99,7 +104,7 @@ void Stage::Render()
 	objectManager.Render(Object::RL_LIFT, cameraX);
 	objectManager.Render(Object::RL_PLAYER, cameraX);
 	objectManager.Render(Object::RL_ITEM, cameraX);
-	objectManager.Render(Object::RL_CASTLE, cameraX);
+	if (tileManager.GetCurrentStage() == 0)DrawGraph(3264 - static_cast<int>(cameraX), 128, ImageManager::GetInstance().GetImage(IMAGE_GOAL_CASTLE_RIGHT), true);
 	EffectManager::GetInstance().Render(cameraX);
 }
 Stage::~Stage()
@@ -283,6 +288,7 @@ void Stage::CheckHit()
 			{
 				float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
 				player->OnGoal(poleCenterX);
+				if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
 			}
 		}
 	}
@@ -362,11 +368,11 @@ void Stage::CheckHitEnemyAndEnemy()
 		else if (objects[i]->objectType == Object::OT_SHELL)
 		{
 			KoopaTroopa* koopaA = static_cast<KoopaTroopa*>(objects[i].get());
-			if (koopaA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue; 
+			if (koopaA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
 			enemyA = koopaA;
 		}
 
-		if (!enemyA) continue; 
+		if (!enemyA) continue;
 
 		for (size_t j = i + 1; j < objects.size(); j++)
 		{
