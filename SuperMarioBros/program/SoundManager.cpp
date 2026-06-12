@@ -36,7 +36,6 @@ SoundManager::SoundManager()
 	SEs[SE_POWERUP_APPEARS] = LoadSoundMem("data/sound/se_powerup_appears.wav");
 	SEs[SE_STAGE_CLEAR] = LoadSoundMem("data/sound/se_stage_clear.wav");
 	SEs[SE_STOMP] = LoadSoundMem("data/sound/se_stomp.wav");
-	SEs[SE_VINE] = LoadSoundMem("data/sound/se_vine.wav");
 	SEs[SE_WARNING] = LoadSoundMem("data/sound/se_warning.wav");
 	SEs[SE_WORLD_CLEAR] = LoadSoundMem("data/sound/se_world_clear.wav");
 	//---------------------------------------------------------
@@ -45,13 +44,13 @@ SoundManager::SoundManager()
 	ChangeVolumeSoundMem(220, SEs[SE_BOWSERFIRE]);
 	ChangeVolumeSoundMem(255, SEs[SE_BREAKBLOCK]);
 	ChangeVolumeSoundMem(255, SEs[SE_BUMP]);
-	ChangeVolumeSoundMem(255, SEs[SE_COIN]);
-	ChangeVolumeSoundMem(255, SEs[SE_FIREBALL]);
-	ChangeVolumeSoundMem(255, SEs[SE_FIREWORKS]);
+	ChangeVolumeSoundMem(170, SEs[SE_COIN]);
+	ChangeVolumeSoundMem(170, SEs[SE_FIREBALL]);
+	ChangeVolumeSoundMem(170, SEs[SE_FIREWORKS]);
 	ChangeVolumeSoundMem(255, SEs[SE_FLAGPOLE]);
 	ChangeVolumeSoundMem(255, SEs[SE_GAME_OVER]);
-	ChangeVolumeSoundMem(255, SEs[SE_JUMP_SMALL]);
-	ChangeVolumeSoundMem(255, SEs[SE_JUMP_SUPER]);
+	ChangeVolumeSoundMem(200, SEs[SE_JUMP_SMALL]);
+	ChangeVolumeSoundMem(200, SEs[SE_JUMP_SUPER]);
 	ChangeVolumeSoundMem(255, SEs[SE_KICK]);
 	ChangeVolumeSoundMem(255, SEs[SE_MARIODIE]);
 	ChangeVolumeSoundMem(255, SEs[SE_PIPE]);
@@ -59,7 +58,6 @@ SoundManager::SoundManager()
 	ChangeVolumeSoundMem(255, SEs[SE_POWERUP_APPEARS]);
 	ChangeVolumeSoundMem(255, SEs[SE_STAGE_CLEAR]);
 	ChangeVolumeSoundMem(255, SEs[SE_STOMP]);
-	ChangeVolumeSoundMem(255, SEs[SE_VINE]);
 	ChangeVolumeSoundMem(255, SEs[SE_WARNING]);
 	ChangeVolumeSoundMem(255, SEs[SE_WORLD_CLEAR]);
 
@@ -98,4 +96,17 @@ void SoundManager::StopAllBGM(){
 			StopMusicMem(BGMs[i]);
 		}
 	}
+}
+
+void SoundManager::PlayBGM(int BGMnum)
+{
+	if (BGMnum < 0 || BGMnum >= BGM_MAX) return;
+	StopAllBGM();
+	PlayMusicMem(BGMs[BGMnum], DX_PLAYTYPE_LOOP);
+}
+
+void SoundManager::PlaySE(int SEnum)
+{
+	if (SEnum < 0 || SEnum >= SE_MAX) return;
+	PlaySoundMem(SEs[SEnum], DX_PLAYTYPE_BACK);
 }

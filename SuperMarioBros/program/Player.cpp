@@ -236,6 +236,8 @@ void Player::Jump()
 	if (PushHitKey(KEY_INPUT_SPACE) && isGround)
 	{
 		speed.y = -JUMP_POWER;
+		if(state == SMALL)SoundManager::GetInstance().PlaySE(SoundManager::SE_JUMP_SMALL);
+		else SoundManager::GetInstance().PlaySE(SoundManager::SE_JUMP_SUPER);
 
 		if (speed.x > DASH_JUDGE_SPEED || speed.x < -DASH_JUDGE_SPEED)
 		{
@@ -541,6 +543,7 @@ void Player::GetSuperMashroom()
 		freezeTimer = POWER_UP_TIME;
 
 		pos.y -= (SUPER_H - SMALL_H);
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	}
 	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
@@ -561,6 +564,7 @@ void Player::GetFireFlower()
 		freezeTimer = POWER_UP_TIME;
 
 		pos.y -= (SUPER_H - SMALL_H);
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	}
 	else if (state == SUPER)
 	{
@@ -568,6 +572,7 @@ void Player::GetFireFlower()
 		newState = FIRE;
 		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	}
 	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
@@ -696,6 +701,7 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 	// 踏みつけ処理
 	if (speed.y > 0.0f && (prevPos.y + size.h) <= enemy->pos.y)
 	{
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_STOMP);
 		pos.y = enemy->pos.y - size.h;
 
 		speed.y = -SQUASH_BOUNCE_POWER;
@@ -735,6 +741,7 @@ void Player::PowerUpUpdate()
 void Player::Death()
 {
 	if (isDead) return;
+	//SoundManager::GetInstance().PlaySE(SoundManager::SE_MARIODIE);
 
 	isDead = true;
 	deathTimer = DEATH_TIME;

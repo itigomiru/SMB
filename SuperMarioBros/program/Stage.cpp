@@ -34,10 +34,12 @@ void Stage::Init()
 	case 0:
 		playerStartPos = { 32.0f, TILE_SIZE * 12 };
 		objectManager.AddObject(std::make_unique<Goal>());
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
 		break;
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_UNDERGROUND);
 		break;
 	}
 	UI::GetInstance().SetTileManager(&tileManager);

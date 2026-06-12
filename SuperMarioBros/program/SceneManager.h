@@ -39,4 +39,6 @@ public:
 		reserveScene = nextScene;
 		reserveStage = nextStage;
 	}
+
+
 };

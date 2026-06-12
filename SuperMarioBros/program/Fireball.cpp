@@ -1,6 +1,7 @@
 #include "Fireball.h"
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "SoundManager.h"
 #include "TileManager.h"
 #include "ObjectManager.h"
 #include "Enemy.h"
@@ -18,7 +19,7 @@ Fireball::Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManage
 	speed.x = isFacingRight ? MOVE_SPEED : -MOVE_SPEED;
 	speed.y = 0;
 	renderLayer = RL_PLAYER;
-
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_FIREBALL);
 }
 
 void Fireball::Update(float cameraX) {
@@ -84,6 +85,7 @@ void Fireball::CheckCollisionX()
 		{
 			pos.x = static_cast<float>(right * TILE_SIZE - size.w);
 			DeathAndEffect();
+			SoundManager::GetInstance().PlaySE(SoundManager::SE_FIREWORKS);
 		}
 	}
 	else if (speed.x < 0.0f)
@@ -92,6 +94,7 @@ void Fireball::CheckCollisionX()
 		if (tileManager->IsSolid(left, top) || tileManager->IsSolid(left, bottom))
 		{
 			pos.x = static_cast<float>((left + 1) * TILE_SIZE);
+			SoundManager::GetInstance().PlaySE(SoundManager::SE_FIREWORKS);
 			DeathAndEffect();
 		}
 	}

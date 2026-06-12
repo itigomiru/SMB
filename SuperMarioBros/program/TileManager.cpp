@@ -8,6 +8,7 @@
 #include "EffectManager.h"
 #include "CoinEffect.h"
 #include "blockBreakEffect.h"
+#include "SoundManager.h"
 #include"ImageManager.h"
 #include "Coin.h"
 #include "PlayerData.h"
@@ -312,7 +313,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 		checkAndHitEnemyAbove();
 		checkAndHitMashAbove();
 		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x + (TILE_SIZE * 0.5), map[y][x].basePosition.y + (TILE_SIZE * 0.5)));
-
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_BREAKBLOCK);
 		map[y][x].type = TILE_EMPTY;
 		return;
 	}
@@ -396,6 +397,7 @@ void TileManager::AddPowerMash(Float2 pos)
 	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_SUPERMASHROOM);
 	mash->SetTileManager(this);
 
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(mash));
 }
 void TileManager::Add1UPMash(Float2 pos)
@@ -403,7 +405,8 @@ void TileManager::Add1UPMash(Float2 pos)
 	//mashを出す
 	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_1UPMASHROOM);
 	mash->SetTileManager(this);
-
+	
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(mash));
 }
 void TileManager::AddFireFlower(Float2 pos)
@@ -411,6 +414,7 @@ void TileManager::AddFireFlower(Float2 pos)
 	//fireflowerを出す
 	auto flower = std::make_unique<FireFlower>(pos.x, pos.y, ITEM_FIREFLOWER);
 	flower->SetTileManager(this);
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(flower));
 }
 void TileManager::AddStar(Float2 pos)
@@ -418,6 +422,7 @@ void TileManager::AddStar(Float2 pos)
 	//starを出す
 	auto star = std::make_unique<Star>(pos.x, pos.y, ITEM_STAR);
 	star->SetTileManager(this);
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(star));
 }
 

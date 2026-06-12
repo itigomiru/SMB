@@ -29,8 +29,6 @@ public:
 	void GoalUpdate();
 	void OnGoal(float poleCenterX); 
 
-	void OnAxe();
-
 	void Damage();
 	void Death();
 	void LandingOnGround();

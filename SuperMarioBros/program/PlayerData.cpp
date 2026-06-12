@@ -1,5 +1,6 @@
 #include"PlayerData.h"
 #include"Player.h"
+#include "SoundManager.h"
 
 PlayerData& PlayerData::GetInstance()
 {
@@ -14,6 +15,7 @@ void PlayerData::AddTime(int num)
 }
 void PlayerData::AddStock(int num)
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_1UP);
 	stock += num;
 	if (stock > STOCK_MAX)stock = STOCK_MAX;
 }
@@ -25,8 +27,8 @@ void PlayerData::AddScore(int num)
 
 void PlayerData::AddCoin(int num)
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_COIN);
 	coin += num; 
-	//sound
 	if (coin > COIN_MAX)
 	{
 		coin -= COIN_MAX;
