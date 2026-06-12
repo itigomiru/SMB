@@ -6,6 +6,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include"ImageManager.h"
+#include "SoundManager.h"
 #include "EffectManager.h"
 #include "ScoreEffect.h"
 #include "Item.h"
@@ -55,6 +56,7 @@ void Stage::Init()
 
 }
 
+
 void Stage::Update()
 {
 	EffectManager::GetInstance().Update();
@@ -72,6 +74,9 @@ void Stage::Update()
 
 	CheckHitPlayerAndLiftSide();
 	CheckHit();
+
+
+
 }
 
 void Stage::Render()
