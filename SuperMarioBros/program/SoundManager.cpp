@@ -74,6 +74,7 @@ SoundManager::SoundManager()
 	ChangeVolumeSoundMem(255,BGMs[BGM_GROUND]);
 	ChangeVolumeSoundMem(255,BGMs[BGM_UNDERGROUND]);
 	ChangeVolumeSoundMem(255,BGMs[BGM_CASTLE]);
+	ChangeVolumeSoundMem(180, BGMs[BGM_WORLD_CLEAR]);
 }
 
 SoundManager::~SoundManager()

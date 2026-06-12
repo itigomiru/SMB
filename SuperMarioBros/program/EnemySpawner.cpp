@@ -68,7 +68,6 @@ void EnemySpawner::Update(float cameraX)
 			case FIREBAR:
 			{
 				int fireCount = 6;
-				bool isClockwise = true;
 
 				for (int i = 0; i < fireCount; i++)
 				{
@@ -77,7 +76,7 @@ void EnemySpawner::Update(float cameraX)
 					float tileX = data.x / TILE_SIZE;
 					float tileY = data.y / TILE_SIZE;
 
-					auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, isClockwise, tileManager);
+					auto fireballElement = std::make_unique<Firebar>(tileX, tileY, distance, data.lookRight, tileManager);
 
 					objectManager->AddObject(std::move(fireballElement));
 				}
@@ -92,9 +91,7 @@ void EnemySpawner::Update(float cameraX)
 			{
 				auto bowser = std::make_unique<Bowser>(
 					data.x,
-					data.y,
-					data.x - 64.0f, // 左移動制限
-					data.x + 64.0f  // 右移動制限
+					data.y
 				);
 
 				bowser->SetTileManager(tileManager);

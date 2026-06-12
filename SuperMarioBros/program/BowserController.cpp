@@ -11,7 +11,7 @@
 #include "ObjectManager.h"
 
 
-Bowser::Bowser(float x, float y, float leftLimit, float rightLimit)
+Bowser::Bowser(float x, float y)
 {
 	pos.x = x;
 	pos.y = y;
@@ -36,8 +36,8 @@ Bowser::Bowser(float x, float y, float leftLimit, float rightLimit)
 	objectType = Object::OT_ENEMY;
 	renderLayer = Object::RL_ENEMY;
 
-	moveLeftLimit = leftLimit;
-	moveRightLimit = rightLimit;
+	moveLeftLimit = 2048;
+	moveRightLimit = 2240;
 
 	isFacingRight = false;
 
@@ -60,6 +60,30 @@ void Bowser::Update(float cameraX)
 {
 	if (isDead) return;
 
+
+	animeTimer++;
+	if (animeTimer >= BOWSER_ANIME_INTERVAL)
+	{
+		animeTimer = 0;
+		animeFrame++;
+
+		if (animeFrame >= 2)
+		{
+			animeFrame = 0;
+		}
+
+	}
+
+	if (tileManager->bridgeState == TileManager::BS_COLLAPSING)
+	{
+		canDamage = false;
+		animeTimer++;
+		return;
+	}
+	ApplyGravity();
+	Move();
+
+	if (tileManager->bridgeState == TileManager::BS_COLLAPSED)return;
 	if (player != nullptr)
 	{
 		isFacingRight = player->pos.x > pos.x;
@@ -128,22 +152,6 @@ void Bowser::Update(float cameraX)
 		break;
 	}
 
-	animeTimer++;
-
-	if (animeTimer >= BOWSER_ANIME_INTERVAL)
-	{
-		animeTimer = 0;
-		animeFrame++;
-
-		if (animeFrame >= 2)
-		{
-			animeFrame = 0;
-		}
-
-	}
-
-	ApplyGravity();
-	Move();
 
 	actionTimer--;
 
@@ -202,12 +210,24 @@ void Bowser::ApplyGravity()
 	{
 		speed.y = FALL_SPEED_MAX;
 	}
+
+	if (pos.y > SCREEN_H)isDead = true;
 }
 
 void Bowser::Move()
 {
 	pos.x += speed.x;
 	pos.y += speed.y;
+	if (pos.x < moveLeftLimit)
+	{
+		pos.x = moveLeftLimit;
+		speed.x = 0.0f;
+	}
+	else if (pos.x + size.w > moveRightLimit)
+	{
+		pos.x = moveRightLimit - size.w;
+		speed.x = 0.0f;
+	}
 
 	int left = static_cast<int>(pos.x) / TILE_SIZE;
 	int right = static_cast<int>(pos.x + size.w - 1) / TILE_SIZE;
@@ -234,11 +254,11 @@ void Bowser::Render(float cameraX)
 
 	if (action == ACTION_BREATH)
 	{
-		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_BREATH);
+		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_WALK);
 	}
 	else
 	{
-		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_WALK);
+		imgHandle = ImageManager::GetInstance().GetImage(IMAGE_ENEMY_BOWSER_BREATH);
 	}
 
 	int drawX = static_cast<int>(pos.x - cameraX);

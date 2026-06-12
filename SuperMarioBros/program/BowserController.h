@@ -8,7 +8,7 @@ class Player;
 class Bowser : public Enemy
 {
 public:
-	Bowser(float x, float y, float leftLimit, float rightLimit);
+	Bowser(float x, float y);
 
 	void Update(float cameraX) override;
 	void Render(float cameraX) override;

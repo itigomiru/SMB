@@ -60,8 +60,9 @@ void Player::Init(Float2 position)
 
 void Player::Update(float cameraX)
 {
-	if (tileManager->bridgeState == TileManager::BS_COLLAPSING)return;
+	if (tileManager->bridgeState == TileManager::BS_COLLAPSING || tileManager->bridgeState == TileManager::BS_COLLAPSED)return;
 	prevPos = pos;
+	if (pos.x - cameraX < 0)pos.x = cameraX;
 
 	if (isEnteringPipe) {
 		int currentStage = tileManager->GetCurrentStage();
@@ -138,6 +139,19 @@ void Player::Update(float cameraX)
 #endif
 	if (fireCooldown > 0)fireCooldown--;
 	if (firePoseTimer > 0)firePoseTimer--;
+
+	if (tileManager->bridgeState == TileManager::BS_CLEAR)
+	{
+		speed.x = 1.0f;
+		isFacingRight = true;
+		if (pos.x > 2350)speed.x = 0.0f;
+		UpdatePlayerSize();
+		ApplyGravity();
+		MoveX();
+		MoveY();
+		CheckCollisionY();
+		return;
+	}
 
 	if (isGoal)
 	{
@@ -326,12 +340,6 @@ void Player::MoveX()
 
 
 	// 左端制限
-	if (pos.x < 0.0f)
-	{
-		pos.x = 0.0f;
-
-		speed.x = 0.0f;
-	}
 }
 
 
@@ -840,8 +848,6 @@ void Player::Render(float cameraX)
 {
 	int tileX = static_cast<int>(pos.x + size.w / 2) / TILE_SIZE;
 	int tileY = static_cast<int>(pos.y + size.h + 1) / TILE_SIZE;
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "TileX: %d TileY: %d", tileX, tileY);
-	DrawFormatString(0, 20, GetColor(255, 255, 255), "pos %f,%f", pos.x, pos.y);
 	if (isDead)
 	{
 		if (isFallenDeath) return;
@@ -1125,7 +1131,6 @@ void Player::PipeCheck() {
 	else if (currentStage == 2) {
 		if (pos.x > 191 && tileY >= 12 && CheckHitKey(KEY_INPUT_D) && isGround) {
 			isEnteringPipe = true;
-			pos.y -= 2; 
 			renderLayer = Object::RL_UNDER_TILE;
 			pipeAnimationTimer = PIPE_ANIMATION_TIME;
 			speed.x = 0;

@@ -23,12 +23,12 @@
 		break;
 	case 1:
 		spawnDataList = {
-			{ FIREBAR,480.0f, 160.0f, false, true },  //ファイア
-			{ FIREBAR,784.0f, 96.0f, false, true },
-			{ FIREBAR,960.0f, 96.0f, false, true },
-			{ FIREBAR,1072.0f, 96.0f, false, true },
-			{ FIREBAR,1216.0f, 144.0f, false, true },
-			{ FIREBAR,1344.0f, 144.0f, false, true },
+			{ FIREBAR,480.0f, 160.0f, false, false },  //ファイア
+			{ FIREBAR,784.0f, 96.0f, false, false },
+			{ FIREBAR,960.0f, 96.0f, false, false },
+			{ FIREBAR,1072.0f, 96.0f, false, false },
+			{ FIREBAR,1216.0f, 144.0f, false, false },
+			{ FIREBAR,1344.0f, 144.0f, false, false },
 			{ FIREBAR,1408.0f, 64.0f, false, true },
 			{ BOWSER,2176.0f, 144.0f, false, true },  //クッパ
 		};

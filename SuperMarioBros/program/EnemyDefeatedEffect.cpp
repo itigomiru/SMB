@@ -49,6 +49,12 @@ void EnemyDefeatedEffect::Render(float cameraX) {
 		srcX = 32;
 		sizeH = 24;
 		break;
+	case Enemy::ET_BOWSER:
+		imageID = IMAGE_ENEMY_BOWSER_WALK;
+		srcX = 0;
+		sizeW = 32;
+		sizeH = 32;
+		break;
 	default:        imageID = IMAGE_ENEMY_GOOMBA; break;
 	}
 
