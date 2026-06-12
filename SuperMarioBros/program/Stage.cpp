@@ -19,6 +19,7 @@
 #include "Goal.h"
 #include "FirebarController.h"
 #include "LiftController.h"
+#include "BowserController.h"
 #include "Ui.h"
 Stage::Stage(int num)
 {
@@ -51,6 +52,8 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
+	
+
 	objectManager.AddObject(std::make_unique<Goal>());
 
 	objectManager.AddObject(std::make_unique<Coin>(30, 130));
@@ -309,10 +312,19 @@ void Stage::CheckHitFireballAndEnemy()
 			{
 				Enemy* enemy = static_cast<Enemy*>(enemyObj.get());
 
-				enemy->Death(player->pos.x < enemy->pos.x, 0);
-				//enemyの死亡エフェクト
+				if (enemy->GetEnemyType() == Enemy::ET_BOWSER)
+				{
+					Bowser* bowser = static_cast<Bowser*>(enemy);
+					bowser->Damage();
+
+					fireball->DeathAndEffect();
+					break;
+				}
+
+				enemy->Death(player->pos.x < enemy->pos.x, 100);
 				fireball->DeathAndEffect();
 				break;
+
 			}
 		}
 	}

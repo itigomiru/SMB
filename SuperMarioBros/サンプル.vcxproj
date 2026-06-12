@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="program\BlockBreakEffect.cpp" />
+    <ClCompile Include="program\BowserController.cpp" />
     <ClCompile Include="program\Coin.cpp" />
     <ClCompile Include="program\CoinEffect.cpp" />
     <ClCompile Include="program\EffectManager.cpp" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\BlockBreakEffect.h" />
+    <ClInclude Include="program\BowserController.h" />
     <ClInclude Include="program\Coin.h" />
     <ClInclude Include="program\CoinEffect.h" />
     <ClInclude Include="program\Effect.h" />

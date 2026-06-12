@@ -3,7 +3,7 @@
 	{
 	case 0:
 		spawnDataList = {
-			{ KOOPA_TROOPA,   100.0f, 182.0f, false, true },
+			{ BOWSER,		   150.0f, 190.0f, false, true },  //ƒNƒbƒp
 			{ GOOMBA,          320.0f, 190.0f, false, true },
 			{ GOOMBA,          640.0f, 190.0f, false, true },
 			{ GOOMBA,          800.0f, 190.0f, false, true },

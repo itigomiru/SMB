@@ -109,6 +109,9 @@
     <ClCompile Include="program\Coin.cpp">
       <Filter>Object\Item</Filter>
     </ClCompile>
+    <ClCompile Include="program\BowserController.cpp">
+      <Filter>Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="program\Float2.h">
@@ -230,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="program\Coin.h">
       <Filter>Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="program\BowserController.h">
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
