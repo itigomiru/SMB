@@ -39,6 +39,7 @@ public:
 	void Render() override;
 	~Stage() override;
 
-
 	float cameraX = 0.0f;
+
+	int roadBreathTimer;
 };
