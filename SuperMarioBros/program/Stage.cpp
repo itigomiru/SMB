@@ -6,6 +6,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include"ImageManager.h"
+#include "SoundManager.h"
 #include "EffectManager.h"
 #include "ScoreEffect.h"
 #include "Item.h"
@@ -17,6 +18,7 @@
 #include "KoopaTroopaController.h"
 #include "Coin.h"
 #include "Goal.h"
+#include "Axe.h"
 #include "FirebarController.h"
 #include "LiftController.h"
 #include "BowserController.h"
@@ -32,11 +34,14 @@ void Stage::Init()
 	{
 	case 0:
 		playerStartPos = { 32.0f, TILE_SIZE * 12 };
+		objectManager.AddObject(std::make_unique<Goal>());
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
 		break;
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
+		objectManager.AddObject(std::make_unique<Axe>());
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
 		break;
-
 	}
 	UI::GetInstance().SetTileManager(&tileManager);
 	auto p = std::make_unique<Player>(playerStartPos);
@@ -53,19 +58,39 @@ void Stage::Init()
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
-	
-
-	objectManager.AddObject(std::make_unique<Goal>());
-
-	objectManager.AddObject(std::make_unique<Coin>(30, 130));
 }
+
 
 void Stage::Update()
 {
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
-	if (tileManager.GetCurrentStage() != 2)CameraUpdate();
-	PlayerData::GetInstance().AddTime(-1);
+	if (tileManager.GetCurrentStage() != 2 && !player->isGoal)CameraUpdate();
+	if (player->isGoal && tileManager.GetCurrentStage() == 0)
+	{
+		cameraX += 1.0f;
+		if (cameraX > 3100) cameraX = 3100;
+	}
+
+	if (tileManager.GetCurrentStage() == 1)
+	{
+		if (tileManager.bridgeState != TileManager::BS_COLLAPSED)
+		{
+			if (cameraX > 2032) cameraX = 2032;
+		}
+		if (tileManager.bridgeState == TileManager::BS_COLLAPSING)
+		{
+			tileManager.bridgeTimer++;
+			if (tileManager.bridgeTimer > tileManager.BRIDGE_COLLAPSE_INTERVAL)
+			{
+				tileManager.CollapseBridge(tileManager.bridgeNum);
+				tileManager.bridgeNum++;
+				tileManager.bridgeTimer = 0;
+			}
+		}
+
+	}
+	if (!player->isGoal)PlayerData::GetInstance().AddTime(-1);
 	if (PlayerData::GetInstance().GetTime() <= 0)
 	{
 		player->Death();
@@ -77,6 +102,9 @@ void Stage::Update()
 
 	CheckHitPlayerAndLiftSide();
 	CheckHit();
+
+
+
 }
 
 void Stage::Render()
@@ -89,6 +117,7 @@ void Stage::Render()
 		{
 			DrawGraph(i * 768 - static_cast<int>(cameraX), TILE_SIZE * 2, ImageManager::GetInstance().GetImage(IMAGE_BACK_GROUND), true);
 		}
+		DrawGraph(3216 - static_cast<int>(cameraX), 128, ImageManager::GetInstance().GetImage(IMAGE_GOAL_CASTLE), true);
 		break;
 	case 1:
 		DrawBox(0, 0, SCREEN_W, SCREEN_H, GetColor(0, 0, 0), true);
@@ -104,7 +133,7 @@ void Stage::Render()
 	objectManager.Render(Object::RL_LIFT, cameraX);
 	objectManager.Render(Object::RL_PLAYER, cameraX);
 	objectManager.Render(Object::RL_ITEM, cameraX);
-	objectManager.Render(Object::RL_CASTLE, cameraX);
+	if (tileManager.GetCurrentStage() == 0)DrawGraph(3264 - static_cast<int>(cameraX), 128, ImageManager::GetInstance().GetImage(IMAGE_GOAL_CASTLE_RIGHT), true);
 	EffectManager::GetInstance().Render(cameraX);
 }
 Stage::~Stage()
@@ -293,17 +322,30 @@ void Stage::CheckHit()
 		}
 		if (obj->objectType == Object::OT_GOAL)
 		{
-			Goal* goal = static_cast<Goal*>(obj.get());
-			if (goal && objectManager.HitObjects(player, goal))
+			if (tileManager.GetCurrentStage() == 0)
 			{
-				float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
-				player->OnGoal(poleCenterX);
+				Goal* goal = static_cast<Goal*>(obj.get());
+				if (goal && objectManager.HitObjects(player, goal))
+				{
+					float poleCenterX = goal->pos.x + 10;
+					if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
+					player->OnGoal(poleCenterX);
+				}
+			}
+			if (tileManager.GetCurrentStage() == 1)
+			{
+				Axe* axe = static_cast<Axe*>(obj.get());
+				if (axe && objectManager.HitObjects(player, axe))
+				{
+					tileManager.bridgeState = TileManager::BS_COLLAPSING;
+					axe->isDead = true;
+				}
 			}
 		}
+		CheckHitFireballAndEnemy();
+		CheckHitShellAndEnemy();
+		CheckHitEnemyAndEnemy();
 	}
-	CheckHitFireballAndEnemy();
-	CheckHitShellAndEnemy();
-	CheckHitEnemyAndEnemy();
 }
 
 void Stage::CheckHitFireballAndEnemy()
@@ -386,11 +428,11 @@ void Stage::CheckHitEnemyAndEnemy()
 		else if (objects[i]->objectType == Object::OT_SHELL)
 		{
 			KoopaTroopa* koopaA = static_cast<KoopaTroopa*>(objects[i].get());
-			if (koopaA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue; 
+			if (koopaA->GetState() == KoopaTroopa::STATE_SHELL_ROLL) continue;
 			enemyA = koopaA;
 		}
 
-		if (!enemyA) continue; 
+		if (!enemyA) continue;
 
 		for (size_t j = i + 1; j < objects.size(); j++)
 		{

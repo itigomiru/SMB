@@ -60,8 +60,43 @@ void Player::Init(Float2 position)
 
 void Player::Update(float cameraX)
 {
+	if (tileManager->bridgeState == TileManager::BS_COLLAPSING)return;
 	prevPos = pos;
 
+	if (isEnteringPipe) {
+		int currentStage = tileManager->GetCurrentStage();
+		pipeAnimationTimer--;
+
+		if (currentStage == 0) {
+			pos.y += 0.8f;
+		}
+		else if (currentStage == 2) {
+			pos.x += 0.8f;
+		}
+
+		if (pipeAnimationTimer <= 0) {
+			isEnteringPipe = false;
+
+			if (currentStage == 0) {
+				tileManager->ChangeStage(2);
+				if (starTimer == 0) SoundManager::GetInstance().PlayBGM(SoundManager::BGM_UNDERGROUND);
+				pos.x = 2 * TILE_SIZE;
+				pos.y = 2 * TILE_SIZE;
+				renderLayer = RL_PLAYER;
+				stage->cameraX = 0;
+			}
+			else if (currentStage == 2) {
+				tileManager->ChangeStage(0);
+				if (starTimer == 0) SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
+				stage->cameraX = 160 * TILE_SIZE;
+				pos.x = 163 * TILE_SIZE + (TILE_SIZE / 2);
+				pos.y = 9 * TILE_SIZE;
+				renderLayer = RL_PLAYER;
+			}
+		}
+
+		return;
+	}
 
 	if (freezeTimer > 0)
 	{
@@ -71,6 +106,14 @@ void Player::Update(float cameraX)
 	if (starTimer > 0)
 	{
 		starTimer--;
+		if (starTimer == 1)
+		{
+			int handle;
+			if (tileManager->GetCurrentStage() == 0)handle = SoundManager::BGM_GROUND;
+			else if (tileManager->GetCurrentStage() == 1)handle = SoundManager::BGM_CASTLE;
+			else handle = SoundManager::BGM_UNDERGROUND;
+			SoundManager::GetInstance().PlayBGM(handle);
+		}
 	}
 
 	isGround = CheckGround();
@@ -235,6 +278,8 @@ void Player::Jump()
 	if (PushHitKey(KEY_INPUT_SPACE) && isGround)
 	{
 		speed.y = -JUMP_POWER;
+		if (state == SMALL)SoundManager::GetInstance().PlaySE(SoundManager::SE_JUMP_SMALL);
+		else SoundManager::GetInstance().PlaySE(SoundManager::SE_JUMP_SUPER);
 
 		if (speed.x > DASH_JUDGE_SPEED || speed.x < -DASH_JUDGE_SPEED)
 		{
@@ -532,6 +577,7 @@ void Player::SetState(int newState)
 
 void Player::GetSuperMashroom()
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	if (state == SMALL)
 	{
 		oldState = SMALL;
@@ -552,6 +598,7 @@ void Player::Get1UpMushroom()
 
 void Player::GetFireFlower()
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	if (state == SMALL)
 	{
 		oldState = SMALL;
@@ -567,12 +614,15 @@ void Player::GetFireFlower()
 		newState = FIRE;
 		isChangingState = true;
 		freezeTimer = POWER_UP_TIME;
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
 	}
 	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 void Player::GetStar()
 {
 	starTimer = STAR_TIME;
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP);
+	SoundManager::GetInstance().PlayBGM(SoundManager::BGM_STAR);
 	EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(pos, ScoreEffect::SCORE_1000));
 }
 
@@ -695,6 +745,7 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 	// 踏みつけ処理
 	if (speed.y > 0.0f && (prevPos.y + size.h) <= enemy->pos.y)
 	{
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_STOMP);
 		pos.y = enemy->pos.y - size.h;
 
 		speed.y = -SQUASH_BOUNCE_POWER;
@@ -734,9 +785,10 @@ void Player::PowerUpUpdate()
 void Player::Death()
 {
 	if (isDead) return;
+	SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_MARIODIE);
 
 	isDead = true;
-	deathTimer = DEATH_TIME; 
+	deathTimer = DEATH_TIME;
 
 	if (!isFallenDeath)
 	{
@@ -768,6 +820,7 @@ void Player::Damage()
 
 	if (state == FIRE || state == SUPER)
 	{
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_PIPE);
 		oldState = state;
 		newState = SMALL;
 		isChangingState = true;
@@ -788,6 +841,7 @@ void Player::Render(float cameraX)
 	int tileX = static_cast<int>(pos.x + size.w / 2) / TILE_SIZE;
 	int tileY = static_cast<int>(pos.y + size.h + 1) / TILE_SIZE;
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "TileX: %d TileY: %d", tileX, tileY);
+	DrawFormatString(0, 20, GetColor(255, 255, 255), "pos %f,%f", pos.x, pos.y);
 	if (isDead)
 	{
 		if (isFallenDeath) return;
@@ -1047,42 +1101,36 @@ void Player::RenderStar(float cameraX)
 
 }
 
-void Player::PipeCheck()
-{
+void Player::PipeCheck() {
+	// すでに土管アニメーション中なら、ここのキー判定はスキップ
+	if (isEnteringPipe) return;
+
 	int currentStage = tileManager->GetCurrentStage();
-	// プレイヤーの中心位置から、現在いるタイルのX, Yインデックスを計算
 	int tileX = static_cast<int>(pos.x + size.w / 2) / TILE_SIZE;
 	int tileY = static_cast<int>(pos.y + size.h + 1) / TILE_SIZE;
-	if (currentStage == 0)
-	{
-		if ((tileX == 57 || tileX == 58) && tileY == 9)
-		{
-			if (CheckHitKey(KEY_INPUT_S))
-			{
-				// ステージを「2 (地下)」に切り替える
-				tileManager->ChangeStage(2);
 
-				pos.x = 2 * TILE_SIZE;
-				pos.y = 2 * TILE_SIZE;
+	if (currentStage == 0) {
+		if (pos.x > 916 && pos.x < 926 && tileY == 9 && isGround) {
+			if (CheckHitKey(KEY_INPUT_S)) {
+				// アニメーション開始の合図
+				isEnteringPipe = true;
+				pipeAnimationTimer = PIPE_ANIMATION_TIME;
 				speed.x = 0;
 				speed.y = 0;
-				stage->cameraX = 0;
+				renderLayer = Object::RL_UNDER_TILE;
+				SoundManager::GetInstance().PlaySE(SoundManager::SE_PIPE);
 			}
-
 		}
 	}
-	else if (currentStage == 2)
-	{
-		if (tileX >= 12 && tileY >= 12 && CheckHitKey(KEY_INPUT_D))
-		{
-			tileManager->ChangeStage(0);
-
-			stage->cameraX = 163 * TILE_SIZE;
-			pos.x = 163 * TILE_SIZE;
-			pos.y = 9 * TILE_SIZE;
+	else if (currentStage == 2) {
+		if (pos.x > 191 && tileY >= 12 && CheckHitKey(KEY_INPUT_D) && isGround) {
+			isEnteringPipe = true;
+			pos.y -= 2; 
+			renderLayer = Object::RL_UNDER_TILE;
+			pipeAnimationTimer = PIPE_ANIMATION_TIME;
 			speed.x = 0;
 			speed.y = 0;
-			return;
+			SoundManager::GetInstance().PlaySE(SoundManager::SE_PIPE);
 		}
 	}
 }
@@ -1135,7 +1183,7 @@ bool Player::CheckLift()
 void Player::OnGoal(float poleCenterX)
 {
 	if (isGoal || isDead) return;
-
+	SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_FLAGPOLE);
 	isGoal = true;
 	goalPhase = GP_DOWN;
 
@@ -1149,41 +1197,69 @@ void Player::OnGoal(float poleCenterX)
 	isCrouching = false;
 	isJumping = false;
 	isAnimJamping = false;
+
+
 }
 void Player::GoalUpdate()
 {
-	switch (goalPhase)
+	if (tileManager->GetCurrentStage() == 0)
 	{
-	case GP_DOWN: // ポールをスライドして降りる
-		speed.x = 0.0f;
-		speed.y = 2.0f; // 一定速度で下へ
 
-		// 地面に着地したら次のフェーズへ
-		if (isGround)
+		switch (goalPhase)
 		{
-			pos.x += size.w;
-			goalPhase = 1;
-			speed.y = 0.0f;
-			isFacingRight = true; // 右を向く
-		}
-		break;
-
-	case GP_WALK:
-		speed.x = SPEED_MAX.x / 2;
-
-		if (pos.x > 3264)
-		{
-			goalPhase = 2;
+		case GP_DOWN: // ポールをスライドして降りる
 			speed.x = 0.0f;
-			SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
-			PlayerData::GetInstance().SetPlayerState(state);
-		}
-		break;
+			speed.y = 1.0f; // 一定速度で下へ
 
-	case GP_CASTLE:
-		speed.x = 0.0f;
-		speed.y = 0.0f;
-		break;
+			// 地面に着地したら次のフェーズへ
+			if (isGround && CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_FLAGPOLE)) == 0)
+			{
+				pos.x += size.w;
+				goalPhase = 1;
+				speed.y = 0.0f;
+				isFacingRight = true; // 右を向く
+				SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_STAGE_CLEAR);
+			}
+			break;
+
+		case GP_WALK:
+			speed.x = 1.0f;
+
+			if (pos.x > 3270)
+			{
+				speed.x = 0.0f;
+				if (CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_STAGE_CLEAR)) == 0)
+				{
+					SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, 1);
+					PlayerData::GetInstance().SetPlayerState(state);
+				}
+			}
+			break;
+		}
+	}
+	if (tileManager->GetCurrentStage() == 1)
+	{
+		switch (goalPhase)
+		{
+		case GP_DOWN:
+			if (isGround)
+			{
+				pos.x += size.w;
+				goalPhase = GP_WALK;
+				speed.y = 0.0f;
+				isFacingRight = true; // 右を向く
+			}
+			break;
+		case GP_WALK:
+			//speed.x = 1.0f;
+			//if (pos.x > 12 * TILE_SIZE)
+			//{
+			//	speed.x = 0.0f;
+			//	SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, 1);
+			//	PlayerData::GetInstance().SetPlayerState(state);
+			//}
+			break;
+		}
 	}
 
 	return;

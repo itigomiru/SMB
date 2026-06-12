@@ -1,9 +1,12 @@
 #include "Goal.h"
 #include "DxLib.h"
+#include "ImageManager.h"
+#include"ScoreEffect.h"
 Goal::Goal()
 {
-	pos = { 3172.0f,32.0f };
-	size = { 8.0f, 176.0f };
+	pos = { 3168.0f,32.0f };
+	size = { 16.0f, 176.0f };
+	flagPos = { 3160.0f, 48.0f };
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;
@@ -17,16 +20,19 @@ void Goal::Render(float cameraX)
 {
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
 	int drawY = static_cast<int>(pos.y);
-	DrawBox(drawX, drawY, drawX + size.w, drawY + size.h, GetColor(0, 255, 0), true);
+	int flagDrawX = static_cast<int>(flagPos.x) - static_cast<int>(cameraX);
+	int flagDrawY = static_cast<int>(flagPos.y);
+	DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_GOAL),true);
+	DrawGraph(flagDrawX, flagDrawY, ImageManager::GetInstance().GetImage(IMAGE_GOAL_FLAG), true);
 }
 int Goal::GetScore(float playerY)
 {
 	float rate = (playerY - pos.y) / size.h;
 
-	if (rate < 0.2f) return 5000;
-	if (rate < 0.4f) return 2000;
-	if (rate < 0.6f) return 800;
-	if (rate < 0.8f) return 400;
+	if (rate < 0.2f) return ScoreEffect::SCORE_5000;
+	if (rate < 0.4f) return ScoreEffect::SCORE_2000;
+	if (rate < 0.6f) return ScoreEffect::SCORE_800;
+	if (rate < 0.8f) return ScoreEffect::SCORE_400;
 
-	return 100;
+	return ScoreEffect::SCORE_100;
 }

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Scene.h"
 #include "Title.h"
 #include "Stage.h"
@@ -40,4 +39,6 @@ public:
 		reserveScene = nextScene;
 		reserveStage = nextStage;
 	}
+
+
 };

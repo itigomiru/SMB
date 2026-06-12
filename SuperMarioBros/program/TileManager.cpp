@@ -8,7 +8,9 @@
 #include "EffectManager.h"
 #include "CoinEffect.h"
 #include "blockBreakEffect.h"
+#include "SoundManager.h"
 #include"ImageManager.h"
+#include "Coin.h"
 #include "PlayerData.h"
 #include <memory>
 void TileManager::SetTile()
@@ -112,7 +114,29 @@ void TileManager::SetTile()
 				}
 			}
 		}
-		//objectManager->AddObject(std::make_unique<Coin>(Float2{ 300.0f, 200.0f }));
+
+		objectManager->AddObject(std::make_unique<Coin>(80, 80));
+		objectManager->AddObject(std::make_unique<Coin>(96, 80));
+		objectManager->AddObject(std::make_unique<Coin>(112, 80));
+		objectManager->AddObject(std::make_unique<Coin>(128, 80));
+		objectManager->AddObject(std::make_unique<Coin>(144, 80));
+
+		objectManager->AddObject(std::make_unique<Coin>(64, 112));
+		objectManager->AddObject(std::make_unique<Coin>(80, 112));
+		objectManager->AddObject(std::make_unique<Coin>(96, 112));
+		objectManager->AddObject(std::make_unique<Coin>(112, 112));
+		objectManager->AddObject(std::make_unique<Coin>(128, 112));
+		objectManager->AddObject(std::make_unique<Coin>(144, 112));
+		objectManager->AddObject(std::make_unique<Coin>(160, 112));
+
+		objectManager->AddObject(std::make_unique<Coin>(64, 144));
+		objectManager->AddObject(std::make_unique<Coin>(80, 144));
+		objectManager->AddObject(std::make_unique<Coin>(96, 144));
+		objectManager->AddObject(std::make_unique<Coin>(112, 144));
+		objectManager->AddObject(std::make_unique<Coin>(128, 144));
+		objectManager->AddObject(std::make_unique<Coin>(144, 144));
+		objectManager->AddObject(std::make_unique<Coin>(160, 144));
+
 		break;
 	}
 
@@ -197,6 +221,15 @@ void TileManager::Render(float cameraX) {
 			case TILE_PIPE_RIGHT_BOTTOM2:
 				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_PIPE_RIGHT_BOTTOM_UNDERGROUND), true);
 				break;
+			case TILE_CASTLE_BRIDGE:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_CASTLE_BRIDGE), true);
+				break;
+			case TILE_MAGMA_TOP:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_MAGMA_TOP), true);
+				break;
+			case TILE_MAGMA_BOTTOM:
+				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_MAGMA_BOTTOM), true);
+				break;
 			}
 		}
 	}
@@ -210,11 +243,12 @@ bool TileManager::IsSolid(int x, int y)
 	if (x < 0 || x >= map[y].size())
 		return false;
 
-	return (map[y][x].type != TILE_EMPTY && map[y][x].type != TILE_HIDE_BLOCK);
+	return (map[y][x].type != TILE_EMPTY && map[y][x].type != TILE_HIDE_BLOCK && map[y][x].type != TILE_MAGMA_TOP && map[y][x].type != TILE_MAGMA_BOTTOM);
 }
 
 void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 {
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_BUMP);
 	// 範囲外チェック（安全のため）
 	if (y < 0 || y >= map.size() || x < 0 || x >= map[y].size()) return;
 
@@ -242,7 +276,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 					if (enemyRight > blockLeft && enemyLeft < blockRight)
 					{
 
-						enemy->Death(enemy->speed.x > 0.0f,0);
+						enemy->Death(enemy->speed.x > 0.0f, 0);
 					}
 				}
 			}
@@ -280,7 +314,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 		checkAndHitEnemyAbove();
 		checkAndHitMashAbove();
 		EffectManager::GetInstance().AddEffect(std::make_unique<BrockBreakEffect>(map[y][x].basePosition.x + (TILE_SIZE * 0.5), map[y][x].basePosition.y + (TILE_SIZE * 0.5)));
-
+		SoundManager::GetInstance().PlaySE(SoundManager::SE_BREAKBLOCK);
 		map[y][x].type = TILE_EMPTY;
 		return;
 	}
@@ -364,6 +398,7 @@ void TileManager::AddPowerMash(Float2 pos)
 	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_SUPERMASHROOM);
 	mash->SetTileManager(this);
 
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(mash));
 }
 void TileManager::Add1UPMash(Float2 pos)
@@ -371,7 +406,8 @@ void TileManager::Add1UPMash(Float2 pos)
 	//mashを出す
 	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_1UPMASHROOM);
 	mash->SetTileManager(this);
-
+	
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(mash));
 }
 void TileManager::AddFireFlower(Float2 pos)
@@ -379,6 +415,7 @@ void TileManager::AddFireFlower(Float2 pos)
 	//fireflowerを出す
 	auto flower = std::make_unique<FireFlower>(pos.x, pos.y, ITEM_FIREFLOWER);
 	flower->SetTileManager(this);
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(flower));
 }
 void TileManager::AddStar(Float2 pos)
@@ -386,6 +423,7 @@ void TileManager::AddStar(Float2 pos)
 	//starを出す
 	auto star = std::make_unique<Star>(pos.x, pos.y, ITEM_STAR);
 	star->SetTileManager(this);
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(star));
 }
 
@@ -398,8 +436,20 @@ bool TileManager::IsHidden(int x, int y) {
 void TileManager::ChangeStage(int stageId)
 {
 	currentStage = stageId;
-	SetTile(); 
+	SetTile();
 
-	
+
 	//objectManager->AllClear();
+}
+
+void TileManager::CollapseBridge(int num)
+{
+	if (currentStage != 1) return;
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_BREAKBLOCK);
+	map[BRIDGE_Y][BRIDGE_RIGHT - num].type = TILE_EMPTY;
+	bridgeTimer = 0;
+	if (map[BRIDGE_Y][BRIDGE_LEFT].type == TILE_EMPTY)
+	{
+		bridgeState = BS_COLLAPSED;
+	}
 }

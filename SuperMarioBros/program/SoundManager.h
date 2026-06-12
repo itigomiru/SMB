@@ -1,32 +1,58 @@
 #pragma once
 
-//--------------------------------------------------
-enum BGM_LIST {
-	BGM_FAKE,
-	BGM_MAX,
-};
-//--------------------------------------------------
-enum SE_LIST {
-	SE_FAKE,
-	SE_MAX,
-};
-//--------------------------------------------------
 class SoundManager
 {
 public:
 	static SoundManager& GetInstance();
+	//--------------------------------------------------
+	enum BGM_LIST {
+		BGM_GROUND,
+		BGM_UNDERGROUND,
+		BGM_CASTLE,
+		BGM_WORLD_CLEAR,
+		BGM_STAGE_CLEAR,
+		BGM_FLAGPOLE,
+		BGM_GAME_OVER, 
+		BGM_MARIODIE,
+		BGM_STAR,
+		BGM_MAX,
+	};
+	//--------------------------------------------------
+	enum SE_LIST {
+		SE_1UP,
+		SE_BOWSERFALLS,
+		SE_BOWSERFIRE,
+		SE_BREAKBLOCK,
+		SE_BUMP,
+		SE_COIN,
+		SE_FIREBALL,
+		SE_FIREWORKS,
+		SE_JUMP_SMALL,
+		SE_JUMP_SUPER,
+		SE_KICK,
+		SE_PIPE,
+		SE_POWERUP,
+		SE_POWERUP_APPEARS,
+		SE_STOMP,
+		SE_WARNING,
+		SE_MAX,
+
+	};
+	//--------------------------------------------------
+	void StopAllBGM();
+	void PlayBGM(int BGMnum);
+	void PlayShotBGM(int BGMnum);
+	void PlaySE(int SEnum);
+	int GetBGMHandle(int BGMnum) const { return BGMs[BGMnum]; }
+	int GetSEHandle(int SEnum) const { return SEs[SEnum]; }
 private:
 	SoundManager();
 	~SoundManager();
 
 	SoundManager(const SoundManager&) = delete;
 	SoundManager& operator=(const SoundManager&) = delete;
-	
+
 	int BGMs[BGM_MAX];	//	音声のハンドルを入れる配列
 
 	int SEs[SE_MAX];	//	効果音のハンドルを入れる配列
-public:
-	int GetSE(int num) const { return SEs[num]; }
-	int GetBGM(int num) const { return BGMs[num]; }
-	void StopAllBGM() ;
 };

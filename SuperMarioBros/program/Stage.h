@@ -3,6 +3,7 @@
 #include "ObjectManager.h"
 #include "TileManager.h"
 #include "EnemySpawner.h"
+#include "SoundManager.h"
 #include "Player.h"
 
 class Stage : public Scene

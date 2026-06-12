@@ -1,14 +1,10 @@
 #pragma once
 #include "Object.h"
-class Goal : public Object
+class Axe : public Object
 {
 public:
-    Goal();
-
-    Float2 flagPos;
+    Axe();
 
     void Update(float cameraX) override;
     void Render(float cameraX) override;
-
-    int GetScore(float playerY);
 };

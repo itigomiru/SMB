@@ -11,12 +11,17 @@ void Title::Init()
 	PlayerData::GetInstance().Reset();
 
 }
-
+  
+int debug = 0;
 void Title::Update()
 {
     if (CheckHitKey(KEY_INPUT_RETURN)) {
         SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,0);
     }
+	if (CheckHitKey(KEY_INPUT_M))
+	{
+        SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
+	}
 }
 
 void Title::Render()

@@ -1,5 +1,6 @@
 #include "EnemyDefeatedEffect.h"
 #include "ImageManager.h"
+#include  "SoundManager.h"
 #include "Enemy.h"
 
 EnemyDefeatedEffect::EnemyDefeatedEffect(float startX, float startY, int type, bool toRight)
@@ -10,6 +11,7 @@ EnemyDefeatedEffect::EnemyDefeatedEffect(float startX, float startY, int type, b
 
 	// 2. 左右どちらに 吹っ飛ぶか
 	speedX = toRight ? HORIZONTAL_SPEED : -HORIZONTAL_SPEED;
+	SoundManager::GetInstance().PlaySE(SoundManager::SE_KICK);
 }
 
 void EnemyDefeatedEffect::Update() {

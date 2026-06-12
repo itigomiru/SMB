@@ -39,6 +39,8 @@ public:
 	int freezeTimer;
 	int invincibleTimer;
 	int starTimer;
+	bool isGoal;       // ゴール演出中かどうか
+	bool isAxed;
 
 private:
 	const float SMALL_H = 16.0f;
@@ -53,7 +55,7 @@ private:
 	const float DASH_JUNP_POWER_MULTIPLIER = 1.05f;
 	const float OVERLAP_JUDGE = 6.0f;
 	const int INVINCIBLE_TIME = 120;
-	const int DEATH_TIME = 120;
+	const int DEATH_TIME = 200;
 	const int POWER_UP_TIME = 60;
 	const int STAR_TIME = 600;
 
@@ -71,6 +73,9 @@ private:
 
 	int state;
 	bool isFacingRight;
+	bool isEnteringPipe;
+	int pipeAnimationTimer;
+	const int PIPE_ANIMATION_TIME = 60;
 
 	int oldState;
 	int newState;
@@ -91,13 +96,14 @@ private:
 	bool isFallenDeath;
 	const float DEATH_JUMP_POWER = 7.0f;
 
-	bool isGoal;       // ゴール演出中かどうか
+
+
 	int goalPhase;     // ゴール演出の進行状態 (0: ポール降下中, 1: 右へ移動中, 2: 城到達)
 	enum GoalPhase
 	{
 		GP_DOWN,
 		GP_WALK,
-		GP_CASTLE,
+		GP_STOP,
 	};
 	int fireballCount;
 	enum PlayerState

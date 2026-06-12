@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="program\Axe.cpp" />
     <ClCompile Include="program\BlockBreakEffect.cpp" />
     <ClCompile Include="program\BowserController.cpp" />
     <ClCompile Include="program\BreathController.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="program\Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="program\Axe.h" />
     <ClInclude Include="program\BlockBreakEffect.h" />
     <ClInclude Include="program\BowserController.h" />
     <ClInclude Include="program\BreathController.h" />
