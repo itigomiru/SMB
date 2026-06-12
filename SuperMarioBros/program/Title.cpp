@@ -11,12 +11,27 @@ void Title::Init()
 	PlayerData::GetInstance().Reset();
 
 }
-
+  
+int debug = 0;
 void Title::Update()
 {
     if (CheckHitKey(KEY_INPUT_RETURN)) {
         SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,0);
     }
+	if (PushHitKey(KEY_INPUT_SPACE))
+	{
+		int h = SoundManager::GetInstance().GetBGM(debug);
+ 		PlayMusicMem(h, DX_PLAYTYPE_LOOP);
+	}
+	if (PushHitKey(KEY_INPUT_UP))PlaySoundMem(SoundManager::GetInstance().GetSE(SE_JUMP_SMALL), DX_PLAYTYPE_BACK);
+	if (PushHitKey(KEY_INPUT_RIGHT))
+	{
+		debug++;
+	}
+	if (PushHitKey(KEY_INPUT_LEFT))
+	{
+		debug--;
+	}
 }
 
 void Title::Render()
