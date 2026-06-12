@@ -1,5 +1,6 @@
 #include "ObjectManager.h"
 #include "Hit.h"
+#include "Enemy.h"
 #include <algorithm>
 
 void ObjectManager::AddObject(std::unique_ptr<Object> object)
@@ -62,4 +63,21 @@ void ObjectManager::Update(float cameraX) {
 			  }),
 		  objects.end());
 	  newObjects.clear();
+  }
+
+  void ObjectManager::RemoveEnemyBullet() {
+	  for (auto& obj : objects) {
+		  if (obj->objectType == Object::OT_ENEMY_BULLET) {
+			  obj->isDead = true;
+		  }
+	  }
+  }
+  bool ObjectManager::SearchBowser() const {
+	  for (const auto& obj : objects) {
+		  if (obj->objectType == Object::OT_ENEMY) {
+			  Enemy* enemy = static_cast<Enemy*>(obj.get());
+			  if(enemy->GetEnemyType() == Enemy::ET_BOWSER)return true;
+		  }
+	  }
+	  return false;
   }

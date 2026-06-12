@@ -5,12 +5,13 @@
 #include "ImageManager.h"
 void Gameover::Init()
 {
+	timer = 0;
+	SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_GAME_OVER);
 }
 void Gameover::Update()
 {
-	if (CheckHitKey(KEY_INPUT_RETURN)) {
-		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
-	}
+	timer++;
+	if (timer > GAMEOVER_DISPLAY_TIME)SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 }
 void Gameover::Render()
 {

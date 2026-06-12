@@ -19,4 +19,6 @@ public:
 	int GetFireballCount() const;
 
 	void AllClear();
+	void RemoveEnemyBullet();
+	bool SearchBowser() const;
 };

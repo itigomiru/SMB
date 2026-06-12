@@ -8,4 +8,7 @@ class Gameover : public Scene
 	void Update() override;
 	void Render() override;
 	~Gameover() override;
+private:
+	int timer = 0;
+	const int GAMEOVER_DISPLAY_TIME = 240;
 };

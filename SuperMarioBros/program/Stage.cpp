@@ -39,6 +39,7 @@ void Stage::Init()
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
 		break;
 	case 1:
+		PlayerData::GetInstance().AddTime(-100);
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
@@ -68,7 +69,8 @@ void Stage::Update()
 {
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
-	if (tileManager.GetCurrentStage() != 2 && !player->isGoal)CameraUpdate();
+	bool vsBouser = tileManager.GetCurrentStage() == 1 && player->pos.x > 1968;
+	if (tileManager.GetCurrentStage() != 2 && !player->isGoal && !vsBouser)CameraUpdate();
 	if (player->isGoal && tileManager.GetCurrentStage() == 0)
 	{
 		cameraX += 1.0f;
@@ -77,13 +79,11 @@ void Stage::Update()
 
 	if (tileManager.GetCurrentStage() == 1)
 	{
-		if (tileManager.bridgeState != TileManager::BS_COLLAPSED)
-		{
-			if (cameraX > 2032) cameraX = 2032;
-		}
+		if (player->pos.x > 1968)cameraX += 2.0f;
 		if (tileManager.bridgeState == TileManager::BS_COLLAPSING)
 		{
 			tileManager.bridgeTimer++;
+			if (cameraX > 2032) cameraX = 2032;
 			if (tileManager.bridgeTimer > tileManager.BRIDGE_COLLAPSE_INTERVAL)
 			{
 				tileManager.CollapseBridge(tileManager.bridgeNum);
@@ -91,6 +91,20 @@ void Stage::Update()
 				tileManager.bridgeTimer = 0;
 			}
 		}
+		if (tileManager.bridgeState == TileManager::BS_COLLAPSED && !objectManager.SearchBowser())
+		{
+			tileManager.bridgeState = TileManager::BS_CLEAR;
+			SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_WORLD_CLEAR);
+		}
+		if (tileManager.bridgeState != TileManager::BS_CLEAR)
+		{
+			if (cameraX > 2032) cameraX = 2032;
+		}
+		if (tileManager.bridgeState == TileManager::BS_CLEAR)
+		{
+			if (cameraX > 2304) cameraX = 2304;
+		}
+
 
 	}
 	if (!player->isGoal)PlayerData::GetInstance().AddTime(-1);
@@ -373,6 +387,7 @@ void Stage::CheckHit()
 				{
 					tileManager.bridgeState = TileManager::BS_COLLAPSING;
 					axe->isDead = true;
+					objectManager.RemoveEnemyBullet();
 				}
 			}
 		}
