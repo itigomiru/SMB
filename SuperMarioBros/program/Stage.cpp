@@ -17,6 +17,7 @@
 #include "KoopaTroopaController.h"
 #include "Coin.h"
 #include "Goal.h"
+#include "Axe.h"
 #include "FirebarController.h"
 #include "LiftController.h"
 #include "Ui.h"
@@ -35,8 +36,8 @@ void Stage::Init()
 		break;
 	case 1:
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
+		objectManager.AddObject(std::make_unique<Axe>());
 		break;
-
 	}
 	UI::GetInstance().SetTileManager(&tileManager);
 	auto p = std::make_unique<Player>(playerStartPos);
@@ -59,12 +60,31 @@ void Stage::Update()
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
 	if (tileManager.GetCurrentStage() != 2 && !player->isGoal)CameraUpdate();
-	if (player->isGoal)
+	if (player->isGoal && tileManager.GetCurrentStage() == 0)
 	{
 		cameraX += 1.0f;
 		if (cameraX > 3100) cameraX = 3100;
 	}
-	PlayerData::GetInstance().AddTime(-1);
+
+	if (tileManager.GetCurrentStage() == 1)
+	{
+		if (tileManager.bridgeState != TileManager::BS_COLLAPSED)
+		{
+			if (cameraX > 2032) cameraX = 2032;
+		}
+		if (tileManager.bridgeState == TileManager::BS_COLLAPSING)
+		{
+			tileManager.bridgeTimer++;
+			if (tileManager.bridgeTimer > tileManager.BRIDGE_COLLAPSE_INTERVAL)
+			{
+				tileManager.CollapseBridge(tileManager.bridgeNum);
+				tileManager.bridgeNum++;
+				tileManager.bridgeTimer = 0;
+			}
+		}
+
+	}
+	if (!player->isGoal)PlayerData::GetInstance().AddTime(-1);
 	if (PlayerData::GetInstance().GetTime() <= 0)
 	{
 		player->Death();
@@ -283,18 +303,30 @@ void Stage::CheckHit()
 		}
 		if (obj->objectType == Object::OT_GOAL)
 		{
-			Goal* goal = static_cast<Goal*>(obj.get());
-			if (goal && objectManager.HitObjects(player, goal))
+			if (tileManager.GetCurrentStage() == 0)
 			{
-				float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
- 				if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
-				player->OnGoal(poleCenterX);
+				Goal* goal = static_cast<Goal*>(obj.get());
+				if (goal && objectManager.HitObjects(player, goal))
+				{
+					float poleCenterX = goal->pos.x + (goal->size.w / 2.0f);
+					if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
+					player->OnGoal(poleCenterX);
+				}
+			}
+			if (tileManager.GetCurrentStage() == 1)
+			{
+				Axe* axe = static_cast<Axe*>(obj.get());
+				if (axe && objectManager.HitObjects(player, axe))
+				{
+					tileManager.bridgeState = TileManager::BS_COLLAPSING;
+					axe->isDead = true;
+				}
 			}
 		}
+		CheckHitFireballAndEnemy();
+		CheckHitShellAndEnemy();
+		CheckHitEnemyAndEnemy();
 	}
-	CheckHitFireballAndEnemy();
-	CheckHitShellAndEnemy();
-	CheckHitEnemyAndEnemy();
 }
 
 void Stage::CheckHitFireballAndEnemy()

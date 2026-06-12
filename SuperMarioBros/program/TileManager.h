@@ -36,7 +36,23 @@ private:
 	void AddFireFlower(Float2 pos);
 	void AddStar(Float2 pos);
 
+
+
+
 public:
+	const int BRIDGE_LEFT = 128;
+	const int BRIDGE_RIGHT = 140;
+	const int BRIDGE_Y = 10;
+	const int BRIDGE_COLLAPSE_INTERVAL = 5;
+	int bridgeNum = 0;
+	int bridgeTimer = 0;
+	int bridgeState = 0; // 0: 通常, 1: 崩壊中, 2: 崩壊後
+	enum BridgeState
+	{
+		BS_NORMAL,
+		BS_COLLAPSING,
+		BS_COLLAPSED,
+	};
 	enum ItemType {
 		ITEM_NONE,
 		ITEM_COIN,
@@ -65,6 +81,9 @@ public:
 		TILE_PIPE_BOTTOM2		= 14,
 		TILE_PIPE_RIGHT_TOP2	= 15,
 		TILE_PIPE_RIGHT_BOTTOM2 = 16,
+		TILE_CASTLE_BRIDGE		= 17,
+		TILE_MAGMA_TOP			= 18,
+		TILE_MAGMA_BOTTOM		= 19,
 		TILE_MAX
 	};
 	void SetTile();
@@ -86,4 +105,6 @@ public:
 	void ChangeStage(int stage);
 
 	void SetCurrentStage(int stage) { currentStage = stage; }
+
+	void CollapseBridge(int num);
 };

@@ -44,7 +44,7 @@ void Firebar::Update(float cameraX)
 		m_angleDegree += 360.0f;
 	}
 
-	m_ballRotateDegree += 8.0f;
+	m_ballRotateDegree += 24.0f;
 
 	if (m_ballRotateDegree >= 360.0f)
 	{
@@ -98,7 +98,7 @@ void Firebar::Render(float cameraX)
 
 	int imgHandle = ImageManager::GetInstance().GetImage(IMAGE_FIRE_BALL);
 
-	double ballRadian = TO_RADIAN(m_ballRotateDegree);
+	float ballRadian = TO_RADIAN(m_ballRotateDegree);
 	
 	for (int i = 0; i < FIREBAR_NUM; i++)
 	{

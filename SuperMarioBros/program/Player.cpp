@@ -60,6 +60,7 @@ void Player::Init(Float2 position)
 
 void Player::Update(float cameraX)
 {
+	if (tileManager->bridgeState == TileManager::BS_COLLAPSING)return;
 	prevPos = pos;
 
 
@@ -736,7 +737,7 @@ void Player::Death()
 	if (isDead) return;
 
 	isDead = true;
-	deathTimer = DEATH_TIME; 
+	deathTimer = DEATH_TIME;
 
 	if (!isFallenDeath)
 	{
@@ -1150,42 +1151,64 @@ void Player::OnGoal(float poleCenterX)
 	isJumping = false;
 	isAnimJamping = false;
 
-	
+
 }
 void Player::GoalUpdate()
 {
-	switch (goalPhase)
+	if (tileManager->GetCurrentStage() == 0)
 	{
-	case GP_DOWN: // ポールをスライドして降りる
-		speed.x = 0.0f;
-		speed.y = 1.0f; // 一定速度で下へ
 
-		// 地面に着地したら次のフェーズへ
-		if (isGround)
+		switch (goalPhase)
 		{
-			pos.x += size.w;
-			goalPhase = 1;
-			speed.y = 0.0f;
-			isFacingRight = true; // 右を向く
-		}
-		break;
-
-	case GP_WALK:
-		speed.x = 1.0f;
-
-		if (pos.x > 3280)
-		{
-			goalPhase = GP_CASTLE;
+		case GP_DOWN: // ポールをスライドして降りる
 			speed.x = 0.0f;
-			SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
-			PlayerData::GetInstance().SetPlayerState(state);
-		}
-		break;
+			speed.y = 1.0f; // 一定速度で下へ
 
-	case GP_CASTLE:
-		speed.x = 0.0f;
-		speed.y = 0.0f;
-		break;
+			// 地面に着地したら次のフェーズへ
+			if (isGround)
+			{
+				pos.x += size.w;
+				goalPhase = 1;
+				speed.y = 0.0f;
+				isFacingRight = true; // 右を向く
+			}
+			break;
+
+		case GP_WALK:
+			speed.x = 1.0f;
+
+			if (pos.x > 3280)
+			{
+				speed.x = 0.0f;
+				SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, 1);
+				PlayerData::GetInstance().SetPlayerState(state);
+			}
+			break;
+		}
+	}
+	if (tileManager->GetCurrentStage() == 1)
+	{
+		switch (goalPhase)
+		{
+		case GP_DOWN:
+			if (isGround)
+			{
+				pos.x += size.w;
+				goalPhase = GP_WALK;
+				speed.y = 0.0f;
+				isFacingRight = true; // 右を向く
+			}
+			break;
+		case GP_WALK:
+			//speed.x = 1.0f;
+			//if (pos.x > 12 * TILE_SIZE)
+			//{
+			//	speed.x = 0.0f;
+			//	SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, 1);
+			//	PlayerData::GetInstance().SetPlayerState(state);
+			//}
+			break;
+		}
 	}
 
 	return;
