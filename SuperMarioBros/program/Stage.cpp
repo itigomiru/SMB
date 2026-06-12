@@ -22,6 +22,7 @@
 #include "FirebarController.h"
 #include "LiftController.h"
 #include "BowserController.h"
+#include "BreathController.h"
 #include "Ui.h"
 Stage::Stage(int num)
 {
@@ -54,6 +55,8 @@ void Stage::Init()
 	enemySpawner.SetObjectManager(&objectManager);
 	enemySpawner.SetTileManager(&tileManager);
 	enemySpawner.SetPlayer(player);
+	roadBreathTimer = 0;
+
 
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
@@ -94,6 +97,37 @@ void Stage::Update()
 	if (PlayerData::GetInstance().GetTime() <= 0)
 	{
 		player->Death();
+	}
+
+	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1650.0f && player-> pos.x < 1950.0f)
+	{
+		roadBreathTimer++;
+
+		if (roadBreathTimer >= 250)
+		{
+			roadBreathTimer = 0;
+
+			float minY = TILE_SIZE * 6.0f;
+			float maxY = TILE_SIZE * 9.0f;
+
+			float y = minY + static_cast<float>(GetRand(static_cast<int>(maxY - minY)));
+
+			Float2 breathPos;
+			breathPos.x = cameraX + SCREEN_W + 16.0f;
+			breathPos.y = y;
+
+			objectManager.AddObject(std::make_unique<Breath>(
+				false,      // 左向きに飛ばす
+				breathPos,
+				y,          // targetYも同じなので横にまっすぐ飛ぶ
+				2.0f
+			));
+		}
+		
+	}
+	else
+	{
+		roadBreathTimer = 0;
 	}
 
 	objectManager.Update(cameraX);
