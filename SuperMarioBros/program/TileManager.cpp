@@ -337,7 +337,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK || (map[y][x].type == TILE_BLOCK && !map[y][x].breakable))
 	{
-		if(map[y][x].itemType != ITEM_TENCOIN)map[y][x].type = TILE_HITTED_BLOCK;
+		if (map[y][x].itemType != ITEM_TENCOIN)map[y][x].type = TILE_HITTED_BLOCK;
 
 		switch (ItemType(map[y][x].itemType))
 		{
@@ -361,10 +361,11 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 				map[y][x].itemCount--;
 				EffectManager::GetInstance().AddEffect(std::make_unique<CoinEffect>(map[y][x].basePosition.x + 4, map[y][x].basePosition.y));
 				PlayerData::GetInstance().AddCoin(1);
+				map[y][x].time = PlayerData::GetInstance().GetTime();
+				if(map[y][x].itemCount == 0)map[y][x].type = TILE_HITTED_BLOCK;
 			}
 			else
 			{
-				map[y][x].type = TILE_HITTED_BLOCK;
 			}
 			break;
 		default:
@@ -406,8 +407,20 @@ void TileManager::Update()
 					map[y][x].speedY = 0.0f;
 				}
 			}
+			if (map[y][x].itemType == ITEM_TENCOIN)
+			{
+				if (map[y][x].itemCount > 1 && map[y][x].itemCount < 10)
+				{
+					if (map[y][x].time - 24 == PlayerData::GetInstance().GetTime())
+					{
+						map[y][x].itemCount--;
+						map[y][x].time = PlayerData::GetInstance().GetTime();
+					}
+				}
+			}
 		}
 	}
+
 }
 void TileManager::AddPowerMash(Float2 pos)
 {
@@ -423,7 +436,7 @@ void TileManager::Add1UPMash(Float2 pos)
 	//mashを出す
 	auto mash = std::make_unique<Mashroom>(pos.x, pos.y, ITEM_1UPMASHROOM);
 	mash->SetTileManager(this);
-	
+
 	SoundManager::GetInstance().PlaySE(SoundManager::SE_POWERUP_APPEARS);
 	objectManager->AddObject(std::move(mash));
 }

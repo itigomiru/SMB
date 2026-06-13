@@ -13,6 +13,7 @@ struct Tile
 	bool breakable;
 	int itemType;
 	int itemCount;
+	int time;
 };
 
 class TileManager
