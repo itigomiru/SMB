@@ -169,13 +169,13 @@ void Player::Update(float cameraX)
 	}
 
 	PlayerData::GetInstance().AddTime(-1);
-	if (PlayerData::GetInstance().GetTime() == 100)
+	if (PlayerData::GetInstance().GetTime() == 100 * 24)
 	{
-		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_WARNING);
+		SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_WARNING);
 	}
-	if (PlayerData::GetInstance().GetTime() <= 100)
+	if (PlayerData::GetInstance().GetTime() < 100 * 24)
 	{
-		if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WARNING)))
+		if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WARNING)) && !isDead)
 		{
 			int handle;
 			if (tileManager->GetCurrentStage() == 0)handle = SoundManager::BGM_HR_GROUND;
