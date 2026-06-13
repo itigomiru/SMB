@@ -273,7 +273,7 @@ void Player::Input()
 	}
 
 	fireballCount = objectManager->GetFireballCount();
-	if (PushHitKey(KEY_INPUT_Z) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX && !isCrouching)
+	if (PushHitKey(KEY_INPUT_B) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX && !isCrouching)
 	{
 		Float2 fireballPos = pos;
 		fireballPos.x += isFacingRight ? size.w : 0;
@@ -288,7 +288,7 @@ void Player::Input()
 	//=========================================================
 	// 最大速度制限
 	//=========================================================
-	if (CheckHitKey(KEY_INPUT_LSHIFT))
+	if (CheckHitKey(KEY_INPUT_B))
 	{
 		if (speed.x > DASH_SPEED_MAX)
 		{
