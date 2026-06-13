@@ -147,7 +147,7 @@ void Player::Update(float cameraX)
 		if (pos.x > 2416)
 		{
 			speed.x = 0.0f;
-			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_B))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
+			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_LSHIFT))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 		}
 		UpdatePlayerSize();
 		ApplyGravity();
@@ -205,7 +205,7 @@ void Player::Update(float cameraX)
 void Player::Input()
 {
 	// しゃがみ
-	if (CheckHitKey(KEY_INPUT_S) && state != SMALL)
+	if ((CheckHitKey(KEY_INPUT_S) || CheckHitKey(KEY_INPUT_DOWN)) && state != SMALL)
 	{
 		if (!isCrouching)
 		{
@@ -233,14 +233,14 @@ void Player::Input()
 		}
 	}
 	// 横移動
-	if (CheckHitKey(KEY_INPUT_A) && !isCrouching)
+	if ((CheckHitKey(KEY_INPUT_A) || CheckHitKey(KEY_INPUT_LEFT)) && !isCrouching)
 	{
 		speed.x -= MOVE_ACCEL;
 		if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
 		if (isGround)isFacingRight = false;
 	}
 	else if
-		(CheckHitKey(KEY_INPUT_D) && !isCrouching)
+		((CheckHitKey(KEY_INPUT_D) || CheckHitKey(KEY_INPUT_RIGHT)) && !isCrouching)
 	{
 		speed.x += MOVE_ACCEL;
 		if (speed.x < 0.05)speed.x += MOVE_ACCEL * 2;
@@ -273,7 +273,7 @@ void Player::Input()
 	}
 
 	fireballCount = objectManager->GetFireballCount();
-	if (PushHitKey(KEY_INPUT_B) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX && !isCrouching)
+	if (PushHitKey(KEY_INPUT_LSHIFT) && state == FIRE && fireCooldown == 0 && fireballCount < FIREBALL_MAX && !isCrouching)
 	{
 		Float2 fireballPos = pos;
 		fireballPos.x += isFacingRight ? size.w : 0;
@@ -288,7 +288,7 @@ void Player::Input()
 	//=========================================================
 	// 最大速度制限
 	//=========================================================
-	if (CheckHitKey(KEY_INPUT_B))
+	if (CheckHitKey(KEY_INPUT_LSHIFT))
 	{
 		if (speed.x > DASH_SPEED_MAX)
 		{
@@ -986,10 +986,10 @@ void Player::RenderSmall(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
+	if (speed.x > 0.1f && (CheckHitKey(KEY_INPUT_A) || CheckHitKey(KEY_INPUT_LEFT)) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
+	else if (speed.x < -0.1f && (CheckHitKey(KEY_INPUT_D) || CheckHitKey(KEY_INPUT_RIGHT)) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -1029,10 +1029,10 @@ void Player::RenderBig(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
+	if (speed.x > 0.1f && (CheckHitKey(KEY_INPUT_A) || CheckHitKey(KEY_INPUT_LEFT)) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
+	else if (speed.x < -0.1f && (CheckHitKey(KEY_INPUT_D) || CheckHitKey(KEY_INPUT_RIGHT)) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -1078,10 +1078,10 @@ void Player::RenderFire(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && CheckHitKey(KEY_INPUT_A) && !isGoal) {
+	if (speed.x > 0.1f && (CheckHitKey(KEY_INPUT_A) || CheckHitKey(KEY_INPUT_LEFT)) && !isGoal) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && CheckHitKey(KEY_INPUT_D) && !isGoal) {
+	else if (speed.x < -0.1f && (CheckHitKey(KEY_INPUT_D) || CheckHitKey(KEY_INPUT_RIGHT)) && !isGoal) {
 		isBraking = true;
 	}
 
@@ -1143,7 +1143,7 @@ void Player::PipeCheck() {
 
 	if (currentStage == 0) {
 		if (pos.x > 916 && pos.x < 926 && tileY == 9 && isGround) {
-			if (CheckHitKey(KEY_INPUT_S)) {
+			if ((CheckHitKey(KEY_INPUT_S) || CheckHitKey(KEY_INPUT_DOWN))) {
 				// アニメーション開始の合図
 				isEnteringPipe = true;
 				pipeAnimationTimer = PIPE_ANIMATION_TIME;
@@ -1155,7 +1155,7 @@ void Player::PipeCheck() {
 		}
 	}
 	else if (currentStage == 2) {
-		if (pos.x > 191 && tileY >= 12 && CheckHitKey(KEY_INPUT_D) && isGround) {
+		if (pos.x > 191 && tileY >= 12 && (CheckHitKey(KEY_INPUT_D) || CheckHitKey(KEY_INPUT_RIGHT)) && isGround) {
 			isEnteringPipe = true;
 			renderLayer = Object::RL_UNDER_TILE;
 			pipeAnimationTimer = PIPE_ANIMATION_TIME;
