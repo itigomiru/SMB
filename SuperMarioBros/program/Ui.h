@@ -12,6 +12,14 @@ private:
 	UI(const UI&) = delete;
 	UI& operator=(const UI&) = delete;
 
+    int coinFrame;
+    int coinTimer;
+
+    static const int COIN_FRAME_W = 8;
+    static const int COIN_FRAME_H = 8;
+    static const int COIN_FRAME_MAX = 3;
+    static const int COIN_ANIME_INTERVAL = 10;
+
 
 public:
 	static UI& GetInstance() {
