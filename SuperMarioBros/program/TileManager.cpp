@@ -233,6 +233,7 @@ void TileManager::Render(float cameraX) {
 			}
 		}
 	}
+	if (currentStage == 1)DrawGraph(2432 - static_cast<int>(cameraX), 184, ImageManager::GetInstance().GetImage(IMAGE_PRINCESS), true);
 }
 
 bool TileManager::IsSolid(int x, int y)

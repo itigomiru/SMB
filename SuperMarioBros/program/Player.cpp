@@ -144,7 +144,11 @@ void Player::Update(float cameraX)
 	{
 		speed.x = 1.0f;
 		isFacingRight = true;
-		if (pos.x > 2350)speed.x = 0.0f;
+		if (pos.x > 2416)
+		{
+			speed.x = 0.0f;
+			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_B))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
+		}
 		UpdatePlayerSize();
 		ApplyGravity();
 		MoveX();
@@ -950,6 +954,7 @@ void Player::Render(float cameraX)
 		}
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	if (pos.x > 2416 && tileManager->bridgeState == TileManager::BS_CLEAR && !CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)))DrawGraph(12, 30, ImageManager::GetInstance().GetImage(IMAGE_CLEAR_MESSAGE), true);
 }
 void Player::RenderSmall(float cameraX)
 {

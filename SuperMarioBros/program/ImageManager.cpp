@@ -47,6 +47,8 @@ ImageManager::ImageManager()
 	images[IMAGE_AXE] = LoadGraph("data/image/image_axe.png");
 	images[IMAGE_GOAL_FLAG] = LoadGraph("data/image/image_goal_flag.png");
 	images[IMAGE_AXE_CHAIN] = LoadGraph("data/image/image_axe_chain.png");
+	images[IMAGE_CLEAR_MESSAGE] = LoadGraph("data/image/image_clear_message.png");
+	images[IMAGE_PRINCESS] = LoadGraph("data/image/image_princess.png");
 	//------------------
 	//丸山
 	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");

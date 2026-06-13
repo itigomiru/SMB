@@ -52,7 +52,7 @@ public:
 		BS_NORMAL,
 		BS_COLLAPSING,
 		BS_COLLAPSED,
-		BS_CLEAR
+		BS_CLEAR,
 	};
 	enum ItemType {
 		ITEM_NONE,
