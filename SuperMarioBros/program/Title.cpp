@@ -31,7 +31,7 @@ void Title::Render()
 
 
 	DrawGraph(40, 26, ImageManager::GetInstance().GetImage(IMAGE_TITLE), true);
-	DrawGraph(111, 160, ImageManager::GetInstance().GetImage(IMAGE_TITLE_PLAY), true);
+	DrawGraph(89, 160, ImageManager::GetInstance().GetImage(IMAGE_TITLE_PLAY), true);
 	for (int i = 0; i < 16; i++)
 	{
 		DrawGraph(i * TILE_SIZE, 208, ImageManager::GetInstance().GetImage(IMAGE_GROUND), true);
