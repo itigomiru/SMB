@@ -10,7 +10,7 @@ Lift::Lift(float x, float y, float distance)
 
 	startPos = pos;
 
-	moveDistance = distance;
+	moveMax = distance;
 	moveX = 0.0f;
 
 	speed.x = LIFT_SPEED;
@@ -25,22 +25,18 @@ Lift::Lift(float x, float y, float distance)
 
 void Lift::Update(float cameraX)
 {
+	// 1. 前のフレームの位置を記録
 	float oldX = pos.x;
 
-	pos.x += speed.x;
+	// 2. 角度（時間）を進める（速度調整用）
+	angle += 0.02f;
 
-	if (pos.x > startPos.x + moveDistance)
-	{
-		pos.x = startPos.x + moveDistance;
-		speed.x = -LIFT_SPEED;
-	}
+	float sin01 = (sinf(angle) + 1.0f) * 0.5f;
 
-	if (pos.x < startPos.x)
-	{
-		pos.x = startPos.x;
-		speed.x = LIFT_SPEED;
-	}
+	// 4. 0のときstartPos.x、1のときstartPos.x + moveDistance になる
+	pos.x = startPos.x + (sin01 * moveMax);
 
+	// 5. 前のフレームからの移動量を計算
 	moveX = pos.x - oldX;
 }
 

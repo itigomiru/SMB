@@ -42,6 +42,7 @@ void Stage::Init()
 		PlayerData::GetInstance().AddTime(-100 * 24);
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
+		objectManager.AddObject(std::make_unique<Lift>(2112.0f, TILE_SIZE * 6,100.0f));
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
 		break;
 	}

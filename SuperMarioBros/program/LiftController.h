@@ -7,8 +7,8 @@ class Lift : public Object
 private:
 	Float2 startPos;
 
-	float moveDistance;
-	
+	float moveMax;
+	float angle = -1.570796f;
 	float moveX;
 
 	static const int LIFT_W = 32;

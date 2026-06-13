@@ -11,7 +11,7 @@ public:
 
 private:
     const float MOVE_SPEED = 0.7f;       // 左右の移動速度
-    const float BOUNCE_POWER = -4.0f;    // 跳ねる強さ
+    const float BOUNCE_POWER = -6.0f;    // 跳ねる強さ
 
     int animationCounter = 0;
     int animWaitCounter = 0;

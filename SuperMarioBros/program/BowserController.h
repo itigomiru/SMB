@@ -63,7 +63,7 @@ private:
 	BowserAction action;
 	int actionTimer;
 	int jumpTimer;
-	const float BOWSER_JUMP_POWER = 4.0f;
+	const float BOWSER_JUMP_POWER = 3.5f;
 	bool hasJumped;
 
 	void SelectAction();
