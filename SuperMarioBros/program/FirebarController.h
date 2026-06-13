@@ -36,7 +36,7 @@ private:
 
 	static const int FIREBAR_NUM = 6;
 	const float ROTATION_SPEED = 2.0f;
-	const float FIREBAR_INTERVAL = 9.0f;
+	const float FIREBAR_INTERVAL = 8.5f;
 
 	Float2 m_ballPos[FIREBAR_NUM];
 
