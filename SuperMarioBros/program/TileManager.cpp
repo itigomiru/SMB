@@ -230,6 +230,10 @@ void TileManager::Render(float cameraX) {
 			case TILE_MAGMA_BOTTOM:
 				DrawGraph(drawX, drawY, ImageManager::GetInstance().GetImage(IMAGE_MAGMA_BOTTOM), true);
 				break;
+			case TILE_BLACK:
+				DrawBox(drawX, drawY, drawX + TILE_SIZE, drawY + TILE_SIZE, 0x000000, 1);
+				break;
+
 			}
 		}
 	}

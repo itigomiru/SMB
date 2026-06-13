@@ -39,7 +39,7 @@ void Stage::Init()
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
 		break;
 	case 1:
-		PlayerData::GetInstance().AddTime(-100);
+		PlayerData::GetInstance().AddTime(-100 * 24);
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
@@ -114,7 +114,7 @@ void Stage::Update()
 		player->Death();
 	}
 
-	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1350.0f && player-> pos.x < 1950.0f)
+	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1450.0f && player-> pos.x < 1950.0f)
 	{
 		roadBreathTimer--;
 

@@ -85,6 +85,7 @@ public:
 		TILE_CASTLE_BRIDGE		= 17,
 		TILE_MAGMA_TOP			= 18,
 		TILE_MAGMA_BOTTOM		= 19,
+		TILE_BLACK				= 20,
 		TILE_MAX
 	};
 	void SetTile();

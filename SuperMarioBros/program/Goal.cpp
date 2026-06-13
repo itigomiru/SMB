@@ -4,7 +4,7 @@
 #include"ScoreEffect.h"
 Goal::Goal()
 {
-	pos = { 3168.0f,32.0f };
+	pos = { 3169.0f,32.0f };
 	size = { 16.0f, 176.0f };
 	flagPos = { 3160.0f, 48.0f };
 	objectType = OT_GOAL;
@@ -18,7 +18,7 @@ void Goal::Update(float cameraX)
 }
 void Goal::Render(float cameraX)
 {
-	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX);
+	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX) -1;
 	int drawY = static_cast<int>(pos.y);
 	int flagDrawX = static_cast<int>(flagPos.x) - static_cast<int>(cameraX);
 	int flagDrawY = static_cast<int>(flagPos.y);

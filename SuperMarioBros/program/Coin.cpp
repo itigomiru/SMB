@@ -10,7 +10,7 @@ Coin::Coin(float x, float y)
 	speed.x = 1.0f;
 	speed.y = 0.0f;
 	isDead = false;
-	renderLayer = RL_UNDER_TILE;
+	renderLayer = RL_ITEM;
 	objectType = OT_ITEM;
 	itemType = TileManager::ITEM_COIN;
 	size = { 16, 16 };
