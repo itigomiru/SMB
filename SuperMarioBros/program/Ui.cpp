@@ -9,8 +9,8 @@
 
 UI::UI()
 {
-	coinFrame = 0;
-	coinTimer = 0;
+	coinAnimationCounter = 0;
+	coinAnimWaitCounter = 0;
 }
 void UI::SetTileManager(TileManager* tm)
 {
@@ -21,18 +21,25 @@ void UI::Render()
 {
 	int off = 7;
 
-	coinTimer++;
-
-	if (coinTimer >= COIN_ANIME_INTERVAL)
+	if (coinAnimWaitCounter > 0)
 	{
-		coinTimer = 0;
-		coinFrame++;
+		coinAnimWaitCounter--;
+	}
+	else
+	{
+		int prevFrame = coinAnimationCounter / COIN_ANIM_SPEED;
 
-		if (coinFrame >= COIN_FRAME_MAX)
+		coinAnimationCounter =
+			(coinAnimationCounter + 1) % (COIN_ANIM_SPEED * COIN_ANIM_FRAMES);
+
+		int nextFrame = coinAnimationCounter / COIN_ANIM_SPEED;
+
+		if (prevFrame != 0 && nextFrame == 0)
 		{
-			coinFrame = 0;
+			coinAnimWaitCounter = COIN_ANIM_WAIT_TIME;
 		}
 	}
+
 
 	int srcX = 1 * 8;
 	//マリオ
@@ -50,18 +57,11 @@ void UI::Render()
 	srcX = (PlayerData::GetInstance().GetScore() % 10) * 8;
 	DrawRectGraph(64 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);
 	//コイン
+	int coinFrame = coinAnimationCounter / COIN_ANIM_SPEED;
 	int coinSrcX = coinFrame * COIN_FRAME_W;
 
-	DrawRectGraph(
-		89,
-		18,
-		coinSrcX,
-		0,
-		COIN_FRAME_W,
-		COIN_FRAME_H,
-		ImageManager::GetInstance().GetImage(IMAGE_COIN_SCENE),
-		true
-	);
+	DrawRectGraph(89,18,coinSrcX,0,COIN_FRAME_W,COIN_FRAME_H,ImageManager::GetInstance().GetImage(IMAGE_COIN_SCENE),true);
+
 	DrawGraph(96 , 20, ImageManager::GetInstance().GetImage(IMAGE_X_SCENE), true);
 	srcX = (PlayerData::GetInstance().GetCoin() / 10) * 8;
 	DrawRectGraph(103 , 18, srcX, 0, 8, 8, ImageManager::GetInstance().GetImage(IMAGE_UI_NUMBER), true);

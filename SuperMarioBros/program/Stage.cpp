@@ -59,6 +59,7 @@ void Stage::Init()
 	roadBreathTimer = 0;
 
 
+
 	tileManager.SetTile();
 	tileManager.SetObjectManager(&objectManager);
 	enemySpawner.SetSpawner();
@@ -113,13 +114,13 @@ void Stage::Update()
 		player->Death();
 	}
 
-	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1650.0f && player-> pos.x < 1950.0f)
+	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1350.0f && player-> pos.x < 1950.0f)
 	{
-		roadBreathTimer++;
+		roadBreathTimer--;
 
-		if (roadBreathTimer >= 250)
+		if (roadBreathTimer <= 0)
 		{
-			roadBreathTimer = 0;
+			roadBreathTimer = ROAD_BREATH_COOL_TIME;
 
 			float minY = TILE_SIZE * 6.0f;
 			float maxY = TILE_SIZE * 9.0f;
@@ -134,7 +135,7 @@ void Stage::Update()
 				false,      // 左向きに飛ばす
 				breathPos,
 				y,          // targetYも同じなので横にまっすぐ飛ぶ
-				2.0f
+				1.5f
 			));
 		}
 		

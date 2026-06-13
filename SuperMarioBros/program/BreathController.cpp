@@ -14,7 +14,14 @@ Breath::Breath(bool right, Float2 position, float target, float moveSpeed)
 	isRight = right;
 	targetY = target;
 
-	speed.x = isRight ? moveSpeed : -moveSpeed;
+	if (isRight)
+	{
+		speed.x = moveSpeed;
+	}
+	else
+	{
+		speed.x = -moveSpeed;
+	}
 	speed.y = 0.0f;
 
 	size.w = BREATH_W;

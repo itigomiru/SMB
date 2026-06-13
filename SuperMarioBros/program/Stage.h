@@ -31,6 +31,8 @@ private :
 	void SetLift();
 	void CheckHitPlayerAndLiftSide();
 
+	int roadBreathTimer;
+	const float ROAD_BREATH_COOL_TIME = 150;
 
 public:
 	Stage(int num = 0);
@@ -41,5 +43,5 @@ public:
 
 	float cameraX = 0.0f;
 
-	int roadBreathTimer;
+	
 };

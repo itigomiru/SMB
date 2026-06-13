@@ -9,31 +9,39 @@ Axe::Axe()
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;
-	animeFrame = 0;
-	animeTimer = 0;
+	animationCounter = 0;
+	animWaitCounter = 0;
 }
 
 void Axe::Update(float cameraX)
 {
-	animeTimer++;
-
-	if (animeTimer >= AXE_ANIME_INTERVAL)
+	if (animWaitCounter > 0)
 	{
-		animeTimer = 0;
-		animeFrame++;
+		animWaitCounter--;
+	}
+	else
+	{
+		int prevFrame = animationCounter / AXE_ANIM_SPEED;
 
-		if (animeFrame >= AXE_FRAME_MAX)
+		animationCounter =
+			(animationCounter + 1) % (AXE_ANIM_SPEED * AXE_ANIM_FRAMES);
+
+		int nextFrame = animationCounter / AXE_ANIM_SPEED;
+
+		if (prevFrame != 0 && nextFrame == 0)
 		{
-			animeFrame = 0;
+			animWaitCounter = AXE_ANIM_WAIT_TIME;
 		}
 	}
 }
+
 void Axe::Render(float cameraX)
 {
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX) - 1;
 	int drawY = static_cast<int>(pos.y);
 
-	int srcX = animeFrame * AXE_FRAME_W;
+	int animFrame = animationCounter / AXE_ANIM_SPEED;
+	int srcX = animFrame * AXE_FRAME_W;
 
 	DrawRectGraph(
 		drawX,
