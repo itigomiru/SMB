@@ -403,6 +403,7 @@ void Stage::CheckHitFireballAndEnemy()
 	for (const auto& fireObj : objectManager.GetObjects())
 	{
 		if (fireObj->objectType != Object::OT_FIREBALL)continue;
+		if (fireObj->isDead) continue;
 		Fireball* fireball = static_cast<Fireball*>(fireObj.get());
 
 		for (const auto& enemyObj : objectManager.GetObjects())
