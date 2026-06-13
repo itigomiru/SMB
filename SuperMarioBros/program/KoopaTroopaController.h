@@ -35,6 +35,8 @@ private:
 	
 	KoopaTroopaState koopaTroopaState;
 	int wakeUpTimer;
+	int walkFrame;
+	int wakeFrame;
 
 	const int WAKEUP_TIME = 480; 
 	const int SHELL_START_TIME = 80;

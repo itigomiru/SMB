@@ -69,6 +69,10 @@ void KoopaTroopa::Update(float cameraX)
 		canDamage = true;
 	}
 
+	if (koopaTroopaState == STATE_WALK)walkFrame = (GetNowCount() / 150) % 2;
+	if (koopaTroopaState == STATE_SHELL_WAKEUP)wakeFrame = (wakeUpTimer / 4) % 2;
+
+
 	isGrounded = CheckGround();
 	prevPos = pos;
 	Move();
@@ -236,7 +240,6 @@ void KoopaTroopa::Render(float cameraX)
 	{
 	case STATE_WALK:
 	{
-		int walkFrame = (GetNowCount() / 150) % 2;
 		srcX = walkFrame * static_cast<int>(WIDTH);
 		srcY = 0;
 	}
@@ -250,7 +253,6 @@ void KoopaTroopa::Render(float cameraX)
 
 	case STATE_SHELL_WAKEUP:
 	{
-		int wakeFrame = (wakeUpTimer / 4) % 2;
 		srcX = (2 + wakeFrame) * static_cast<int>(WIDTH);
 		srcY = HEIGHT - SHELL_HEIGHT;
 	}
