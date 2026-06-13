@@ -15,6 +15,11 @@ public:
 		BGM_GAME_OVER, 
 		BGM_MARIODIE,
 		BGM_STAR,
+		BGM_WARNING,
+		BGM_HR_GROUND,
+		BGM_HR_UNDERGROUND,
+		BGM_HR_CASTLE,
+		BGM_HR_STAR,
 		BGM_MAX,
 	};
 	//--------------------------------------------------
@@ -34,7 +39,6 @@ public:
 		SE_POWERUP,
 		SE_POWERUP_APPEARS,
 		SE_STOMP,
-		SE_WARNING,
 		SE_MAX,
 
 	};
