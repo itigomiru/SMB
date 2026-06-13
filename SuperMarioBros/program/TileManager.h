@@ -12,6 +12,7 @@ struct Tile
 	int type;
 	bool breakable;
 	int itemType;
+	int itemCount;
 };
 
 class TileManager
@@ -62,6 +63,7 @@ public:
 		ITEM_FIREFLOWER,
 		ITEM_1UPMASHROOM,
 		ITEM_STAR,
+		ITEM_TENCOIN,
 		ITEM_MAX
 	};
 	enum TileType {

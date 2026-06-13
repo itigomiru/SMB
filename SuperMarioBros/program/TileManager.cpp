@@ -337,7 +337,7 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 
 	if (map[y][x].type == TILE_QUESTION || map[y][x].type == TILE_HIDE_BLOCK || (map[y][x].type == TILE_BLOCK && !map[y][x].breakable))
 	{
-		map[y][x].type = TILE_HITTED_BLOCK;
+		if(map[y][x].itemType != ITEM_TENCOIN)map[y][x].type = TILE_HITTED_BLOCK;
 
 		switch (ItemType(map[y][x].itemType))
 		{
@@ -354,6 +354,18 @@ void TileManager::HitTile(int x, int y, bool isPlayerSmall)
 			break;
 		case ITEM_STAR:
 			AddStar(map[y][x].basePosition);
+			break;
+		case ITEM_TENCOIN:
+			if (map[y][x].itemCount > 0)
+			{
+				map[y][x].itemCount--;
+				EffectManager::GetInstance().AddEffect(std::make_unique<CoinEffect>(map[y][x].basePosition.x + 4, map[y][x].basePosition.y));
+				PlayerData::GetInstance().AddCoin(1);
+			}
+			else
+			{
+				map[y][x].type = TILE_HITTED_BLOCK;
+			}
 			break;
 		default:
 			break;
