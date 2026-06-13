@@ -168,6 +168,27 @@ void Player::Update(float cameraX)
 		return;
 	}
 
+	PlayerData::GetInstance().AddTime(-1);
+	if (PlayerData::GetInstance().GetTime() == 100)
+	{
+		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_WARNING);
+	}
+	if (PlayerData::GetInstance().GetTime() <= 100)
+	{
+		if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WARNING)))
+		{
+			int handle;
+			if (tileManager->GetCurrentStage() == 0)handle = SoundManager::BGM_HR_GROUND;
+			else if (tileManager->GetCurrentStage() == 1)handle = SoundManager::BGM_HR_CASTLE;
+			else if (tileManager->GetCurrentStage() == 2)handle = SoundManager::BGM_HR_UNDERGROUND;
+			if (starTimer > 0)handle = SoundManager::BGM_HR_STAR;
+
+
+			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(handle)))SoundManager::GetInstance().PlayBGM(handle);
+		}
+	}
+
+
 	PipeCheck();
 	Input();
 	UpdatePlayerSize();
@@ -954,7 +975,7 @@ void Player::Render(float cameraX)
 		}
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-	if (pos.x > 2416 && tileManager->bridgeState == TileManager::BS_CLEAR && !CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)))DrawGraph(12, 30, ImageManager::GetInstance().GetImage(IMAGE_CLEAR_MESSAGE), true);
+	if (pos.x > 2416 && tileManager->bridgeState == TileManager::BS_CLEAR && !CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)))DrawGraph(17, 65, ImageManager::GetInstance().GetImage(IMAGE_CLEAR_MESSAGE), true);
 }
 void Player::RenderSmall(float cameraX)
 {

@@ -108,7 +108,7 @@ void Stage::Update()
 
 
 	}
-	if (!player->isGoal)PlayerData::GetInstance().AddTime(-1);
+
 	if (PlayerData::GetInstance().GetTime() <= 0)
 	{
 		player->Death();

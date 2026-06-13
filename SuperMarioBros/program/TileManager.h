@@ -43,7 +43,7 @@ public:
 	const int BRIDGE_LEFT = 128;
 	const int BRIDGE_RIGHT = 140;
 	const int BRIDGE_Y = 10;
-	const int BRIDGE_COLLAPSE_INTERVAL = 10;
+	const int BRIDGE_COLLAPSE_INTERVAL = 7;
 	int bridgeNum = 0;
 	int bridgeTimer = 0;
 	int bridgeState = 0; // 0: 通常, 1: 崩壊中, 2: 崩壊後
