@@ -3,13 +3,14 @@
 class Axe : public Object
 {
 private:
-    int animeFrame;
-    int animeTimer;
+    int animationCounter;
+    int animWaitCounter;
 
     static const int AXE_FRAME_W = 16;
     static const int AXE_FRAME_H = 16;
-    static const int AXE_FRAME_MAX = 3;
-    static const int AXE_ANIME_INTERVAL = 10;
+    static const int AXE_ANIM_SPEED = 8;
+    static const int AXE_ANIM_FRAMES = 3;
+    static const int AXE_ANIM_WAIT_TIME = 20;
 
 public:
     Axe();
