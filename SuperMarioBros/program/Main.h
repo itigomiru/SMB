@@ -14,6 +14,7 @@
 #include <DxLib.h>
 
 bool PushHitKey( int key );
+bool CheckKey(int key);
 bool CheckMouseInput( int button = MOUSE_INPUT_LEFT|MOUSE_INPUT_RIGHT );
 bool PushMouseInput( int button = MOUSE_INPUT_LEFT|MOUSE_INPUT_RIGHT );
 int GetMouseX();

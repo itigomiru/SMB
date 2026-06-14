@@ -37,19 +37,55 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	MouseLeftFrame = 0;
 	MouseRightFrame = 0;
 
-
-	while( TRUE )
+	while (TRUE)
 	{
 		Time = GetNowCount();
 		ClearDrawScreen();
 
-		GetHitKeyStateAll( KeyBuffer );
+		GetHitKeyStateAll(KeyBuffer);
 
-		for( int i = 0; i < 256; i++ ){
-			if( KeyBuffer[i] )	KeyFrame[i]++;
-			else				KeyFrame[i] = 0;
+		int padState = GetJoypadInputState(DX_INPUT_PAD1);
+		int povState = GetJoypadPOVState(DX_INPUT_PAD1, 0);
+
+		int analogX = 0, analogY = 0;
+		GetJoypadAnalogInput(&analogX, &analogY, DX_INPUT_PAD1);
+
+		if ((padState & PAD_INPUT_UP) ||
+			(analogY < -500) ||
+			(povState == 0 || povState == 4500 || povState == 31500))
+		{
+			KeyBuffer[KEY_INPUT_UP] = 1;
 		}
 
+		if ((padState & PAD_INPUT_DOWN) ||
+			(analogY > 500) ||
+			(povState == 18000 || povState == 13500 || povState == 22500))
+		{
+			KeyBuffer[KEY_INPUT_DOWN] = 1;
+		}
+
+		if ((padState & PAD_INPUT_LEFT) ||
+			(analogX < -500) ||
+			(povState == 27000 || povState == 22500 || povState == 31500))
+		{
+			KeyBuffer[KEY_INPUT_LEFT] = 1;
+		}
+
+		if ((padState & PAD_INPUT_RIGHT) ||
+			(analogX > 500) ||
+			(povState == 9000 || povState == 13500 || povState == 4500))
+		{
+			KeyBuffer[KEY_INPUT_RIGHT] = 1;
+		}
+
+		if (padState & PAD_INPUT_A)     KeyBuffer[KEY_INPUT_SPACE] = 1;  
+		if (padState & PAD_INPUT_C)     KeyBuffer[KEY_INPUT_LSHIFT] = 1; 
+		if (padState & PAD_INPUT_8)     KeyBuffer[KEY_INPUT_RETURN] = 1;
+
+		for (int i = 0; i < 256; i++) {
+			if (KeyBuffer[i])	KeyFrame[i]++;
+			else				KeyFrame[i] = 0;
+		}
 		if( CheckMouseInput( MOUSE_INPUT_LEFT ) )	MouseLeftFrame++;
 		else										MouseLeftFrame = 0;
 
@@ -62,7 +98,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		ScreenFlip();
 		while( GetNowCount() - Time < 17 ){}
 		if( ProcessMessage() )	break;
-		if( CheckHitKey( KEY_INPUT_ESCAPE ) )	break;
+		if( CheckKey( KEY_INPUT_ESCAPE ) )	break;
 	}
 
 
@@ -76,6 +112,12 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 bool PushHitKey( int key )
 {
 	if( KeyFrame[key] == 1 ){
+		return true;
+	}
+	return false;
+}
+bool CheckKey(int key) {
+	if (KeyFrame[key] > 0) {
 		return true;
 	}
 	return false;

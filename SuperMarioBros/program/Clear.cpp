@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "ImageManager.h"
+#include "Main.h"
 #include "Clear.h"
 
 void Clear::Init()
@@ -9,7 +10,7 @@ void Clear::Init()
 }
 void Clear::Update()
 {
-	if (CheckHitKey(KEY_INPUT_RETURN)) {
+	if (CheckKey(KEY_INPUT_RETURN)) {
 		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 	}
 }

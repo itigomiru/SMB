@@ -2,13 +2,14 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 #include "ImageManager.h"
+#include "Main.h"
 #include "DxLib.h"
 void Ending::Init()
 {
 }
 void Ending::Update()
 {
-	if (CheckHitKey(KEY_INPUT_RETURN)) {
+	if (CheckKey(KEY_INPUT_RETURN)) {
 		SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 	}
 }

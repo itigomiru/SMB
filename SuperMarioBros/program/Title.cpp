@@ -15,10 +15,10 @@ void Title::Init()
 int debug = 0;
 void Title::Update()
 {
-    if (CheckHitKey(KEY_INPUT_RETURN)) {
+    if (CheckKey(KEY_INPUT_RETURN)) {
         SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,0);
     }
-	if (CheckHitKey(KEY_INPUT_M))
+	if (CheckKey(KEY_INPUT_M))
 	{
         SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE,1);
 	}
