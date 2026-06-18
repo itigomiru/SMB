@@ -28,6 +28,7 @@ public:
 		OT_SHELL,
 		OT_GOAL,
 		OT_LIFT,
+		OT_FLAG,
 	};
 	enum RenderLayer
 	{

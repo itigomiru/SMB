@@ -153,8 +153,17 @@ void Stage::Update()
 	CheckHitPlayerAndLiftSide();
 	CheckHit();
 
+	if (tileManager.GetCurrentStage() == 0 && player->isGoal)
+	{
+		for (const auto& obj : objectManager.GetObjects())
+		{
+			if (obj->objectType != Object::OT_GOAL) continue;
 
-
+			Goal* goal = static_cast<Goal*>(obj.get());
+			player->isFlagEnd = goal->IsFlagEnd();
+			break;
+		}
+	}
 }
 
 void Stage::Render()
@@ -375,11 +384,23 @@ void Stage::CheckHit()
 			if (tileManager.GetCurrentStage() == 0)
 			{
 				Goal* goal = static_cast<Goal*>(obj.get());
+
 				if (goal && objectManager.HitObjects(player, goal))
 				{
 					float poleCenterX = goal->pos.x + 10;
-					if (!player->isGoal)EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(player->pos, goal->GetScore(player->pos.y)));
+
+					if (!player->isGoal)
+					{
+						EffectManager::GetInstance().AddEffect(
+							std::make_unique<ScoreEffect>(
+								player->pos,
+								goal->GetScore(player->pos.y)
+							)
+						);
+					}
+
 					player->OnGoal(poleCenterX);
+					goal->StartFlagMove();
 				}
 			}
 			if (tileManager.GetCurrentStage() == 1)

@@ -26,7 +26,7 @@ public:
 	bool CheckSquashEnemy(Enemy* enemy);
 	void PowerUpUpdate();
 	void DeathUpdate();
-	void GoalUpdate();
+	void GoalUpdate(bool flagEnd);
 	void OnGoal(float poleCenterX); 
 
 	void Damage();
@@ -39,8 +39,9 @@ public:
 	int freezeTimer;
 	int invincibleTimer;
 	int starTimer;
-	bool isGoal;       // ゴール演出中かどうか
+	bool isGoal;
 	bool isAxed;
+	bool isFlagEnd;
 
 private:
 	const float SMALL_H = 16.0f;
@@ -99,12 +100,14 @@ private:
 	bool isFallenDeath;
 	const float DEATH_JUMP_POWER = 7.0f;
 
+	int goalWaitTimer;
+	const int GOAL_TURN_WAIT_TIME = 40;
 
-
-	int goalPhase;     // ゴール演出の進行状態 (0: ポール降下中, 1: 右へ移動中, 2: 城到達)
+	int goalPhase;     // ゴール演出の進行状態
 	enum GoalPhase
 	{
 		GP_DOWN,
+		GP_TURN,
 		GP_WALK,
 		GP_STOP,
 	};

@@ -12,6 +12,7 @@
 #include "EffectManager.h"
 #include "Hit.h"
 #include "LiftController.h"
+#include "Goal.h"
 
 bool IsPress(int key, int padButton) {
 	if (CheckKey(key)) return true;
@@ -71,7 +72,9 @@ void Player::Init(Float2 position)
 	isOnLift = false;
 	isGoal = false;
 	goalPhase = GP_DOWN;
+	isFlagEnd = false;
 	comboCount = 0;
+	goalWaitTimer = 0;
 }
 
 
@@ -183,7 +186,7 @@ void Player::Update(float cameraX)
 
 	if (isGoal)
 	{
-		GoalUpdate();
+		GoalUpdate(isFlagEnd);
 		UpdatePlayerSize();
 		ApplyGravity();
 		AdJustHitBox();
@@ -1294,7 +1297,7 @@ void Player::OnGoal(float poleCenterX)
 
 
 }
-void Player::GoalUpdate()
+void Player::GoalUpdate(bool flagEnd)
 {
 	if (tileManager->GetCurrentStage() == 0)
 	{
@@ -1306,17 +1309,30 @@ void Player::GoalUpdate()
 			speed.y = 1.0f; // 一定速度で下へ
 
 			// 地面に着地したら次のフェーズへ
-			if (isGround && CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_FLAGPOLE)) == 0)
+			if (isGround && flagEnd &&CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_FLAGPOLE)) == 0)
 			{
 				pos.x += size.w;
+				isFacingRight = false;
+				speed.x = 0.0f;
 				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				goalPhase = 1;
 				speed.y = 0.0f;
-				isFacingRight = true; // 右を向く
+				goalWaitTimer = GOAL_TURN_WAIT_TIME;
 				SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_STAGE_CLEAR);
 			}
 			break;
+		case GP_TURN:
+			speed.x = 0.0f;
+			speed.y = 0.0f;
 
+			goalWaitTimer--;
+
+			if (goalWaitTimer <= 0)
+			{
+				isFacingRight = true;
+				goalPhase = GP_WALK;
+			}
+			break;
 		case GP_WALK:
 			speed.x = 1.0f;
 
