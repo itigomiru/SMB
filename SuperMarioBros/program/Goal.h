@@ -11,4 +11,14 @@ public:
     void Render(float cameraX) override;
 
     int GetScore(float playerY);
+
+    void StartFlagMove();
+    bool IsFlagEnd() const { return isFlagEnd; }
+
+private:
+    bool isFlagMoving;
+    bool isFlagEnd;
+
+    static constexpr float FLAG_DOWN_SPEED = 1.0f;
+    static constexpr float FLAG_END_Y = 176.0f;
 };

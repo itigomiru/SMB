@@ -10,12 +10,25 @@ Goal::Goal()
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;
+	isFlagMoving = false;
+	isFlagEnd = false;
 }
 
 void Goal::Update(float cameraX)
 {
-	// ゴールは特に更新することがないため、ここでは何もしません。
+	if (isFlagMoving && !isFlagEnd)
+	{
+		flagPos.y += FLAG_DOWN_SPEED;
+
+		if (flagPos.y >= FLAG_END_Y)
+		{
+			flagPos.y = FLAG_END_Y;
+			isFlagMoving = false;
+			isFlagEnd = true;
+		}
+	}
 }
+
 void Goal::Render(float cameraX)
 {
 	int drawX = static_cast<int>(pos.x) - static_cast<int>(cameraX) -1;
@@ -35,4 +48,11 @@ int Goal::GetScore(float playerY)
 	if (rate < 0.8f) return ScoreEffect::SCORE_400;
 
 	return ScoreEffect::SCORE_100;
+}
+
+void Goal::StartFlagMove()
+{
+	if (isFlagEnd) return;
+
+	isFlagMoving = true;
 }

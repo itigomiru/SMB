@@ -114,7 +114,7 @@
     </ClCompile>
     <ClCompile Include="program\BreathController.cpp">
       <Filter>Object\Enemy</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="program\Axe.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -245,7 +245,7 @@
     </ClInclude>
     <ClInclude Include="program\BreathController.h">
       <Filter>Object\Enemy</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="program\Axe.h">
       <Filter>Object</Filter>
     </ClInclude>
