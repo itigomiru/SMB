@@ -6,6 +6,7 @@
 Coin::Coin(float x, float y)
 {
 	pos = { x, y };
+	hitBoxPos = pos;
 	state = IS_MOVING;
 	speed.x = 1.0f;
 	speed.y = 0.0f;
@@ -14,6 +15,7 @@ Coin::Coin(float x, float y)
 	objectType = OT_ITEM;
 	itemType = TileManager::ITEM_COIN;
 	size = { 16, 16 };
+	hitBoxSize = size;
 }
 
 void Coin::Update(float cameraX)
@@ -33,6 +35,8 @@ void Coin::Update(float cameraX)
 			animWaitCounter = ANIM_WAIT_TIME;
 		}
 	}
+	hitBoxPos = pos;
+	hitBoxSize = size;
 }
 
 void Coin::Render(float cameraX)

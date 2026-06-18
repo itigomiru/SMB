@@ -42,7 +42,7 @@ void ObjectManager::Update(float cameraX) {
  }
 
   bool ObjectManager::HitObjects(Object* attacker, Object* target) {
-	  return CheckBoxHit(attacker->pos, attacker->size, target->pos, target->size);
+	  return CheckBoxHit(attacker->hitBoxPos, attacker->hitBoxSize, target->hitBoxPos, target->hitBoxSize);
   }
 
   int ObjectManager::GetFireballCount() const {

@@ -10,6 +10,7 @@
 Breath::Breath(bool right, Float2 position, float target, float moveSpeed)
 {
 	pos = position;
+	hitBoxPos = pos;
 
 	isRight = right;
 	targetY = target;
@@ -26,6 +27,7 @@ Breath::Breath(bool right, Float2 position, float target, float moveSpeed)
 
 	size.w = BREATH_W;
 	size.h = BREATH_H;
+	hitBoxSize = { size.w - hitBoxOffset.w * 2, size.h - hitBoxOffset.h * 2 };
 
 	objectType = Object::OT_ENEMY_BULLET;
 	renderLayer = Object::RL_ENEMY;
@@ -79,6 +81,8 @@ void Breath::Update(float cameraX)
 	{
 		isDead = true;
 	}
+	hitBoxPos.x = pos.x + hitBoxOffset.w;
+	hitBoxPos.y = pos.y + hitBoxOffset.h;
 }
 
 void Breath::Render(float cameraX)

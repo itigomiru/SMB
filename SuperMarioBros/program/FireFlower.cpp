@@ -6,6 +6,7 @@
 FireFlower::FireFlower(float tileX, float tileY, int type)
 {
 	pos = { tileX, tileY };
+	hitBoxPos = pos;
 	spawnWait = SPAWN_WAIT_TIME;
 	spawnPos = pos;
 	state = IS_SPAWNING;
@@ -16,6 +17,7 @@ FireFlower::FireFlower(float tileX, float tileY, int type)
 	objectType = OT_ITEM;
 	itemType = type;
 	size = { 16, 16 };
+	hitBoxSize = size;
 }
 
 void FireFlower::Update(float cameraX)
@@ -34,7 +36,8 @@ void FireFlower::Update(float cameraX)
 	}
 
 	animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
-	
+	hitBoxPos = pos;
+	hitBoxSize = size;
 }
 
 void FireFlower::Render(float cameraX)

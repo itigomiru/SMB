@@ -7,6 +7,8 @@ public:
 	Float2 pos;//位置
 	Float2 speed;//速度
 	Size size;//サイズ
+	Float2 hitBoxPos;//当たり判定の位置
+	Size hitBoxSize;//当たり判定のサイズ
 	int objectType;//オブジェクトの種類
 	int renderLayer;
 

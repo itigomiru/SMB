@@ -11,10 +11,12 @@
 KoopaTroopa::KoopaTroopa()
 {
 	pos = { 100.0f, 190.0f };
+	hitBoxPos = pos;
 	prevPos = pos;
 	objectType = OT_ENEMY;
 	speed = { -SPEED.x, 0.0f };
 	size = { WIDTH, HEIGHT };
+	hitBoxSize = size;
 
 	renderLayer = RL_ENEMY;
 	isDead = false;
@@ -76,6 +78,8 @@ void KoopaTroopa::Update(float cameraX)
 	isGrounded = CheckGround();
 	prevPos = pos;
 	Move();
+	hitBoxPos = pos;
+	hitBoxSize = size;
 	ApplyGravity();
 	CheckCollisionX();
 	CheckCollisionY();

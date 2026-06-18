@@ -15,6 +15,8 @@ Bowser::Bowser(float x, float y)
 {
 	pos.x = x;
 	pos.y = y;
+	hitBoxPos.x = pos.x;
+	hitBoxPos.y = pos.y;
 
 	speed.x = 0.0f;
 	speed.y = 0.0f;
@@ -27,6 +29,7 @@ Bowser::Bowser(float x, float y)
 
 	size.w = BOWSER_W;
 	size.h = BOWSER_H;
+	hitBoxSize = size;
 
 	tileManager = nullptr;
 	objectManager = nullptr;
@@ -82,6 +85,8 @@ void Bowser::Update(float cameraX)
 	}
 	ApplyGravity();
 	Move();
+	hitBoxPos.x = pos.x;
+	hitBoxPos.y = pos.y;
 
 	if (tileManager->bridgeState == TileManager::BS_COLLAPSED)return;
 	if (player != nullptr)
