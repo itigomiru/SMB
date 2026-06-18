@@ -79,6 +79,7 @@ int WINAPI WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		}
 
 		if (padState & PAD_INPUT_A)     KeyBuffer[KEY_INPUT_SPACE] = 1;  
+		if (padState & PAD_INPUT_A)     KeyBuffer[KEY_INPUT_B] = 1;  
 		if (padState & PAD_INPUT_C)     KeyBuffer[KEY_INPUT_LSHIFT] = 1; 
 		if (padState & PAD_INPUT_8)     KeyBuffer[KEY_INPUT_RETURN] = 1;
 

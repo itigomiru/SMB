@@ -162,7 +162,7 @@ void Player::Update(float cameraX)
 		if (pos.x > 2416)
 		{
 			speed.x = 0.0f;
-			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_LSHIFT))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
+			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_B))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 		}
 		UpdatePlayerSize();
 		ApplyGravity();
