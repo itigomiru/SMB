@@ -64,6 +64,9 @@ private:
 	const float DASH_SPEED_MAX = 3.0f;
 
 	const float SQUASH_BOUNCE_POWER = 4.5f;
+	const Size HitBoxSmall = { 12.0f, 16.0f };
+	const Size HitBoxBig = { 12.0f, 32.0f };
+	const float HitBoxOffsetX = 2.0f;
 
 	bool isGround;//地面にいるかどうか
 	bool isJumping;
@@ -142,6 +145,6 @@ private:
 
 	void PipeCheck();
 
-	
+	void AdJustHitBox();
 };
 

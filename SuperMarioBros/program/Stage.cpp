@@ -447,7 +447,7 @@ void Stage::CheckHitFireballAndEnemy()
 					break;
 				}
 
-				enemy->Death(player->pos.x < enemy->pos.x, 100);
+				enemy->Death(player->pos.x < enemy->pos.x, ScoreEffect::SCORE_100);
 				fireball->DeathAndEffect();
 				break;
 
@@ -540,13 +540,29 @@ void Stage::CheckHitEnemyAndEnemy()
 
 				if (enemyA->pos.x < enemyB->pos.x)
 				{
-					if (objects[i]->objectType == Object::OT_ENEMY) enemyA->pos.x -= 1.0f;
-					if (objects[j]->objectType == Object::OT_ENEMY) enemyB->pos.x += 1.0f;
+					if (objects[i]->objectType == Object::OT_ENEMY)
+					{
+						enemyA->pos.x -= 1.0f;
+						enemyA->hitBoxPos.x = enemyA->pos.x;
+					}
+					if (objects[j]->objectType == Object::OT_ENEMY)
+					{
+						enemyB->pos.x += 1.0f;
+						enemyB->hitBoxPos.x = enemyB->pos.x;
+					}
 				}
 				else
 				{
-					if (objects[i]->objectType == Object::OT_ENEMY) enemyA->pos.x += 1.0f;
-					if (objects[j]->objectType == Object::OT_ENEMY) enemyB->pos.x -= 1.0f;
+					if (objects[i]->objectType == Object::OT_ENEMY) 
+					{
+						enemyA->pos.x += 1.0f;
+						enemyA->hitBoxPos.x = enemyA->pos.x;
+					}
+					if (objects[j]->objectType == Object::OT_ENEMY)
+					{
+						enemyB->pos.x -= 1.0f;
+						enemyB->hitBoxPos.x = enemyB->pos.x;
+					}
 				}
 			}
 		}

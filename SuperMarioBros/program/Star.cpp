@@ -6,6 +6,7 @@
 Star::Star(float tileX, float tileY, int type)
 {
 	pos = { tileX, tileY };
+	hitBoxPos = pos;
 	spawnWait = SPAWN_WAIT_TIME;
 	spawnPos = pos;
 	state = IS_SPAWNING;
@@ -17,6 +18,7 @@ Star::Star(float tileX, float tileY, int type)
 	itemType = type;
 
 	size = { 16, 16 };
+	hitBoxSize = size;
 }
 
 void Star::Update(float cameraX)
@@ -42,7 +44,8 @@ void Star::Update(float cameraX)
 	}
 
 	animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
-
+	hitBoxPos = pos;
+	hitBoxSize = size;
 }
 
 void Star::Render(float cameraX)

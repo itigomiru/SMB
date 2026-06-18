@@ -7,6 +7,7 @@ Lift::Lift(float x, float y, float distance)
 {
 	pos.x = x;
 	pos.y = y;
+	hitBoxPos = pos;
 
 	startPos = pos;
 
@@ -17,6 +18,7 @@ Lift::Lift(float x, float y, float distance)
 
 	size.w = LIFT_W;
 	size.h = LIFT_H;
+	hitBoxSize.w = LIFT_W;
 
 	objectType = Object::OT_LIFT;
 	renderLayer = Object::RL_LIFT;
@@ -35,6 +37,7 @@ void Lift::Update(float cameraX)
 
 	// 4. 0のときstartPos.x、1のときstartPos.x + moveDistance になる
 	pos.x = startPos.x + (sin01 * moveMax);
+	hitBoxPos.x = pos.x;
 
 	// 5. 前のフレームからの移動量を計算
 	moveX = pos.x - oldX;

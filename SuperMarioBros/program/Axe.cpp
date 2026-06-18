@@ -5,7 +5,9 @@
 Axe::Axe()
 {
 	pos = { 2257.0f,128.0f };
+	hitBoxPos = pos;
 	size = { 15.0f, 16.0f };
+	hitBoxSize = size;
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;
 	isDead = false;

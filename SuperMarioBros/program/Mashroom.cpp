@@ -6,6 +6,7 @@
 Mashroom::Mashroom(float tileX, float tileY,int type)
 {
 	pos = { tileX, tileY };
+	hitBoxPos = pos;
 	spawnWait = SPAWN_WAIT_TIME;
 	spawnPos = pos;
 	state = IS_SPAWNING;
@@ -18,6 +19,7 @@ Mashroom::Mashroom(float tileX, float tileY,int type)
 	if (itemType == TileManager::ITEM_SUPERMASHROOM)mashType = MT_SUPER;
 	if (itemType == TileManager::ITEM_1UPMASHROOM)mashType = MT_1UP;
 	size = { 16, 16 };
+	hitBoxSize = size;
 }
 
 void Mashroom::Update(float cameraX)
@@ -41,6 +43,8 @@ void Mashroom::Update(float cameraX)
 		pos.y += speed.y;
 		CheckCollisionY();
 	}
+	hitBoxPos = pos;
+	hitBoxSize = size;
 }
 void Mashroom::Render(float cameraX)
 {

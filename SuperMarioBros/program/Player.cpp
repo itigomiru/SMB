@@ -45,6 +45,7 @@ void Player::Init(Float2 position)
 	isCrouching = false;
 	speed = { 0.0f, 0.0f };
 	pos = position;
+	hitBoxPos.x = pos.x + HitBoxOffsetX;
 	prevPos = pos;
 	state = SMALL;
 	size =
@@ -52,6 +53,7 @@ void Player::Init(Float2 position)
 		WIDTH,
 		SMALL_H
 	};
+	hitBoxSize = HitBoxSmall;
 	isFacingRight = true;
 	isDead = false;
 	isGround = false;
@@ -88,9 +90,11 @@ void Player::Update(float cameraX)
 
 		if (currentStage == 0) {
 			pos.y += 0.8f;
+			hitBoxPos.y = pos.y;
 		}
 		else if (currentStage == 2) {
 			pos.x += 0.8f;
+			hitBoxPos.x = pos.x + HitBoxOffsetX;
 		}
 
 		if (pipeAnimationTimer <= 0) {
@@ -100,7 +104,9 @@ void Player::Update(float cameraX)
 				tileManager->ChangeStage(2);
 				if (starTimer == 0) SoundManager::GetInstance().PlayBGM(SoundManager::BGM_UNDERGROUND);
 				pos.x = 2 * TILE_SIZE;
+				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				pos.y = 2 * TILE_SIZE;
+				hitBoxPos.y = pos.y;
 				renderLayer = RL_PLAYER;
 				stage->cameraX = 0;
 			}
@@ -109,7 +115,9 @@ void Player::Update(float cameraX)
 				if (starTimer == 0) SoundManager::GetInstance().PlayBGM(SoundManager::BGM_GROUND);
 				stage->cameraX = 160 * TILE_SIZE;
 				pos.x = 163 * TILE_SIZE + (TILE_SIZE / 2);
+				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				pos.y = 9 * TILE_SIZE;
+				hitBoxPos.y = pos.y;
 				renderLayer = RL_PLAYER;
 			}
 		}
@@ -165,10 +173,11 @@ void Player::Update(float cameraX)
 		if (pos.x > 2416)
 		{
 			speed.x = 0.0f;
-			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_LSHIFT))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
+			if (!CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)) && PushHitKey(KEY_INPUT_B))SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_TITLE);
 		}
 		UpdatePlayerSize();
 		ApplyGravity();
+		AdJustHitBox();
 		MoveX();
 		MoveY();
 		CheckCollisionY();
@@ -180,6 +189,7 @@ void Player::Update(float cameraX)
 		GoalUpdate(isFlagEnd);
 		UpdatePlayerSize();
 		ApplyGravity();
+		AdJustHitBox();
 		MoveX();
 		MoveY();
 		CheckCollisionY();
@@ -214,28 +224,47 @@ void Player::Update(float cameraX)
 	Jump();
 	ApplyGravity();
 	MoveX();
+	AdJustHitBox();
 	CheckCollisionX();
+	AdJustHitBox();
 	MoveY();
+	AdJustHitBox();
 	CheckCollisionY();
+	AdJustHitBox();
 }
 
+void Player::AdJustHitBox()
+{
+	hitBoxPos.x = pos.x + HitBoxOffsetX;
+	hitBoxPos.y = pos.y;
+	if (state != SMALL)
+	{
+		hitBoxSize = HitBoxBig;
+		if (isCrouching)hitBoxSize.h = HitBoxSmall.h;
+	}
+	else
+	{
+		hitBoxSize = HitBoxSmall;
+	}
+}
 
 void Player::Input()
 {
 	// しゃがみ
 	if ((CheckKey(KEY_INPUT_S) || CheckKey(KEY_INPUT_DOWN)) && state != SMALL)
 	{
-		if (!isCrouching)
+		if (!isCrouching && isGround)
 		{
 			isCrouching = true;
 			isTryingToStand = false;
 			// 足固定で縮む
 			pos.y += (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
 		}
 	}
 	else
 	{
-		if (isCrouching)
+		if (isCrouching && isGround)
 		{
 			if (CheckCanStand())
 			{
@@ -243,6 +272,7 @@ void Player::Input()
 				isTryingToStand = false;
 				standPushDir = 0.0f;
 				pos.y -= (SUPER_H - SMALL_H);
+				hitBoxPos.y = pos.y;
 			}
 			else
 			{
@@ -251,20 +281,49 @@ void Player::Input()
 		}
 	}
 	// 横移動
-	if ((CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)) && !isCrouching)
+	if ((CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)))
 	{
-		speed.x -= MOVE_ACCEL;
-		if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
-		if (isGround)isFacingRight = false;
+		if (!isCrouching)
+		{
+			speed.x -= MOVE_ACCEL;
+			if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
+			if (isGround)isFacingRight = false;
+		}
+		else if (!isGround)
+		{
+			speed.x -= MOVE_ACCEL;
+			if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
+			if (isGround)isFacingRight = false;
+		}
+		else
+		{
+			isCrouching = false;
+			pos.y -= (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
+		}
 	}
-	else if
-		((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)) && !isCrouching)
+	if((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)))
 	{
-		speed.x += MOVE_ACCEL;
-		if (speed.x < 0.05)speed.x += MOVE_ACCEL * 2;
-		if (isGround)isFacingRight = true;
+		if (!isCrouching)
+		{
+			speed.x += MOVE_ACCEL;
+			if (speed.x < 0.05)speed.x += MOVE_ACCEL;
+			if (isGround)isFacingRight = true;
+		}
+		else if (!isGround)
+		{
+			speed.x += MOVE_ACCEL;
+			if (speed.x < 0.05)speed.x += MOVE_ACCEL;
+			if (isGround)isFacingRight = true;
+		}
+		else
+		{
+			isCrouching = false;
+			pos.y -= (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
+		}
 	}
-	else
+	if (!(CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT) || (CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT))))
 	{
 		if (isGround)
 		{
@@ -393,28 +452,27 @@ void Player::MoveY()
 
 void Player::CheckCollisionX()
 {
-	int px = static_cast<int>(pos.x);
-
-	int py = static_cast<int>(pos.y);
+	// ★ すべて hitBoxPos と hitBoxSize 基準に変換
+	int px = static_cast<int>(hitBoxPos.x);
+	int py = static_cast<int>(hitBoxPos.y);
 
 	int top = py / TILE_SIZE;
+	int bottom = (py + hitBoxSize.h - 1) / TILE_SIZE;
+	int middle = (py + hitBoxSize.h / 2) / TILE_SIZE;
 
-	int bottom = (py + size.h - 1) / TILE_SIZE;
-
-	int middle = (py + size.h / 2) / TILE_SIZE;
 	//=========================================================
 	// 右移動
 	//=========================================================
-
 	if (speed.x > 0.0f)
 	{
-		int right = (px + size.w) / TILE_SIZE;
+		int right = (px + hitBoxSize.w) / TILE_SIZE;
 
 		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom) || tileManager->IsSolid(right, middle))
 		{
-			pos.x =
-				static_cast<float>(
-					right * TILE_SIZE - size.w);
+			// ★ ヒットボックスの位置を壁の手前に戻す
+			hitBoxPos.x = static_cast<float>(right * TILE_SIZE - hitBoxSize.w);
+			// ★ 戻ったヒットボックスの位置から、本体(画像)の pos.x を逆算する！
+			pos.x = hitBoxPos.x - HitBoxOffsetX;
 
 			speed.x = 0.0f;
 		}
@@ -423,14 +481,16 @@ void Player::CheckCollisionX()
 	//=========================================================
 	// 左移動
 	//=========================================================
-
 	else if (speed.x < 0.0f)
 	{
 		int left = px / TILE_SIZE;
 
 		if (tileManager->IsSolid(left, top) || tileManager->IsSolid(left, bottom) || tileManager->IsSolid(left, middle))
 		{
-			pos.x = static_cast<float>((left + 1) * TILE_SIZE);
+			// ★ ヒットボックスの位置を戻す
+			hitBoxPos.x = static_cast<float>((left + 1) * TILE_SIZE);
+			// ★ 本体(画像)の pos.x を逆算
+			pos.x = hitBoxPos.x - HitBoxOffsetX;
 
 			speed.x = 0.0f;
 		}
@@ -439,27 +499,27 @@ void Player::CheckCollisionX()
 
 void Player::CheckCollisionY()
 {
-	int px = static_cast<int>(pos.x);
-
-	int py = static_cast<int>(pos.y);
+	// ★ すべて hitBoxPos と hitBoxSize 基準に変換
+	int px = static_cast<int>(hitBoxPos.x);
+	int py = static_cast<int>(hitBoxPos.y);
 
 	int left = px / TILE_SIZE;
-
-	int right = (px + size.w - 1) / TILE_SIZE;
+	int right = (px + hitBoxSize.w - 1) / TILE_SIZE;
 
 	//=========================================================
 	// 下方向
 	//=========================================================
-
 	if (speed.y > 0.0f)
 	{
-		int bottom =
-			(py + size.h - 1)
-			/ TILE_SIZE;
+		int bottom = (py + hitBoxSize.h - 1) / TILE_SIZE;
 
 		if (tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom))
 		{
-			pos.y = static_cast<float>(bottom * TILE_SIZE - size.h);
+			// ★ ヒットボックスを床の上に載せる
+			hitBoxPos.y = static_cast<float>(bottom * TILE_SIZE - hitBoxSize.h);
+			// ★ Y方向は HitBoxOffsetY が 0（足元と画像の底辺が同じ）想定なのでそのまま同期
+			pos.y = hitBoxPos.y;
+
 			speed.y = 0.0f;
 			isGround = true;
 			isAnimJamping = false;
@@ -475,7 +535,6 @@ void Player::CheckCollisionY()
 	//=========================================================
 	// 上方向
 	//=========================================================
-
 	else if (speed.y < 0.0f)
 	{
 		int top = py / TILE_SIZE;
@@ -486,69 +545,49 @@ void Player::CheckCollisionY()
 		if (isLeftSolid || isRightSolid)
 		{
 			bool slided = false;
-			// 角での滑り処理
-			// 左の角に当たった
+
+			// ★ 角の滑り処理の overlap 計算も、pos ではなく hitBoxPos と hitBoxSize に変更
 			if (isLeftSolid && !isRightSolid)
 			{
-				float overlap = (float)((left + 1) * TILE_SIZE) - pos.x;
-				// 重なりが閾値以下なら、右に押し出す
+				float overlap = (float)((left + 1) * TILE_SIZE) - hitBoxPos.x;
 				if (overlap > 0.0f && overlap < OVERLAP_JUDGE)
 				{
 					pos.x += overlap;
+					hitBoxPos.x += overlap; // ヒットボックスも一緒にずらす
 					slided = true;
 				}
 			}
-			// 右の角に当たった
 			else if (!isLeftSolid && isRightSolid)
 			{
-				float overlap = (pos.x + size.w) - (float)(right * TILE_SIZE);
-				// 重なりが閾値以下なら、左に押し出す
+				float overlap = (hitBoxPos.x + hitBoxSize.w) - (float)(right * TILE_SIZE);
 				if (overlap > 0.0f && overlap < OVERLAP_JUDGE)
 				{
 					pos.x -= overlap;
+					hitBoxPos.x -= overlap; // ヒットボックスも一緒にずらす
 					slided = true;
 				}
 			}
 
-			// 滑らなかった場合、頭をぶつけた処理
 			if (!slided)
 			{
-				// 衝突応答
 				pos.y = static_cast<float>((top + 1) * TILE_SIZE);
+				hitBoxPos.y = pos.y;
 				speed.y = 0.0f;
 
 				int center;
 				if (isLeftSolid && isRightSolid)
 				{
-					// プレイヤーの中心に近い方を叩く
-					float playerCenterX = pos.x + size.w / 2.0f;
+					// ★ プレイヤーの中心計算も hitBoxSize を使う
+					float playerCenterX = hitBoxPos.x + hitBoxSize.w / 2.0f;
 					float boundaryX = (float)(left + 1) * TILE_SIZE;
-					if (playerCenterX < boundaryX)
-					{
-						center = left;
-					}
-					else
-					{
-						center = right;
-					}
+					if (playerCenterX < boundaryX) center = left;
+					else center = right;
 				}
-				else if (isLeftSolid)
-				{
-					center = left;
-				}
-				else // isRightSolid
-				{
-					center = right;
-				}
+				else if (isLeftSolid)  center = left;
+				else                   center = right;
 
-				if (state != SMALL)
-				{
-					tileManager->HitTile(center, top, false);
-				}
-				else
-				{
-					tileManager->HitTile(center, top, true);
-				}
+				if (state != SMALL) tileManager->HitTile(center, top, false);
+				else                tileManager->HitTile(center, top, true);
 			}
 		}
 
@@ -560,47 +599,38 @@ void Player::CheckCollisionY()
 
 			Lift* lift = static_cast<Lift*>(obj.get());
 
-			float playerLeft = pos.x;
-			float playerRight = pos.x + size.w;
-			float playerTop = pos.y;
-			float prevPlayerTop = prevPos.y;
+			// ★ ここもすべて hitBox 基準でリフトとの衝突を見る
+			float playerLeft = hitBoxPos.x;
+			float playerRight = hitBoxPos.x + hitBoxSize.w;
+			float playerTop = hitBoxPos.y;
+			float prevPlayerTop = prevPos.y + (hitBoxPos.y - pos.y); // 前フレームのhitBoxYをシミュレート
 
 			float liftLeft = lift->pos.x;
 			float liftRight = lift->pos.x + lift->size.w;
 			float liftBottom = lift->pos.y + lift->size.h;
 
-			bool hitX =
-				playerRight > liftLeft &&
-				playerLeft < liftRight;
-
-			bool hitHead =
-				prevPlayerTop >= liftBottom &&
-				playerTop <= liftBottom;
+			bool hitX = playerRight > liftLeft && playerLeft < liftRight;
+			bool hitHead = prevPlayerTop >= liftBottom && playerTop <= liftBottom;
 
 			if (hitX && hitHead)
 			{
 				pos.y = liftBottom;
+				hitBoxPos.y = pos.y;
 				speed.y = 0.0f;
 				isJumping = false;
 				break;
 			}
 		}
-
-
 	}
 }
-
 bool Player::CheckGround()
 {
-	int px = static_cast<int>(pos.x);
-
-	int py = static_cast<int>(pos.y);
+	int px = static_cast<int>(hitBoxPos.x);
+	int py = static_cast<int>(hitBoxPos.y);
 
 	int left = px / TILE_SIZE;
-
-	int right = (px + size.w - 1) / TILE_SIZE;
-
-	int bottom = (py + size.h) / TILE_SIZE;
+	int right = (px + hitBoxSize.w - 1) / TILE_SIZE;
+	int bottom = (py + hitBoxSize.h) / TILE_SIZE;
 
 	return tileManager->IsSolid(left, bottom) || tileManager->IsSolid(right, bottom);
 }
@@ -682,25 +712,28 @@ void Player::UpdatePlayerSize()
 	if (state == SMALL)
 	{
 		size.h = SMALL_H;
+		hitBoxSize.h = HitBoxSmall.h;
 	}
 	else
 	{
 		if (isCrouching)
 		{
 			size.h = SMALL_H;
+			hitBoxSize.h = HitBoxSmall.h;
 		}
 		else
 		{
 			size.h = SUPER_H;
+			hitBoxSize.h = HitBoxBig.h;
 		}
 	}
 }
 
 bool Player::CheckCanStand()
 {
-	int px = static_cast<int>(pos.x);
+	int px = static_cast<int>(hitBoxPos.x);
 
-	int py = static_cast<int>(pos.y);
+	int py = static_cast<int>(hitBoxPos.y);
 
 	int left = px / TILE_SIZE;
 
@@ -735,10 +768,11 @@ void Player::UpdateStandPush()
 
 	// 仮移動
 	pos.x += push;
+	hitBoxPos.x = pos.x + HitBoxOffsetX;
 
 	// 横壁チェック
-	int px = static_cast<int>(pos.x);
-	int py = static_cast<int>(pos.y);
+	int px = static_cast<int>(hitBoxPos.x);
+	int py = static_cast<int>(hitBoxPos.y);
 
 	int top = py / TILE_SIZE;
 
@@ -755,6 +789,7 @@ void Player::UpdateStandPush()
 		if (tileManager->IsSolid(right, top) || tileManager->IsSolid(right, bottom))
 		{
 			pos.x -= push;
+			hitBoxPos.x = pos.x + HitBoxOffsetX;
 			return;
 		}
 	}
@@ -785,19 +820,26 @@ void Player::UpdateStandPush()
 		isCrouching = false;
 
 		pos.y -= (SUPER_H - SMALL_H);
+		hitBoxPos.y = pos.y;
 	}
 }
 
 bool Player::CheckSquashEnemy(Enemy* enemy)
 {
-
 	if (enemy->canSquashed == false) return false;
 
+
+	float currentBoxBottom = hitBoxPos.y + hitBoxSize.h;
+	float prevBoxBottom = prevPos.y + (hitBoxPos.y - pos.y) + hitBoxSize.h;
+
 	// 踏みつけ処理
-	if (speed.y > 0.0f && (prevPos.y + size.h) <= enemy->pos.y)
+	if (speed.y > 0.0f && prevBoxBottom <= enemy->pos.y)
 	{
 		SoundManager::GetInstance().PlaySE(SoundManager::SE_STOMP);
-		pos.y = enemy->pos.y - size.h;
+
+
+		hitBoxPos.y = enemy->pos.y - hitBoxSize.h;
+		pos.y = hitBoxPos.y;
 
 		speed.y = -SQUASH_BOUNCE_POWER;
 		EffectManager::GetInstance().AddEffect(std::make_unique<ScoreEffect>(enemy->pos, static_cast<ScoreEffect::SCORE>(comboCount)));
@@ -811,7 +853,6 @@ bool Player::CheckSquashEnemy(Enemy* enemy)
 	}
 
 	return false;
-
 }
 
 void Player::PowerUpUpdate()
@@ -824,6 +865,7 @@ void Player::PowerUpUpdate()
 		if (oldState != SMALL && newState == SMALL)
 		{
 			pos.y += (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
 		}
 
 		state = newState;
@@ -861,6 +903,7 @@ void Player::DeathUpdate()
 	else if (deathTimer < DEATH_TIME - 20)
 	{
 		pos.y += deathSpeedY;
+		hitBoxPos.y = pos.y;
 		deathSpeedY += SceneManager::GetInstance().GRAVITY;
 	}
 }
@@ -994,6 +1037,7 @@ void Player::Render(float cameraX)
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	if (pos.x > 2416 && tileManager->bridgeState == TileManager::BS_CLEAR && !CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_WORLD_CLEAR)))DrawGraph(17, 65, ImageManager::GetInstance().GetImage(IMAGE_CLEAR_MESSAGE), true);
+
 }
 void Player::RenderSmall(float cameraX)
 {
@@ -1209,18 +1253,21 @@ bool Player::CheckLift()
 		Lift* lift = static_cast<Lift*>(obj.get());
 
 		bool hitX =
-			pos.x + size.w > lift->pos.x &&
-			pos.x < lift->pos.x + lift->size.w;
+			hitBoxPos.x + hitBoxSize.w > lift->hitBoxPos.x &&
+			hitBoxPos.x < lift->hitBoxPos.x + lift->size.w;
 
 		bool onTop =
-			pos.y + size.h >= lift->pos.y - 2.0f &&
-			pos.y + size.h <= lift->pos.y + 6.0f;
+			hitBoxPos.y + hitBoxSize.h >= lift->hitBoxPos.y - 2.0f &&
+			hitBoxPos.y + hitBoxSize.h <= lift->hitBoxPos.y + 6.0f;
 
 		if (hitX && onTop)
 		{
-			pos.y = lift->pos.y - size.h;
+			hitBoxPos.y = lift->hitBoxPos.y - hitBoxSize.h;
+			pos.y = hitBoxPos.y;
+
 			speed.y = 0.0f;
 
+			// リフトの移動量を同期（画像もヒットボックスも Update 内で AdJust されるため pos のみ移動）
 			pos.x += lift->GetMoveX();
 
 			return true;
@@ -1237,6 +1284,7 @@ void Player::OnGoal(float poleCenterX)
 	goalPhase = GP_DOWN;
 
 	pos.x = poleCenterX - size.w;
+	hitBoxPos.x = pos.x + HitBoxOffsetX;
 
 	speed.x = 0.0f;
 	speed.y = 0.0f;
@@ -1266,9 +1314,10 @@ void Player::GoalUpdate(bool flagEnd)
 				pos.x += size.w;
 				isFacingRight = false;
 				speed.x = 0.0f;
+				hitBoxPos.x = pos.x + HitBoxOffsetX;
+				goalPhase = 1;
 				speed.y = 0.0f;
 				goalWaitTimer = GOAL_TURN_WAIT_TIME;
-				goalPhase = GP_TURN;
 				SoundManager::GetInstance().PlayShotBGM(SoundManager::BGM_STAGE_CLEAR);
 			}
 			break;
@@ -1307,6 +1356,7 @@ void Player::GoalUpdate(bool flagEnd)
 			if (isGround)
 			{
 				pos.x += size.w;
+				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				goalPhase = GP_WALK;
 				speed.y = 0.0f;
 				isFacingRight = true; // 右を向く

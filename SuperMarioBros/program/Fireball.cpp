@@ -11,11 +11,13 @@
 
 Fireball::Fireball(Float2 pos, bool isFacingRight, TileManager* tm, ObjectManager* om) {
 	this->pos = pos;
+	hitBoxPos = pos;
 	tileManager = tm;
 	objectManager = om;
 
 	objectType = OT_FIREBALL;
 	size = { 8.0f, 8.0f }; 
+	hitBoxSize = size;
 	speed.x = isFacingRight ? MOVE_SPEED : -MOVE_SPEED;
 	speed.y = 0;
 	renderLayer = RL_PLAYER;
@@ -26,9 +28,11 @@ void Fireball::Update(float cameraX) {
 	ApplyGravity();
 
 	MoveX();
+	hitBoxPos.x = pos.x;
 	CheckCollisionX();
 
 	MoveY();
+	hitBoxPos.y = pos.y;
 	CheckCollisionY();
 
 

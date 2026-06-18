@@ -75,10 +75,10 @@ bool Firebar::HitPlayer(Object* player)
 		float fireTop = m_ballPos[i].y;
 		float fireBottom = m_ballPos[i].y + size.h;
 
-		float playerLeft = player->pos.x;
-		float playerRight = player->pos.x + player->size.w;
-		float playerTop = player->pos.y;
-		float playerBottom = player->pos.y + player->size.h;
+		float playerLeft = player->hitBoxPos.x;
+		float playerRight = player->hitBoxPos.x + player->hitBoxSize.w;
+		float playerTop = player->hitBoxPos.y;
+		float playerBottom = player->hitBoxPos.y + player->hitBoxSize.h;
 
 		if (fireLeft < playerRight &&
 			fireRight > playerLeft &&

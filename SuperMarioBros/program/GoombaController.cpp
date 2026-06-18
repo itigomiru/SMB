@@ -10,10 +10,12 @@
 Goomba::Goomba()
 {
 	pos = { 100.0f, 200.0f };
+	hitBoxPos = pos;
 	prevPos = pos;
 	objectType = OT_ENEMY;
 	speed = { -SPEED.x, 0.0f };
 	size = { WIDTH, HEIGHT };
+	hitBoxSize = size;
 
 	renderLayer = RL_ENEMY;
 	isDead = false;
@@ -49,9 +51,12 @@ void Goomba::Update(float cameraX)
 	prevPos = pos;
 	Move();
 	ApplyGravity();
+	hitBoxPos = pos;
+	hitBoxSize = size;
 	CheckCollisionX();
 	CheckCollisionY();
-
+    hitBoxPos = pos;
+    hitBoxSize = size;
     animationCounter = (animationCounter + 1) % (ANIM_SPEED * ANIM_FRAMES);
 
 }

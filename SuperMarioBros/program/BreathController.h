@@ -25,6 +25,7 @@ private:
 
 	static const int BREATH_W = 28; 
 	static const int BREATH_H = 10;
+	const Size hitBoxOffset = { 2.0f, 1.0f }; // 当たり判定のオフセット
 
 	const float BREATH_Y_SPEED = 1.0f;
 };
