@@ -250,7 +250,7 @@ void Player::Input()
 	// しゃがみ
 	if ((CheckKey(KEY_INPUT_S) || CheckKey(KEY_INPUT_DOWN)) && state != SMALL)
 	{
-		if (!isCrouching)
+		if (!isCrouching && isGround)
 		{
 			isCrouching = true;
 			isTryingToStand = false;
@@ -261,7 +261,7 @@ void Player::Input()
 	}
 	else
 	{
-		if (isCrouching)
+		if (isCrouching && isGround)
 		{
 			if (CheckCanStand())
 			{
@@ -278,20 +278,49 @@ void Player::Input()
 		}
 	}
 	// 横移動
-	if ((CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)) && !isCrouching)
+	if ((CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)))
 	{
-		speed.x -= MOVE_ACCEL;
-		if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
-		if (isGround)isFacingRight = false;
+		if (!isCrouching)
+		{
+			speed.x -= MOVE_ACCEL;
+			if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
+			if (isGround)isFacingRight = false;
+		}
+		else if (!isGround)
+		{
+			speed.x -= MOVE_ACCEL;
+			if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
+			if (isGround)isFacingRight = false;
+		}
+		else
+		{
+			isCrouching = false;
+			pos.y -= (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
+		}
 	}
-	else if
-		((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)) && !isCrouching)
+	if((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)))
 	{
-		speed.x += MOVE_ACCEL;
-		if (speed.x < 0.05)speed.x += MOVE_ACCEL * 2;
-		if (isGround)isFacingRight = true;
+		if (!isCrouching)
+		{
+			speed.x += MOVE_ACCEL;
+			if (speed.x < 0.05)speed.x += MOVE_ACCEL;
+			if (isGround)isFacingRight = true;
+		}
+		else if (!isGround)
+		{
+			speed.x += MOVE_ACCEL;
+			if (speed.x < 0.05)speed.x += MOVE_ACCEL;
+			if (isGround)isFacingRight = true;
+		}
+		else
+		{
+			isCrouching = false;
+			pos.y -= (SUPER_H - SMALL_H);
+			hitBoxPos.y = pos.y;
+		}
 	}
-	else
+	if (!(CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT) || (CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT))))
 	{
 		if (isGround)
 		{

@@ -5,7 +5,9 @@
 Goal::Goal()
 {
 	pos = { 3169.0f,32.0f };
+	hitBoxPos = pos;
 	size = { 16.0f, 176.0f };
+	hitBoxSize = size;
 	flagPos = { 3160.0f, 48.0f };
 	objectType = OT_GOAL;
 	renderLayer = RL_GOAL;

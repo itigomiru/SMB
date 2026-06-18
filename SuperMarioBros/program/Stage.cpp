@@ -426,7 +426,7 @@ void Stage::CheckHitFireballAndEnemy()
 					break;
 				}
 
-				enemy->Death(player->pos.x < enemy->pos.x, 100);
+				enemy->Death(player->pos.x < enemy->pos.x, ScoreEffect::SCORE_100);
 				fireball->DeathAndEffect();
 				break;
 
