@@ -107,6 +107,7 @@ void Player::Update(float cameraX)
 				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				pos.y = 2 * TILE_SIZE;
 				hitBoxPos.y = pos.y;
+				isCrouching = false;
 				renderLayer = RL_PLAYER;
 				stage->cameraX = 0;
 			}
@@ -117,6 +118,7 @@ void Player::Update(float cameraX)
 				pos.x = 163 * TILE_SIZE + (TILE_SIZE / 2);
 				hitBoxPos.x = pos.x + HitBoxOffsetX;
 				pos.y = 9 * TILE_SIZE;
+				isCrouching = false;
 				hitBoxPos.y = pos.y;
 				renderLayer = RL_PLAYER;
 			}
@@ -297,7 +299,7 @@ void Player::Input()
 		}
 
 	}
-	if((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)))
+	if ((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)))
 	{
 		if (!isCrouching)
 		{
@@ -1016,7 +1018,6 @@ void Player::Render(float cameraX)
 	}
 	else
 	{
-		if (starTimer / 4 % 2 == 1)SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 		// 通常時の描画
 		switch (state)
 		{
@@ -1064,12 +1065,31 @@ void Player::RenderSmall(float cameraX)
 	int drawX = static_cast<int>(pos.x - cameraX);
 	int drawY = static_cast<int>(pos.y);
 
+	int handle;
+	switch ((starTimer / 2) % 4)
+	{
+	case 0:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL);
+		break;
+	case 1:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL_GREEN);
+		break;
+
+	case 2:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL_BLACK);
+		break;
+
+	case 3:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL_RED);
+		break;
+	}
+
 	if (isFacingRight) {
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true);
 	}
 	else
 	{
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_SMALL), true, true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true, true);
 	}
 }
 void Player::RenderBig(float cameraX)
@@ -1113,11 +1133,33 @@ void Player::RenderBig(float cameraX)
 		srcX = chipW * 6; // しゃがみポーズ
 	}
 
+	int handle;
+
+	switch ((starTimer / 2) % 4)
+	{
+	case 0:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG);
+		break;
+
+	case 1:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_GREEN);
+		break;
+
+	case 2:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_BLACK);
+		break;
+
+	default:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_RED);
+		break;
+	}
+
+
 	if (isFacingRight) {
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true);
 	}
 	else {
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG), true, true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true, true);
 	}
 }
 
@@ -1166,14 +1208,33 @@ void Player::RenderFire(float cameraX)
 	{
 		srcX = chipW * 7;
 	}
+	int handle;
 
+	switch ((starTimer / 2) % 4)
+	{
+	case 0:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE);
+		break;
+
+	case 1:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_GREEN);
+		break;
+
+	case 2:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_BLACK);
+		break;
+
+	default:
+		handle = ImageManager::GetInstance().GetImage(IMAGE_PLAYER_BIG_RED);
+		break;
+	}
 
 	if (isFacingRight) {
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true);
 	}
 	else
 	{
-		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, ImageManager::GetInstance().GetImage(IMAGE_PLAYER_FIRE), true, true);
+		DrawRectGraph(drawX, drawY, srcX, 0, chipW, chipH, handle, true, true);
 	}
 }
 
@@ -1299,7 +1360,7 @@ void Player::GoalUpdate(bool flagEnd)
 			speed.y = 1.0f; // 一定速度で下へ
 
 			// 地面に着地したら次のフェーズへ
-			if (isGround && flagEnd &&CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_FLAGPOLE)) == 0)
+			if (isGround && flagEnd && CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_FLAGPOLE)) == 0)
 			{
 				pos.x += size.w;
 				isFacingRight = false;

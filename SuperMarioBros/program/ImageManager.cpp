@@ -49,6 +49,12 @@ ImageManager::ImageManager()
 	images[IMAGE_AXE_CHAIN] = LoadGraph("data/image/image_axe_chain.png");
 	images[IMAGE_CLEAR_MESSAGE] = LoadGraph("data/image/image_clear_message.png");
 	images[IMAGE_PRINCESS] = LoadGraph("data/image/image_princess.png");
+	images[IMAGE_PLAYER_SMALL_GREEN] = LoadGraph("data/image/image_player_small_green.png");
+	images[IMAGE_PLAYER_SMALL_RED] = LoadGraph("data/image/image_player_small_red.png");
+	images[IMAGE_PLAYER_SMALL_BLACK] = LoadGraph("data/image/image_player_small_black.png");
+	images[IMAGE_PLAYER_BIG_GREEN] = LoadGraph("data/image/image_player_big_green.png");
+	images[IMAGE_PLAYER_BIG_RED] = LoadGraph("data/image/image_player_big_red.png");
+	images[IMAGE_PLAYER_BIG_BLACK] = LoadGraph("data/image/image_player_big_black.png");
 	//------------------
 	//丸山
 	images[IMAGE_BLOCK] = LoadGraph("data/image/image_block.png");
