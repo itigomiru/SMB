@@ -396,6 +396,7 @@ void Stage::CheckHit()
 						break;
 					case TileManager::ITEM_COIN:
 						PlayerData::GetInstance().AddCoin(1);
+						PlayerData::GetInstance().AddScore(200);
 						break;
 
 					}
