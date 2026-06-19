@@ -292,12 +292,7 @@ void Player::Input()
 			if (speed.x > 0.05)speed.x -= MOVE_ACCEL;
 			if (isGround)isFacingRight = false;
 		}
-		else
-		{
-			isCrouching = false;
-			pos.y -= (SUPER_H - SMALL_H);
-			hitBoxPos.y = pos.y;
-		}
+
 	}
 	if((CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)))
 	{
@@ -313,12 +308,7 @@ void Player::Input()
 			if (speed.x < 0.05)speed.x += MOVE_ACCEL;
 			if (isGround)isFacingRight = true;
 		}
-		else
-		{
-			isCrouching = false;
-			pos.y -= (SUPER_H - SMALL_H);
-			hitBoxPos.y = pos.y;
-		}
+
 	}
 	if (!(CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT) || (CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT))))
 	{
@@ -1088,10 +1078,10 @@ void Player::RenderBig(float cameraX)
 	bool isBraking = false;
 
 	// 逆キーが押されている場合はブレーキアニメーション
-	if (speed.x > 0.1f && (CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)) && !isGoal) {
+	if (speed.x > 0.1f && (CheckKey(KEY_INPUT_A) || CheckKey(KEY_INPUT_LEFT)) && !isGoal && !isCrouching) {
 		isBraking = true;
 	}
-	else if (speed.x < -0.1f && (CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)) && !isGoal) {
+	else if (speed.x < -0.1f && (CheckKey(KEY_INPUT_D) || CheckKey(KEY_INPUT_RIGHT)) && !isGoal && !isCrouching) {
 		isBraking = true;
 	}
 

@@ -32,6 +32,7 @@ SoundManager::SoundManager()
 	SEs[SE_POWERUP] = LoadSoundMem("data/sound/se_powerup.wav");
 	SEs[SE_POWERUP_APPEARS] = LoadSoundMem("data/sound/se_powerup_appears.wav");
 	SEs[SE_STOMP] = LoadSoundMem("data/sound/se_stomp.wav");
+	SEs[SE_PAUSE] = LoadSoundMem("data/sound/se_pause.wav");
 	//---------------------------------------------------------
 	ChangeVolumeSoundMem(255, SEs[SE_1UP]);
 	ChangeVolumeSoundMem(250, SEs[SE_BOWSERFALLS]);
@@ -48,7 +49,7 @@ SoundManager::SoundManager()
 	ChangeVolumeSoundMem(255, SEs[SE_POWERUP]);
 	ChangeVolumeSoundMem(255, SEs[SE_POWERUP_APPEARS]);
 	ChangeVolumeSoundMem(255, SEs[SE_STOMP]);
-
+	ChangeVolumeSoundMem(255, SEs[SE_PAUSE]);
 
 	//---------------------------------------------------------
 	//	音声のハンドルを入れる配列を初期化

@@ -39,6 +39,7 @@ public:
 		SE_POWERUP,
 		SE_POWERUP_APPEARS,
 		SE_STOMP,
+		SE_PAUSE,
 		SE_MAX,
 
 	};
