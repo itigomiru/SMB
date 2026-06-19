@@ -75,6 +75,7 @@ void Player::Init(Float2 position)
 	isFlagEnd = false;
 	comboCount = 0;
 	goalWaitTimer = 0;
+	goalScoreTimer = 0;
 }
 
 
@@ -1326,10 +1327,26 @@ void Player::GoalUpdate(bool flagEnd)
 		case GP_WALK:
 			speed.x = 1.0f;
 
+			goalScoreTimer++;
+
+			if (goalScoreTimer >= GOAL_SCORE_INTERVAL)
+			{
+				goalScoreTimer = 0;
+
+				if (PlayerData::GetInstance().GetTime() > 0)
+				{
+					PlayerData::GetInstance().AddTime(-24);
+					PlayerData::GetInstance().AddScore(GOAL_TIME_SCORE);
+
+					SoundManager::GetInstance().PlaySE(SoundManager::SE_COIN);
+				}
+			}
+
+
 			if (pos.x > 3270)
 			{
 				speed.x = 0.0f;
-				if (CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_STAGE_CLEAR)) == 0)
+				if (PlayerData::GetInstance().GetTime() <= 0 && CheckSoundMem(SoundManager::GetInstance().GetBGMHandle(SoundManager::BGM_STAGE_CLEAR)) == 0)
 				{
 					SceneManager::GetInstance().ReserveScene(SceneManager::SCENE_PRESTAGE, 1);
 					PlayerData::GetInstance().SetPlayerState(state);
