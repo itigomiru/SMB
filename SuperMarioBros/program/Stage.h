@@ -15,6 +15,9 @@ private :
 	EnemySpawner enemySpawner;
 	Player* player = nullptr;
 	int state;
+	bool isPausing;
+	int pauseTimer;
+	const int PAUSE_TIME = 60;
 	enum StageState
 	{
 		ST_NORMAL,

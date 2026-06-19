@@ -42,7 +42,7 @@ void Stage::Init()
 		PlayerData::GetInstance().AddTime(-100 * 24);
 		playerStartPos = { 32.0f, TILE_SIZE * 6 };
 		objectManager.AddObject(std::make_unique<Axe>());
-		objectManager.AddObject(std::make_unique<Lift>(2112.0f, TILE_SIZE * 6,100.0f));
+		objectManager.AddObject(std::make_unique<Lift>(2112.0f, TILE_SIZE * 6, 100.0f));
 		SoundManager::GetInstance().PlayBGM(SoundManager::BGM_CASTLE);
 		break;
 	}
@@ -69,6 +69,29 @@ void Stage::Init()
 
 void Stage::Update()
 {
+	if (PushHitKey(KEY_INPUT_RETURN))
+	{
+		if (isPausing)
+		{
+			if (pauseTimer <= 0)
+			{
+				isPausing = false;
+				SoundManager::GetInstance().PlaySE(SoundManager::SE_PAUSE);
+			}
+		}
+		else
+		{
+			isPausing = true;
+			pauseTimer = PAUSE_TIME;
+			SoundManager::GetInstance().PlaySE(SoundManager::SE_PAUSE);
+		}
+	}
+	if (isPausing)
+	{
+		pauseTimer--;
+		if (pauseTimer < 0)pauseTimer = 0;
+		return;
+	}
 	EffectManager::GetInstance().Update();
 	if (UpdateFreeze())return;
 	bool vsBouser = tileManager.GetCurrentStage() == 1 && player->pos.x > 1968;
@@ -115,7 +138,7 @@ void Stage::Update()
 		player->Death();
 	}
 
-	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1450.0f && player-> pos.x < 1950.0f)
+	if (tileManager.GetCurrentStage() == 1 && player->pos.x >= 1450.0f && player->pos.x < 1950.0f)
 	{
 		roadBreathTimer--;
 
@@ -139,7 +162,7 @@ void Stage::Update()
 				1.5f
 			));
 		}
-		
+
 	}
 	else
 	{
@@ -553,7 +576,7 @@ void Stage::CheckHitEnemyAndEnemy()
 				}
 				else
 				{
-					if (objects[i]->objectType == Object::OT_ENEMY) 
+					if (objects[i]->objectType == Object::OT_ENEMY)
 					{
 						enemyA->pos.x += 1.0f;
 						enemyA->hitBoxPos.x = enemyA->pos.x;
