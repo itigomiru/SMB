@@ -103,6 +103,11 @@ private:
 	int goalWaitTimer;
 	const int GOAL_TURN_WAIT_TIME = 40;
 
+	int goalScoreTimer;
+
+	static const int GOAL_SCORE_INTERVAL = 2;
+	static const int GOAL_TIME_SCORE = 50;
+
 	int goalPhase;     // ゴール演出の進行状態
 	enum GoalPhase
 	{
