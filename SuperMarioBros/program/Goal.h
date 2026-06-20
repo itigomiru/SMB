@@ -19,6 +19,6 @@ private:
     bool isFlagMoving;
     bool isFlagEnd;
 
-    static constexpr float FLAG_DOWN_SPEED = 1.0f;
+    static constexpr float FLAG_DOWN_SPEED = 2.0f;
     static constexpr float FLAG_END_Y = 176.0f;
 };

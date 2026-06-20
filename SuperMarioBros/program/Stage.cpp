@@ -454,7 +454,7 @@ void Stage::CheckHitFireballAndEnemy()
 
 		for (const auto& enemyObj : objectManager.GetObjects())
 		{
-			if (enemyObj->objectType != Object::OT_ENEMY)continue;
+			if (enemyObj->objectType != Object::OT_ENEMY && enemyObj->objectType != Object::OT_SHELL)continue;
 
 			if (enemyObj->isDead)continue;
 
