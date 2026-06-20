@@ -159,7 +159,7 @@ void Player::Update(float cameraX)
 		comboCount = 0;
 	}
 
-#if 1
+#if 0
 	// デバッグ用キー
 	if (PushHitKey(KEY_INPUT_0)) { GetSuperMashroom(); }
 	if (PushHitKey(KEY_INPUT_9)) { GetFireFlower(); }
